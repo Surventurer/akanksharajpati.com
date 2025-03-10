@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR - Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #E6DFD9;
+            color: #896A5B;
+            font-family: 'Times New Roman', serif;
+            overflow-x: hidden;
+        }
+        
+        nav {
+            padding: 2rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            /* background-color: rgba(232, 225, 217, 0.9); */
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #6d4c41;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 2rem;
+        }
+
+        .logo {
+            width: 20vw; 
+            height: 20vw;
+            max-width: 200px; 
+            max-height: 200px; 
+            min-width: 80px; 
+            min-height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                width: 25vw;
+                height: 25vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                width: 30vw;
+                height: 30vw;
+            }
+        }
+
+        
+        main {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+        
+        h1 {
+            font-size: 7rem;
+            margin-bottom: 1rem;
+            color: #6d4c41;
+            font-weight: normal;
+        }
+        
+        p {
+            color: #6d4c41;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            font-size: 1.5rem;
+        }
+        
+        .notify-btn {
+            padding: 0.8rem 3rem;
+            background-color: transparent;
+            border: 1px solid #6d4c41;
+            border-radius: 50px;
+            color: #6d4c41;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .notify-btn:hover {
+            background-color: rgba(109, 76, 65, 0.1);
+        }
+        
+        /* Contact Section Styles */
+        .contact-section {
+            height: 100vh;
+            width: 100%;
+            background-color: #9a7b67;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .contact-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .content-left {
+            text-align: left;
+            max-width: 60%;
+        }
+        
+        .contact-section h1 {
+            font-size: 5rem;
+            font-weight: normal;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: white;
+            width: 100%;
+            margin: 2rem 0;
+            opacity: 0.7;
+        }
+        
+        .subtitle {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1.5rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            /* border: 2px solid white;
+            border-radius: 50%; */
+        }
+        
+        .social-name {
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 5rem;
+            }
+            p {
+                font-size: 1.5rem;
+            }
+            nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .contact-section h1 {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .social-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .social-name {
+                font-size: 1.2rem;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .content-left {
+                max-width: 100%;
+                text-align: center;
+            }
+            
+            .divider {
+                margin: 2rem auto;
+            }
+            
+            .social-links {
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 3.7rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            .notify-btn{
+                font-size: 1rem;
+            }
+            nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .contact-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .social-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .social-name {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="https://www.linkedin.com/in/akanksha-rajpati-513999250">ABOUT</a>
+            <span style="color:#6d4c41;">|</span>
+            <a href="#contact">CONTACT</a>
+        </div>
+        <div></div>
+    </nav>
+    
+    <main id="home">
+        <div class="logo-container">
+            <img src="asset/logo.png" alt="AR Logo" class="logo">
+        </div>
+        <div class="content">
+            <h1>Coming soon!</h1>
+            <p>We're currently working on creating something fantastic.<br>It will be here soon, subscribe to be notified</p>
+            <a href="mailto:akati@gmail.com?subject=Notify%20Me&body=I%20want%20to%20be%20notified!"> <button class="notify-btn">NOTIFY ME</button></a>
+        </div>
+    </main>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="content-left">
+                <h1>Get in touch!</h1>
+                <div class="divider"></div>
+                <p class="subtitle">To see more of my work, visit my socials:</p>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://in.pinterest.com/travist_/" class="social-link">
+                    <img src="asset/pinterest.png" alt="Pinterest" class="social-icon">
+                    <span class="social-name">Pinterest</span>
+                </a>
+                
+                <a href="https://www.wattpad.com/user/travist_" class="social-link">
+                    <img src="asset/wattpad.png" alt="Wattpad" class="social-icon">
+                    <span class="social-name">Wattpad</span>
+                </a>
+                
+                <a href="https://youtube.com/@travist_?si=ueu8k2wbuG6uIX3H" class="social-link">
+                    <img src="asset/youtube.png" alt="YouTube" class="social-icon">
+                    <span class="social-name">Youtube</span>
+                </a>
+                </a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
