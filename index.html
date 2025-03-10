@@ -31,7 +31,6 @@
             top: 0;
             left: 0;
             z-index: 100;
-            /* background-color: rgba(232, 225, 217, 0.9); */
         }
         
         .nav-links {
@@ -188,8 +187,6 @@
         .social-icon {
             width: 50px;
             height: 50px;
-            /* border: 2px solid white;
-            border-radius: 50%; */
         }
         
         .social-name {
@@ -280,6 +277,11 @@
             }
         }
     </style>
+    <script>
+        function sendEmail() {
+            window.location.href = "mailto:akati@gmail.com?subject=Notify%20Me&body=I%20want%20to%20be%20notified!";
+        }
+    </script>
 </head>
 <body>
     <nav>
@@ -298,7 +300,8 @@
         <div class="content">
             <h1>Coming soon!</h1>
             <p>We're currently working on creating something fantastic.<br>It will be here soon, subscribe to be notified</p>
-            <a href="mailto:akati@gmail.com?subject=Notify%20Me&body=I%20want%20to%20be%20notified!"> <button class="notify-btn">NOTIFY ME</button></a>
+            <button class="notify-btn" onclick="sendEmail()">NOTIFY ME</button>
+            <!-- <a href="mailto:akati@gmail.com?subject=Notify%20Me&body=I%20want%20to%20be%20notified!"> <button class="notify-btn">NOTIFY ME</button></a> -->
         </div>
     </main>
     
