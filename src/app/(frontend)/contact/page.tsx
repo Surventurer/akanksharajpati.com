@@ -1,6 +1,9 @@
 import { fetchContactPage } from '@/lib/cms.server';
 import ContactClient from './ContactClient';
 
+// Force dynamic rendering to always fetch fresh CMS data
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
     title: 'Contact | Akanksha Rajpati',
     description: 'Get in touch with me for collaborations, questions, or just to say hello.',

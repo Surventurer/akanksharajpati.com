@@ -4,6 +4,9 @@ import React from 'react'
 import { fetchHomePage, fetchArticles } from '@/lib/cms.server'
 import { Media, Font } from '@/payload-types'
 
+// Force dynamic rendering to always fetch fresh CMS data
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
     const [pageData, articles] = await Promise.all([
         fetchHomePage(),
@@ -64,7 +67,7 @@ export default async function Home() {
                     )}
                     <div className="absolute inset-0 hero-gradient"></div>
                     <div className="relative z-10 text-center px-6 max-w-4xl">
-                        <h1 
+                        <h1
                             className="text-6xl md:text-9xl mb-6 drop-shadow-sm leading-none"
                             style={{
                                 fontFamily: getFontFamily(pageData?.heroHeadingLine1Font),
@@ -72,7 +75,7 @@ export default async function Home() {
                             }}
                         >
                             {pageData?.heroHeadingLine1 || 'Between Summer'} <br />
-                            <span 
+                            <span
                                 className="text-serif-accent"
                                 style={{
                                     fontFamily: getFontFamily(pageData?.heroHeadingLine2Font),
@@ -83,7 +86,7 @@ export default async function Home() {
                             </span>
                         </h1>
                         {pageData?.heroDescription && (
-                            <p 
+                            <p
                                 className="text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto leading-relaxed italic"
                                 style={{
                                     fontFamily: getFontFamily(pageData?.heroDescriptionFont),
@@ -94,8 +97,8 @@ export default async function Home() {
                             </p>
                         )}
                         {pageData?.heroButtonText && pageData?.heroButtonLink && (
-                            <Link 
-                                href={pageData?.heroButtonLink} 
+                            <Link
+                                href={pageData?.heroButtonLink}
                                 className="btn-primary"
                                 style={{
                                     fontFamily: getFontFamily(pageData?.heroButtonFont),
@@ -131,7 +134,7 @@ export default async function Home() {
                         <div className={pageData?.showAboutPreviewImage !== false ? "md:col-span-7 space-y-10 pl-0 md:pl-12" : "md:col-span-12 space-y-10 text-center"}>
                             <div className="space-y-4">
                                 {pageData?.aboutPreviewSectionLabel && (
-                                    <span 
+                                    <span
                                         className="section-label"
                                         style={{
                                             fontFamily: getFontFamily(pageData?.aboutPreviewSectionLabelFont),
@@ -141,7 +144,7 @@ export default async function Home() {
                                         {pageData?.aboutPreviewSectionLabel}
                                     </span>
                                 )}
-                                <h2 
+                                <h2
                                     className="heading-display"
                                     style={{
                                         fontFamily: getFontFamily(pageData?.aboutPreviewHeadingNormalFont),
@@ -149,7 +152,7 @@ export default async function Home() {
                                     }}
                                 >
                                     {pageData?.aboutPreviewHeadingNormal || "Hello, I'm"}{' '}
-                                    <span 
+                                    <span
                                         className="text-serif-accent"
                                         style={{
                                             fontFamily: getFontFamily(pageData?.aboutPreviewHeadingAccentFont),
@@ -172,7 +175,7 @@ export default async function Home() {
                                     </p>
                                 )}
                                 {pageData?.aboutPreviewTextSecondary && (
-                                    <p 
+                                    <p
                                         className="text-base font-sans not-italic text-foreground/70"
                                         style={{
                                             fontFamily: getFontFamily(pageData?.aboutPreviewTextSecondaryFont),
@@ -203,7 +206,7 @@ export default async function Home() {
                 <section className="py-24 bg-beige overflow-hidden border-y border-accent/10" id="shop">
                     <div className="max-w-7xl mx-auto px-6 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div className="space-y-2">
-                            <h2 
+                            <h2
                                 className="font-display text-4xl"
                                 style={{
                                     fontFamily: getFontFamily(pageData?.shopPreviewHeadingNormalFont),
@@ -211,7 +214,7 @@ export default async function Home() {
                                 }}
                             >
                                 {pageData?.shopPreviewHeadingNormal || 'Shop My'}{' '}
-                                <span 
+                                <span
                                     className="text-serif-accent"
                                     style={{
                                         fontFamily: getFontFamily(pageData?.shopPreviewHeadingAccentFont),
@@ -222,7 +225,7 @@ export default async function Home() {
                                 </span>
                             </h2>
                             {pageData?.shopPreviewDescription && (
-                                <p 
+                                <p
                                     className="text-foreground/50 text-sm tracking-wide"
                                     style={{
                                         fontFamily: getFontFamily(pageData?.shopPreviewDescriptionFont),
@@ -242,14 +245,14 @@ export default async function Home() {
                             </button>
                         </div>
                     </div>
-                    
+
                     {/* Products Carousel Placeholder */}
                     <div className="flex gap-8 overflow-x-auto px-6 max-w-7xl mx-auto scrollbar-hide pb-12">
                         <div className="flex-none w-72 group text-center text-foreground/50 py-16">
                             <p>Products will be displayed here</p>
                         </div>
                     </div>
-                    
+
                     <div className="text-center mt-8">
                         <Link href="/shop" className="btn-outline">
                             View All Products
@@ -265,7 +268,7 @@ export default async function Home() {
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-4">
                             <div className="space-y-2">
                                 {pageData?.blogPreviewSectionLabel && (
-                                    <span 
+                                    <span
                                         className="section-label"
                                         style={{
                                             fontFamily: getFontFamily(pageData?.blogPreviewSectionLabelFont),
@@ -275,7 +278,7 @@ export default async function Home() {
                                         {pageData?.blogPreviewSectionLabel}
                                     </span>
                                 )}
-                                <h2 
+                                <h2
                                     className="font-display text-4xl"
                                     style={{
                                         fontFamily: getFontFamily(pageData?.blogPreviewHeadingNormalFont),
@@ -283,7 +286,7 @@ export default async function Home() {
                                     }}
                                 >
                                     {pageData?.blogPreviewHeadingNormal || 'Latest'}{' '}
-                                    <span 
+                                    <span
                                         className="text-serif-accent"
                                         style={{
                                             fontFamily: getFontFamily(pageData?.blogPreviewHeadingAccentFont),
@@ -295,8 +298,8 @@ export default async function Home() {
                                 </h2>
                             </div>
                             {pageData?.blogPreviewButtonText && pageData?.blogPreviewButtonLink && (
-                                <Link 
-                                    href={pageData?.blogPreviewButtonLink} 
+                                <Link
+                                    href={pageData?.blogPreviewButtonLink}
                                     className="btn-outline"
                                 >
                                     {pageData?.blogPreviewButtonText}

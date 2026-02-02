@@ -3,6 +3,10 @@ import { fetchAboutPage } from "@/lib/cms.server";
 import { Media } from "@/payload-types";
 import Image from "next/image";
 
+// Force dynamic rendering to always fetch fresh CMS data
+export const dynamic = 'force-dynamic'
+
+
 export default async function About() {
     const pageData = await fetchAboutPage();
 
@@ -50,56 +54,56 @@ export default async function About() {
             {/* About Section - only show if enabled */}
             {serializedPageData.heroEnabled !== false && (
                 <section className="py-20 px-6 bg-card" id="about">
-                <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16 items-center">
-                    {serializedPageData.showHeroImage !== false && heroImage && (
-                        <div className="md:col-span-5 relative">
-                            <div className="absolute -inset-4 border border-accent/40 translate-x-8 translate-y-8 -z-0"></div>
-                            <img
-                                alt="Sarah in a curated interior"
-                                className="relative z-10 w-full aspect-[4/5] object-cover grayscale-[0.2] sepia-[0.1]"
-                                src={heroImage}
-                            />
-                        </div>
-                    )}
-                    <div className={serializedPageData.showHeroImage !== false && heroImage ? "md:col-span-7 space-y-10 pl-0 md:pl-12" : "md:col-span-12 space-y-10 text-center"}>
-                        <div className="space-y-4">
-                            {/* @ts-ignore */}
-                            {serializedPageData.sectionLabel && (
-                                <span className="section-label" style={getStyle(serializedPageData?.sectionLabelFont, serializedPageData?.sectionLabelColor)}>{serializedPageData.sectionLabel}</span>
-                            )}
-                            <h2 className="heading-display">
-                                {/* @ts-ignore */}
-                                {serializedPageData.headingNormal && <span style={getStyle(serializedPageData?.headingNormalFont, serializedPageData?.headingNormalColor)}>{serializedPageData.headingNormal}</span>}
-                                {serializedPageData.headingAccent && <> <span className="text-serif-accent" style={getStyle(serializedPageData?.headingAccentFont, serializedPageData?.headingAccentColor)}>{serializedPageData.headingAccent}</span></>}
-                            </h2>
-                        </div>
-                        <div className="space-y-6 body-editorial">
-                            {/* @ts-ignore */}
-                            {serializedPageData.introTextMain && (
-                                <p style={getStyle(serializedPageData?.introTextMainFont, serializedPageData?.introTextMainColor)}>
-                                    {serializedPageData.introTextMain}
-                                </p>
-                            )}
-                            {/* @ts-ignore */}
-                            {serializedPageData.introTextSecondary && (
-                                <p className="text-base font-sans not-italic text-foreground/70" style={getStyle(serializedPageData?.introTextSecondaryFont, serializedPageData?.introTextSecondaryColor)}>
-                                    {serializedPageData.introTextSecondary}
-                                </p>
-                            )}
-                        </div>
-                        {serializedPageData.showSignatureImage !== false && signatureImage && (
-                            <div className="flex items-center gap-8">
+                    <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16 items-center">
+                        {serializedPageData.showHeroImage !== false && heroImage && (
+                            <div className="md:col-span-5 relative">
+                                <div className="absolute -inset-4 border border-accent/40 translate-x-8 translate-y-8 -z-0"></div>
                                 <img
-                                    alt="Signature"
-                                    className="h-12 opacity-80"
-                                    src={signatureImage}
-                                    style={{ filter: "invert(1)", mixBlendMode: "multiply" }}
+                                    alt="Sarah in a curated interior"
+                                    className="relative z-10 w-full aspect-[4/5] object-cover grayscale-[0.2] sepia-[0.1]"
+                                    src={heroImage}
                                 />
                             </div>
                         )}
+                        <div className={serializedPageData.showHeroImage !== false && heroImage ? "md:col-span-7 space-y-10 pl-0 md:pl-12" : "md:col-span-12 space-y-10 text-center"}>
+                            <div className="space-y-4">
+                                {/* @ts-ignore */}
+                                {serializedPageData.sectionLabel && (
+                                    <span className="section-label" style={getStyle(serializedPageData?.sectionLabelFont, serializedPageData?.sectionLabelColor)}>{serializedPageData.sectionLabel}</span>
+                                )}
+                                <h2 className="heading-display">
+                                    {/* @ts-ignore */}
+                                    {serializedPageData.headingNormal && <span style={getStyle(serializedPageData?.headingNormalFont, serializedPageData?.headingNormalColor)}>{serializedPageData.headingNormal}</span>}
+                                    {serializedPageData.headingAccent && <> <span className="text-serif-accent" style={getStyle(serializedPageData?.headingAccentFont, serializedPageData?.headingAccentColor)}>{serializedPageData.headingAccent}</span></>}
+                                </h2>
+                            </div>
+                            <div className="space-y-6 body-editorial">
+                                {/* @ts-ignore */}
+                                {serializedPageData.introTextMain && (
+                                    <p style={getStyle(serializedPageData?.introTextMainFont, serializedPageData?.introTextMainColor)}>
+                                        {serializedPageData.introTextMain}
+                                    </p>
+                                )}
+                                {/* @ts-ignore */}
+                                {serializedPageData.introTextSecondary && (
+                                    <p className="text-base font-sans not-italic text-foreground/70" style={getStyle(serializedPageData?.introTextSecondaryFont, serializedPageData?.introTextSecondaryColor)}>
+                                        {serializedPageData.introTextSecondary}
+                                    </p>
+                                )}
+                            </div>
+                            {serializedPageData.showSignatureImage !== false && signatureImage && (
+                                <div className="flex items-center gap-8">
+                                    <img
+                                        alt="Signature"
+                                        className="h-12 opacity-80"
+                                        src={signatureImage}
+                                        style={{ filter: "invert(1)", mixBlendMode: "multiply" }}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
             )}
 
             {/* Philosophy Section - only show if data exists and is enabled */}

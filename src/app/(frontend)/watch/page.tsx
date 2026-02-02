@@ -2,6 +2,9 @@ import { fetchWatchPage } from '@/lib/cms.server';
 import WatchClient from './WatchClient';
 import { Metadata } from 'next';
 
+// Force dynamic rendering to always fetch fresh CMS data
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
     const data = await fetchWatchPage();
     return {
