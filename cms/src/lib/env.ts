@@ -3,8 +3,8 @@ import { z } from 'zod'
 
 export const env = createEnv({
     server: {
-        CMS_SEED_ADMIN_EMAIL: z.email(),
-        CMS_SEED_ADMIN_PASSWORD: z.string().min(1),
+        CMS_SEED_ADMIN_EMAIL: z.string().trim().email(),
+        CMS_SEED_ADMIN_PASSWORD: z.string().trim().min(1),
     },
     client: {
         //
