@@ -1,0 +1,193 @@
+Vercel CLI 50.9.6
+Retrieving project…
+Deploying surventurers-projects/cms
+Uploading [--------------------] (0.0B/8.8KB)
+Uploading [======--------------] (3.0KB/8.8KB)
+Uploading [====================] (8.8KB/8.8KB)
+Inspect: https://vercel.com/surventurers-projects/cms/EWbzXgBXvbCf6VaRyjxLy6aawrJ1 [3s]
+Production: https://cms-dj693rwa0-surventurers-projects.vercel.app [3s]
+https://cms-dj693rwa0-surventurers-projects.vercel.appBuilding...
+Building...
+Building: Running build in Washington, D.C., USA (East) – iad1
+Building: Build machine configuration: 2 cores, 8 GB
+Building: Retrieving list of deployment files...
+Building: Downloading 149 deployment files...
+Building: Restored build cache from previous deployment (GVQisbZpLu64NX9QA1zaoxS8AjWW)
+Building: Warning: Detected "engines": { "node": "^18.20.2 || >=20.9.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+Building: Running "vercel build"
+Building: Vercel CLI 50.9.6
+Building: > Detected ENABLE_EXPERIMENTAL_COREPACK=1 and "pnpm@9.15.4" in package.json
+Building: Warning: Detected "engines": { "node": "^18.20.2 || >=20.9.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+Building: Installing dependencies...
+Building: ! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-9.15.4.tgz
+Building: (node:59) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Building: (Use `node --trace-deprecation ...` to show where the warning was created)
+Building: Recreating /vercel/path0/node_modules
+Building: Lockfile is up to date, resolution step is skipped
+Building: Progress: resolved 1, reused 0, downloaded 0, added 0
+Building: Packages: +931
+Building: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Building: Progress: resolved 931, reused 0, downloaded 25, added 15
+Building: Progress: resolved 931, reused 0, downloaded 31, added 16
+Building: Progress: resolved 931, reused 0, downloaded 45, added 29
+Building: Progress: resolved 931, reused 0, downloaded 78, added 62
+Building: Progress: resolved 931, reused 0, downloaded 118, added 106
+Building: Progress: resolved 931, reused 0, downloaded 154, added 138
+Building: Progress: resolved 931, reused 0, downloaded 177, added 164
+Building: Progress: resolved 931, reused 0, downloaded 181, added 166
+Building: Progress: resolved 931, reused 0, downloaded 195, added 180
+Building: Progress: resolved 931, reused 0, downloaded 197, added 181
+Building: Progress: resolved 931, reused 0, downloaded 211, added 195
+Building: Progress: resolved 931, reused 0, downloaded 221, added 205
+Building: Progress: resolved 931, reused 0, downloaded 242, added 229
+Building: Progress: resolved 931, reused 0, downloaded 262, added 246
+Building: Progress: resolved 931, reused 0, downloaded 313, added 300
+Building: Progress: resolved 931, reused 0, downloaded 337, added 325
+Building: Progress: resolved 931, reused 0, downloaded 433, added 424
+Building: Progress: resolved 931, reused 0, downloaded 522, added 509
+Building: Progress: resolved 931, reused 0, downloaded 538, added 522
+Building: Progress: resolved 931, reused 0, downloaded 542, added 526
+Building: Progress: resolved 931, reused 0, downloaded 572, added 557
+Building: Progress: resolved 931, reused 0, downloaded 702, added 692
+Building: Progress: resolved 931, reused 0, downloaded 806, added 790
+Building: Progress: resolved 931, reused 0, downloaded 881, added 871
+Building: Progress: resolved 931, reused 0, downloaded 931, added 919
+Building: Progress: resolved 931, reused 0, downloaded 931, added 931, done
+Building: .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+Building: .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+Building: .../esbuild@0.27.2/node_modules/esbuild postinstall$ node install.js
+Building: .../esbuild@0.18.20/node_modules/esbuild postinstall$ node install.js
+Building: .../esbuild@0.25.12/node_modules/esbuild postinstall$ node install.js
+Building: .../node_modules/unrs-resolver postinstall: Done
+Building: .../sharp@0.34.2/node_modules/sharp install$ node install/check
+Building: .../esbuild@0.27.2/node_modules/esbuild postinstall: Done
+Building: .../esbuild@0.18.20/node_modules/esbuild postinstall: Done
+Building: .../esbuild@0.25.12/node_modules/esbuild postinstall: Done
+Building: .../sharp@0.34.5/node_modules/sharp install: Done
+Building: .../sharp@0.34.2/node_modules/sharp install: Done
+Building: dependencies:
+Building: + @payloadcms/db-mongodb 3.74.0
+Building: + @payloadcms/db-postgres 3.74.0
+Building: + @payloadcms/email-resend 3.74.0
+Building: + @payloadcms/next 3.74.0
+Building: + @payloadcms/richtext-lexical 3.74.0
+Building: + @payloadcms/storage-vercel-blob 3.74.0
+Building: + @payloadcms/ui 3.74.0
+Building: + @plaiceholder/next 3.0.0
+Building: + @radix-ui/react-accordion 1.2.12
+Building: + @radix-ui/react-alert-dialog 1.1.15
+Building: + @radix-ui/react-aspect-ratio 1.1.8
+Building: + @radix-ui/react-avatar 1.1.11
+Building: + @radix-ui/react-checkbox 1.3.3
+Building: + @radix-ui/react-collapsible 1.1.12
+Building: + @radix-ui/react-context-menu 2.2.16
+Building: + @radix-ui/react-dialog 1.1.15
+Building: + @radix-ui/react-dropdown-menu 2.1.16
+Building: + @radix-ui/react-hover-card 1.1.15
+Building: + @radix-ui/react-label 2.1.8
+Building: + @radix-ui/react-menubar 1.1.16
+Building: + @radix-ui/react-navigation-menu 1.2.14
+Building: + @radix-ui/react-popover 1.1.15
+Building: + @radix-ui/react-progress 1.1.8
+Building: + @radix-ui/react-radio-group 1.3.8
+Building: + @radix-ui/react-scroll-area 1.2.10
+Building: + @radix-ui/react-select 2.2.6
+Building: + @radix-ui/react-separator 1.1.8
+Building: + @radix-ui/react-slider 1.3.6
+Building: + @radix-ui/react-slot 1.2.4
+Building: + @radix-ui/react-switch 1.2.6
+Building: + @radix-ui/react-tabs 1.1.13
+Building: + @radix-ui/react-toast 1.2.15
+Building: + @radix-ui/react-toggle 1.1.10
+Building: + @radix-ui/react-toggle-group 1.1.11
+Building: + @radix-ui/react-tooltip 1.2.8
+Building: + @t3-oss/env-nextjs 0.13.10
+Building: + @tailwindcss/postcss 4.1.18
+Building: + @tailwindcss/typography 0.5.19
+Building: + class-variance-authority 0.7.1
+Building: + clsx 2.1.1
+Building: + cmdk 1.1.1
+Building: + date-fns 4.1.0
+Building: + dotenv 16.4.7
+Building: + embla-carousel-react 8.6.0
+Building: + graphql 16.12.0
+Building: + input-otp 1.4.2
+Building: + lucide-react 0.563.0
+Building: + next 16.1.6
+Building: + next-themes 0.4.6
+Building: + payload 3.74.0
+Building: + plaiceholder 3.0.0
+Building: + postcss 8.5.6
+Building: + react 19.1.0
+Building: + react-day-picker 9.13.0
+Building: + react-dom 19.1.0
+Building: + react-hook-form 7.71.1
+Building: + react-resizable-panels 4.5.8
+Building: + recharts 3.7.0
+Building: + sharp 0.34.2
+Building: + sonner 2.0.7
+Building: + tailwind-merge 3.4.0
+Building: + tailwindcss 4.1.18
+Building: + vaul 1.1.2
+Building: + zod 4.3.6
+Building: devDependencies:
+Building: + @faker-js/faker 10.2.0
+Building: + @playwright/test 1.56.1
+Building: + @testing-library/react 16.3.0
+Building: + @types/estree-jsx 1.0.5
+Building: + @types/node 22.19.7
+Building: + @types/react 19.2.10
+Building: + @types/react-dom 19.2.3
+Building: + @vitejs/plugin-react 4.5.2
+Building: + cross-env 10.1.0
+Building: + eslint 9.39.2
+Building: + eslint-config-next 16.1.6
+Building: + jsdom 26.1.0
+Building: + playwright 1.56.1
+Building: + playwright-core 1.56.1
+Building: + prettier 3.8.1
+Building: + react-router-dom 7.13.0
+Building: + tsx 4.21.0
+Building: + typescript 5.7.3
+Building: + vite-tsconfig-paths 5.1.4
+Building: + vitest 3.2.3
+Building: Done in 31.1s
+Building: Detected Next.js version: 16.1.6
+Building: Running "pnpm run build"
+Building: > cms@1.0.0 build /vercel/path0
+Building: > cross-env NODE_OPTIONS="--no-deprecation --max-old-space-size=8000" next build
+Building: ▲ Next.js 16.1.6 (Turbopack)
+Building: - Environments: .env
+Building: Creating an optimized production build ...
+Building: ✓ Compiled successfully in 50s
+Building: Running TypeScript ...
+Building: Collecting page data using 1 worker ...
+Building: Generating static pages using 1 worker (0/11) ...
+Building: Generating static pages using 1 worker (2/11)
+Building: Generating static pages using 1 worker (5/11)
+Building: Generating static pages using 1 worker (8/11)
+Building: ✓ Generating static pages using 1 worker (11/11) in 7.3s
+Building: Finalizing page optimization ...
+Building: Route (app)
+Building: ┌ ○ /
+Building: ├ ○ /_not-found
+Building: ├ ○ /about
+Building: ├ ƒ /admin/[[...segments]]
+Building: ├ ƒ /api/[...slug]
+Building: ├ ƒ /api/graphql
+Building: ├ ƒ /api/graphql-playground
+Building: ├ ○ /blog
+Building: ├ ƒ /blog/[slug]
+Building: ├ ○ /contact
+Building: ├ ○ /shop
+Building: └ ○ /watch
+Building: ○  (Static)   prerendered as static content
+Building: ƒ  (Dynamic)  server-rendered on demand
+Building: Traced Next.js server files in: 52.734ms
+Building: Created all serverless functions in: 878.066ms
+Building: Collected static files (public/, static/, .next/static): 6.384ms
+Building: Build Completed in /vercel/output [2m]
+Building: Deploying outputs...
+[2K[1A[2K[GProduction: https://cms-dj693rwa0-surventurers-projects.vercel.app [2m]
+Completing...
+Aliased: https://cms-orcin-beta.vercel.app [2m]

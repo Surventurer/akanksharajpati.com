@@ -1,6 +1,5 @@
 # Dependencies
 node_modules
-cms/node_modules
 /.pnp
 .pnp.js
 
@@ -9,13 +8,10 @@ cms/node_modules
 
 # Next.js
 /.next/
-cms/.next/
 /out/
-cms/out/
 
 # Production
 /build
-cms/build
 
 # Misc
 .DS_Store
@@ -29,18 +25,21 @@ pnpm-debug.log*
 # Local Env Files
 .env
 .env*.local
-cms/.env
-cms/.env*.local
 
 # Vercel
 .vercel
-cms/.vercel
 
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
-# CMS
-cms/media
-public/media
+# Media uploads
+/media
+/public/media
+
+# Vercel env file
 .env.vercel
+
+# Lockfiles - only use pnpm
+package-lock.json
+yarn.lock
