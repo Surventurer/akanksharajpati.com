@@ -1,2 +1,46 @@
-ignore
+# Dependencies
+node_modules
+cms/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+cms/.next/
+/out/
+cms/out/
+
+# Production
+/build
+cms/build
+
+# Misc
 .DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local Env Files
+.env
+.env*.local
+cms/.env
+cms/.env*.local
+
+# Vercel
+.vercel
+cms/.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# CMS
+cms/media
+public/media
+.env.vercel

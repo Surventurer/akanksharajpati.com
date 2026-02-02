@@ -1,0 +1,17 @@
+{
+    "name": "akanksharajpati-root",
+    "private": true,
+    "scripts": {
+        "dev": "cd cms && npm run dev",
+        "build": "cd cms && npm run build",
+        "start": "cd cms && npm run start",
+        "install:cms": "cd cms && npm install"
+    },
+    "devDependencies": {
+        "cross-env": "^10.1.0"
+    },
+    "dependencies": {
+        "mongodb": "^7.0.0",
+        "sass": "^1.97.3"
+    }
+}
