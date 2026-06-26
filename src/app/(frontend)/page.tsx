@@ -1,21 +1,23 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import { fetchHomePage, fetchArticles } from '@/lib/cms.server'
+import { fetchHomePage, fetchArticles, fetchShopPage } from '@/lib/cms.server'
 import { Media, Font } from '@/payload-types'
 
 // Force dynamic rendering to always fetch fresh CMS data
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-    const [pageData, articles] = await Promise.all([
+    const [pageData, articles, shopData] = await Promise.all([
         fetchHomePage(),
-        fetchArticles()
+        fetchArticles(),
+        fetchShopPage()
     ]);
 
     // Serialize data to prevent enqueueModel errors
     const serializedPageData = pageData ? JSON.parse(JSON.stringify(pageData)) : null;
     const serializedArticles = JSON.parse(JSON.stringify(articles));
+    const serializedShopData = shopData ? JSON.parse(JSON.stringify(shopData)) : null;
 
     // If page is disabled or no data, show placeholder
     if (!serializedPageData || !serializedPageData.pageEnabled) {
@@ -236,21 +238,64 @@ export default async function Home() {
                                 </p>
                             )}
                         </div>
-                        <div className="flex gap-4">
-                            <button className="w-10 h-10 rounded-full border border-accent/40 flex items-center justify-center hover:bg-accent/10 transition-colors">
-                                <span className="material-symbols-outlined text-sm">west</span>
-                            </button>
-                            <button className="w-10 h-10 rounded-full border border-accent/40 flex items-center justify-center hover:bg-accent/10 transition-colors">
-                                <span className="material-symbols-outlined text-sm">east</span>
-                            </button>
-                        </div>
                     </div>
 
-                    {/* Products Carousel Placeholder */}
-                    <div className="flex gap-8 overflow-x-auto px-6 max-w-7xl mx-auto scrollbar-hide pb-12">
-                        <div className="flex-none w-72 group text-center text-foreground/50 py-16">
-                            <p>Products will be displayed here</p>
-                        </div>
+                    {/* Products Grid */}
+                    <div className="max-w-7xl mx-auto px-6 pb-12">
+                        {serializedShopData?.products && serializedShopData.products.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {serializedShopData.products.map((product: any, index: number) => {
+                                    const productImage = getMediaUrl(product.image)
+                                    return (
+                                        <div key={index} className="group">
+                                            <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card">
+                                                {productImage && (
+                                                    <Image
+                                                        alt={product.name}
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                        src={productImage}
+                                                        fill
+                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                    />
+                                                )}
+                                                {product.badge && (
+                                                    <div
+                                                        className="absolute top-3 left-3 px-3 py-1 text-[10px] uppercase tracking-widest font-bold"
+                                                        style={{ backgroundColor: product.badgeColor || 'var(--accent)', color: '#fff' }}
+                                                    >
+                                                        {product.badge}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {product.category && (
+                                                <p className="text-[10px] uppercase tracking-widest font-bold mb-1 text-secondary">{product.category}</p>
+                                            )}
+                                            <h3 className="text-lg font-display mb-1">
+                                                {product.link ? (
+                                                    <Link href={product.link} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                                                        {product.name}
+                                                    </Link>
+                                                ) : product.name}
+                                            </h3>
+                                            <div className="flex items-center gap-2">
+                                                {product.salePrice ? (
+                                                    <>
+                                                        <span className="font-display text-base text-primary">{product.salePrice}</span>
+                                                        <span className="text-foreground/40 text-sm line-through">{product.price}</span>
+                                                    </>
+                                                ) : (
+                                                    <span className="font-display text-base">{product.price}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 text-foreground/50">
+                                <p>Products coming soon</p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="text-center mt-8">
