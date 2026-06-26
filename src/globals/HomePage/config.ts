@@ -328,6 +328,29 @@ export const HomePage: GlobalConfig = {
                             defaultValue: true,
                         },
                         {
+                            name: 'shopPreviewSectionLabel',
+                            type: 'text',
+                            label: 'Section Label',
+                            defaultValue: 'The Atelier',
+                        },
+                        {
+                            name: 'shopPreviewSectionLabelFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Section Label Font',
+                        },
+                        {
+                            name: 'shopPreviewSectionLabelColor',
+                            type: 'text',
+                            label: 'Section Label Color',
+                            defaultValue: '#B88078',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
                             name: 'shopPreviewHeadingNormal',
                             type: 'text',
                             label: 'Heading Normal',
@@ -395,6 +418,18 @@ export const HomePage: GlobalConfig = {
                                     Field: '@/components/payload/ColorPickerField#ColorPickerField',
                                 },
                             },
+                        },
+                        {
+                            name: 'shopPreviewButtonText',
+                            type: 'text',
+                            label: 'View All Button Text',
+                            defaultValue: 'View All Products',
+                        },
+                        {
+                            name: 'shopPreviewButtonLink',
+                            type: 'text',
+                            label: 'View All Button Link',
+                            defaultValue: '/shop',
                         },
                     ],
                 },

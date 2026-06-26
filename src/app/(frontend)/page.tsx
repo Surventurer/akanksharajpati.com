@@ -208,6 +208,17 @@ export default async function Home() {
                 <section className="py-24 bg-beige overflow-hidden border-y border-accent/10" id="shop">
                     <div className="max-w-7xl mx-auto px-6 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div className="space-y-2">
+                            {pageData?.shopPreviewSectionLabel && (
+                                <span
+                                    className="section-label"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.shopPreviewSectionLabelFont),
+                                        color: pageData?.shopPreviewSectionLabelColor || undefined
+                                    }}
+                                >
+                                    {pageData?.shopPreviewSectionLabel}
+                                </span>
+                            )}
                             <h2
                                 className="font-display text-4xl"
                                 style={{
@@ -238,6 +249,14 @@ export default async function Home() {
                                 </p>
                             )}
                         </div>
+                        {pageData?.shopPreviewButtonText && pageData?.shopPreviewButtonLink && (
+                            <Link
+                                href={pageData?.shopPreviewButtonLink}
+                                className="btn-outline"
+                            >
+                                {pageData?.shopPreviewButtonText}
+                            </Link>
+                        )}
                     </div>
 
                     {/* Products Grid */}
@@ -298,11 +317,6 @@ export default async function Home() {
                         )}
                     </div>
 
-                    <div className="text-center mt-8">
-                        <Link href="/shop" className="btn-outline">
-                            View All Products
-                        </Link>
-                    </div>
                 </section>
             )}
 

@@ -951,6 +951,9 @@ export interface HomePage {
   aboutPreviewButtonText?: string | null;
   aboutPreviewButtonLink?: string | null;
   shopPreviewEnabled?: boolean | null;
+  shopPreviewSectionLabel?: string | null;
+  shopPreviewSectionLabelFont?: (string | null) | Font;
+  shopPreviewSectionLabelColor?: string | null;
   shopPreviewHeadingNormal?: string | null;
   shopPreviewHeadingNormalFont?: (string | null) | Font;
   shopPreviewHeadingNormalColor?: string | null;
@@ -960,6 +963,8 @@ export interface HomePage {
   shopPreviewDescription?: string | null;
   shopPreviewDescriptionFont?: (string | null) | Font;
   shopPreviewDescriptionColor?: string | null;
+  shopPreviewButtonText?: string | null;
+  shopPreviewButtonLink?: string | null;
   blogPreviewEnabled?: boolean | null;
   blogPreviewSectionLabel?: string | null;
   blogPreviewSectionLabelFont?: (string | null) | Font;
@@ -1812,6 +1817,9 @@ export interface HomePageSelect<T extends boolean = true> {
   aboutPreviewButtonText?: T;
   aboutPreviewButtonLink?: T;
   shopPreviewEnabled?: T;
+  shopPreviewSectionLabel?: T;
+  shopPreviewSectionLabelFont?: T;
+  shopPreviewSectionLabelColor?: T;
   shopPreviewHeadingNormal?: T;
   shopPreviewHeadingNormalFont?: T;
   shopPreviewHeadingNormalColor?: T;
@@ -1821,6 +1829,8 @@ export interface HomePageSelect<T extends boolean = true> {
   shopPreviewDescription?: T;
   shopPreviewDescriptionFont?: T;
   shopPreviewDescriptionColor?: T;
+  shopPreviewButtonText?: T;
+  shopPreviewButtonLink?: T;
   blogPreviewEnabled?: T;
   blogPreviewSectionLabel?: T;
   blogPreviewSectionLabelFont?: T;
