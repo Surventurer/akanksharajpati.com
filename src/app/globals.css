@@ -32,7 +32,7 @@
 
     --font-display: var(--font-display);
     --font-serif: var(--font-serif);
-    --font-brand: 'MyClientFont', sans-serif;
+    --font-brand: var(--font-serif), serif;
 
     --animate-fade-in: fade-in 0.3s ease-out;
     --animate-slide-in-down: slide-in-down 0.3s ease-out;

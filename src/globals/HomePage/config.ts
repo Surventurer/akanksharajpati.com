@@ -525,6 +525,236 @@ export const HomePage: GlobalConfig = {
                         },
                     ],
                 },
+                {
+                    label: 'Watch Preview Section',
+                    fields: [
+                        {
+                            name: 'watchPreviewEnabled',
+                            type: 'checkbox',
+                            label: 'Enable Watch Preview Section',
+                            defaultValue: true,
+                        },
+                        {
+                            name: 'watchPreviewSectionLabel',
+                            type: 'text',
+                            label: 'Section Label',
+                            defaultValue: 'The Visual Diary',
+                        },
+                        {
+                            name: 'watchPreviewSectionLabelFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Section Label Font',
+                        },
+                        {
+                            name: 'watchPreviewSectionLabelColor',
+                            type: 'text',
+                            label: 'Section Label Color',
+                            defaultValue: '#B88078',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'watchPreviewHeadingNormal',
+                            type: 'text',
+                            label: 'Heading Normal',
+                            defaultValue: 'Recent',
+                        },
+                        {
+                            name: 'watchPreviewHeadingNormalFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Heading Normal Font',
+                        },
+                        {
+                            name: 'watchPreviewHeadingNormalColor',
+                            type: 'text',
+                            label: 'Heading Normal Color',
+                            defaultValue: '#4a4b34',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'watchPreviewHeadingAccent',
+                            type: 'text',
+                            label: 'Heading Accent',
+                            defaultValue: 'Videos',
+                        },
+                        {
+                            name: 'watchPreviewHeadingAccentFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Heading Accent Font',
+                        },
+                        {
+                            name: 'watchPreviewHeadingAccentColor',
+                            type: 'text',
+                            label: 'Heading Accent Color',
+                            defaultValue: '#B88078',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'watchPreviewDescription',
+                            type: 'textarea',
+                            label: 'Description',
+                            defaultValue: 'Visual stories capturing the beauty of seasonal living.',
+                        },
+                        {
+                            name: 'watchPreviewDescriptionFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Description Font',
+                        },
+                        {
+                            name: 'watchPreviewDescriptionColor',
+                            type: 'text',
+                            label: 'Description Color',
+                            defaultValue: '#6b6c4f',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'watchPreviewButtonText',
+                            type: 'text',
+                            label: 'View All Button Text',
+                            defaultValue: 'Watch All Videos',
+                        },
+                        {
+                            name: 'watchPreviewButtonLink',
+                            type: 'text',
+                            label: 'View All Button Link',
+                            defaultValue: '/watch',
+                        },
+                    ],
+                },
+                {
+                    label: 'Contact Preview Section',
+                    fields: [
+                        {
+                            name: 'contactPreviewEnabled',
+                            type: 'checkbox',
+                            label: 'Enable Contact Preview Section',
+                            defaultValue: true,
+                        },
+                        {
+                            name: 'contactPreviewSectionLabel',
+                            type: 'text',
+                            label: 'Section Label',
+                            defaultValue: 'Let’s Connect',
+                        },
+                        {
+                            name: 'contactPreviewSectionLabelFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Section Label Font',
+                        },
+                        {
+                            name: 'contactPreviewSectionLabelColor',
+                            type: 'text',
+                            label: 'Section Label Color',
+                            defaultValue: '#B88078',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'contactPreviewHeadingNormal',
+                            type: 'text',
+                            label: 'Heading Normal',
+                            defaultValue: 'Get in',
+                        },
+                        {
+                            name: 'contactPreviewHeadingNormalFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Heading Normal Font',
+                        },
+                        {
+                            name: 'contactPreviewHeadingNormalColor',
+                            type: 'text',
+                            label: 'Heading Normal Color',
+                            defaultValue: '#4a4b34',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'contactPreviewHeadingAccent',
+                            type: 'text',
+                            label: 'Heading Accent',
+                            defaultValue: 'Touch',
+                        },
+                        {
+                            name: 'contactPreviewHeadingAccentFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Heading Accent Font',
+                        },
+                        {
+                            name: 'contactPreviewHeadingAccentColor',
+                            type: 'text',
+                            label: 'Heading Accent Color',
+                            defaultValue: '#B88078',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'contactPreviewDescription',
+                            type: 'textarea',
+                            label: 'Description',
+                            defaultValue: "Have a question, collaboration idea, or just want to say hello? I'd love to hear from you.",
+                        },
+                        {
+                            name: 'contactPreviewDescriptionFont',
+                            type: 'relationship',
+                            relationTo: 'fonts',
+                            label: 'Description Font',
+                        },
+                        {
+                            name: 'contactPreviewDescriptionColor',
+                            type: 'text',
+                            label: 'Description Color',
+                            defaultValue: '#6b6c4f',
+                            admin: {
+                                components: {
+                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                },
+                            },
+                        },
+                        {
+                            name: 'contactPreviewButtonText',
+                            type: 'text',
+                            label: 'Button Text',
+                            defaultValue: 'Get in Touch',
+                        },
+                        {
+                            name: 'contactPreviewButtonLink',
+                            type: 'text',
+                            label: 'Button Link',
+                            defaultValue: '/contact',
+                        },
+                    ],
+                },
                 // =====================
                 // THEME SETTINGS
                 // =====================

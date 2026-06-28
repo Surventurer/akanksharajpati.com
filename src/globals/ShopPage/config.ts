@@ -476,6 +476,16 @@ export const ShopPage: GlobalConfig = {
                                     label: 'Is Digital Product',
                                     defaultValue: false,
                                 },
+                                {
+                                    name: 'publishedAt',
+                                    type: 'date',
+                                    label: 'Published Date',
+                                    admin: {
+                                        date: {
+                                            pickerAppearance: 'dayOnly',
+                                        },
+                                    },
+                                },
                             ],
                         },
                         // Product Card Styling

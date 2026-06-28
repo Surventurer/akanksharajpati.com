@@ -1,23 +1,26 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import { fetchHomePage, fetchArticles, fetchShopPage } from '@/lib/cms.server'
+import { fetchHomePage, fetchArticles, fetchShopPage, fetchWatchPage, fetchContactPage } from '@/lib/cms.server'
 import { Media, Font } from '@/payload-types'
 
 // Force dynamic rendering to always fetch fresh CMS data
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-    const [pageData, articles, shopData] = await Promise.all([
+    const [pageData, articles, shopData, watchData, contactData] = await Promise.all([
         fetchHomePage(),
         fetchArticles(),
-        fetchShopPage()
+        fetchShopPage(),
+        fetchWatchPage(),
+        fetchContactPage()
     ]);
 
     // Serialize data to prevent enqueueModel errors
     const serializedPageData = pageData ? JSON.parse(JSON.stringify(pageData)) : null;
     const serializedArticles = JSON.parse(JSON.stringify(articles));
     const serializedShopData = shopData ? JSON.parse(JSON.stringify(shopData)) : null;
+    const serializedWatchData = watchData ? JSON.parse(JSON.stringify(watchData)) : null;
 
     // If page is disabled or no data, show placeholder
     if (!serializedPageData || !serializedPageData.pageEnabled) {
@@ -204,124 +207,6 @@ export default async function Home() {
                 </section>
             )}
 
-            {/* Shop Preview Section */}
-            {pageData?.shopPreviewEnabled && (
-                <section className="py-24 bg-beige overflow-hidden border-y border-accent/10" id="shop">
-                    <div className="max-w-7xl mx-auto px-6 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-                        <div className="space-y-2">
-                            {pageData?.shopPreviewSectionLabel && (
-                                <span
-                                    className="section-label"
-                                    style={{
-                                        fontFamily: getFontFamily(pageData?.shopPreviewSectionLabelFont),
-                                        color: pageData?.shopPreviewSectionLabelColor || undefined
-                                    }}
-                                >
-                                    {pageData?.shopPreviewSectionLabel}
-                                </span>
-                            )}
-                            <h2
-                                className="font-display text-4xl"
-                                style={{
-                                    fontFamily: getFontFamily(pageData?.shopPreviewHeadingNormalFont),
-                                    color: pageData?.shopPreviewHeadingNormalColor || undefined
-                                }}
-                            >
-                                {pageData?.shopPreviewHeadingNormal || 'Shop My'}{' '}
-                                <span
-                                    className="text-serif-accent"
-                                    style={{
-                                        fontFamily: getFontFamily(pageData?.shopPreviewHeadingAccentFont),
-                                        color: pageData?.shopPreviewHeadingAccentColor || undefined
-                                    }}
-                                >
-                                    {pageData?.shopPreviewHeadingAccent || 'Autumn Edits'}
-                                </span>
-                            </h2>
-                            {pageData?.shopPreviewDescription && (
-                                <p
-                                    className="text-foreground/50 text-sm tracking-wide"
-                                    style={{
-                                        fontFamily: getFontFamily(pageData?.shopPreviewDescriptionFont),
-                                        color: pageData?.shopPreviewDescriptionColor || undefined
-                                    }}
-                                >
-                                    {pageData?.shopPreviewDescription}
-                                </p>
-                            )}
-                        </div>
-                        {pageData?.shopPreviewButtonText && pageData?.shopPreviewButtonLink && (
-                            <Link
-                                href={pageData?.shopPreviewButtonLink}
-                                className="btn-outline"
-                            >
-                                {pageData?.shopPreviewButtonText}
-                            </Link>
-                        )}
-                    </div>
-
-                    {/* Products Grid */}
-                    <div className="max-w-7xl mx-auto px-6 pb-12">
-                        {serializedShopData?.products && serializedShopData.products.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                {serializedShopData.products.map((product: any, index: number) => {
-                                    const productImage = getMediaUrl(product.image)
-                                    return (
-                                        <div key={index} className="group">
-                                            <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                                                {productImage && (
-                                                    <Image
-                                                        alt={product.name}
-                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                                        src={productImage}
-                                                        fill
-                                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                                    />
-                                                )}
-                                                {product.badge && (
-                                                    <div
-                                                        className="badge-premium absolute top-3 left-3"
-                                                        style={{ backgroundColor: product.badgeColor || 'var(--accent)', color: '#fff' }}
-                                                    >
-                                                        {product.badge}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            {product.category && (
-                                                <p className="text-[10px] uppercase tracking-widest font-bold mb-1 text-secondary">{product.category}</p>
-                                            )}
-                                            <h3 className="text-lg font-display mb-1">
-                                                {product.link ? (
-                                                    <Link href={product.link} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                                                        {product.name}
-                                                    </Link>
-                                                ) : product.name}
-                                            </h3>
-                                            <div className="flex items-center gap-2">
-                                                {product.salePrice ? (
-                                                    <>
-                                                        <span className="font-display text-base text-primary">{product.salePrice}</span>
-                                                        <span className="text-foreground/40 text-sm line-through">{product.price}</span>
-                                                    </>
-                                                ) : (
-                                                    <span className="font-display text-base">{product.price}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        ) : (
-                            <div className="text-center py-12 text-foreground/50">
-                                <div className="material-symbols-outlined text-4xl mb-3 opacity-40">shopping_bag</div>
-                                <p>Products coming soon</p>
-                            </div>
-                        )}
-                    </div>
-
-                </section>
-            )}
-
             {/* Blog Preview Section */}
             {pageData?.blogPreviewEnabled && (
                 <section className="py-24 px-6 bg-card" id="journal">
@@ -400,6 +285,298 @@ export default async function Home() {
                                 </div>
                             )}
                         </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Shop Preview Section */}
+            {pageData?.shopPreviewEnabled && (
+                <section className="py-24 bg-beige overflow-hidden border-y border-accent/10" id="shop">
+                    <div className="max-w-7xl mx-auto px-6 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                        <div className="space-y-2">
+                            {pageData?.shopPreviewSectionLabel && (
+                                <span
+                                    className="section-label"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.shopPreviewSectionLabelFont),
+                                        color: pageData?.shopPreviewSectionLabelColor || undefined
+                                    }}
+                                >
+                                    {pageData?.shopPreviewSectionLabel}
+                                </span>
+                            )}
+                            <h2
+                                className="font-display text-4xl"
+                                style={{
+                                    fontFamily: getFontFamily(pageData?.shopPreviewHeadingNormalFont),
+                                    color: pageData?.shopPreviewHeadingNormalColor || undefined
+                                }}
+                            >
+                                {pageData?.shopPreviewHeadingNormal || 'Shop My'}{' '}
+                                <span
+                                    className="text-serif-accent"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.shopPreviewHeadingAccentFont),
+                                        color: pageData?.shopPreviewHeadingAccentColor || undefined
+                                    }}
+                                >
+                                    {pageData?.shopPreviewHeadingAccent || 'Autumn Edits'}
+                                </span>
+                            </h2>
+                            {pageData?.shopPreviewDescription && (
+                                <p
+                                    className="text-foreground/50 text-sm tracking-wide"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.shopPreviewDescriptionFont),
+                                        color: pageData?.shopPreviewDescriptionColor || undefined
+                                    }}
+                                >
+                                    {pageData?.shopPreviewDescription}
+                                </p>
+                            )}
+                        </div>
+                        {pageData?.shopPreviewButtonText && pageData?.shopPreviewButtonLink && (
+                            <Link
+                                href={pageData?.shopPreviewButtonLink}
+                                className="btn-outline"
+                            >
+                                {pageData?.shopPreviewButtonText}
+                            </Link>
+                        )}
+                    </div>
+
+                    {/* Products Grid */}
+                    <div className="max-w-7xl mx-auto px-6 pb-12">
+                        {serializedShopData?.products && serializedShopData.products.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {[...serializedShopData.products]
+                                    .sort((a: any, b: any) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime())
+                                    .slice(0, 3).map((product: any, index: number) => {
+                                    const productImage = getMediaUrl(product.image)
+                                    return (
+                                        <div key={index} className="group">
+                                            <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                                                {productImage && (
+                                                    <Image
+                                                        alt={product.name}
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                        src={productImage}
+                                                        fill
+                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                    />
+                                                )}
+                                                {product.badge && (
+                                                    <div
+                                                        className="badge-premium absolute top-3 left-3"
+                                                        style={{ backgroundColor: product.badgeColor || 'var(--accent)', color: '#fff' }}
+                                                    >
+                                                        {product.badge}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {product.category && (
+                                                <p className="text-[10px] uppercase tracking-widest font-bold mb-1 text-secondary">{product.category}</p>
+                                            )}
+                                            <h3 className="text-lg font-display mb-1">
+                                                {product.link ? (
+                                                    <Link href={product.link} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                                                        {product.name}
+                                                    </Link>
+                                                ) : product.name}
+                                            </h3>
+                                            <div className="flex items-center gap-2">
+                                                {product.salePrice ? (
+                                                    <>
+                                                        <span className="font-display text-base text-primary">{product.salePrice}</span>
+                                                        <span className="text-foreground/40 text-sm line-through">{product.price}</span>
+                                                    </>
+                                                ) : (
+                                                    <span className="font-display text-base">{product.price}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 text-foreground/50">
+                                <div className="material-symbols-outlined text-4xl mb-3 opacity-40">shopping_bag</div>
+                                <p>Products coming soon</p>
+                            </div>
+                        )}
+                    </div>
+
+                </section>
+            )}
+
+            {/* Watch Preview Section */}
+            {pageData?.watchPreviewEnabled && (
+                <section className="py-24 px-6 bg-card" id="watch">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-4">
+                            <div className="space-y-2">
+                                {pageData?.watchPreviewSectionLabel && (
+                                    <span
+                                        className="section-label"
+                                        style={{
+                                            fontFamily: getFontFamily(pageData?.watchPreviewSectionLabelFont),
+                                            color: pageData?.watchPreviewSectionLabelColor || undefined
+                                        }}
+                                    >
+                                        {pageData?.watchPreviewSectionLabel}
+                                    </span>
+                                )}
+                                <h2
+                                    className="font-display text-4xl"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.watchPreviewHeadingNormalFont),
+                                        color: pageData?.watchPreviewHeadingNormalColor || undefined
+                                    }}
+                                >
+                                    {pageData?.watchPreviewHeadingNormal || 'Recent'}{' '}
+                                    <span
+                                        className="text-serif-accent"
+                                        style={{
+                                            fontFamily: getFontFamily(pageData?.watchPreviewHeadingAccentFont),
+                                            color: pageData?.watchPreviewHeadingAccentColor || undefined
+                                        }}
+                                    >
+                                        {pageData?.watchPreviewHeadingAccent || 'Videos'}
+                                    </span>
+                                </h2>
+                                {pageData?.watchPreviewDescription && (
+                                    <p
+                                        className="text-foreground/50 text-sm tracking-wide"
+                                        style={{
+                                            fontFamily: getFontFamily(pageData?.watchPreviewDescriptionFont),
+                                            color: pageData?.watchPreviewDescriptionColor || undefined
+                                        }}
+                                    >
+                                        {pageData?.watchPreviewDescription}
+                                    </p>
+                                )}
+                            </div>
+                            {pageData?.watchPreviewButtonText && pageData?.watchPreviewButtonLink && (
+                                <Link
+                                    href={pageData?.watchPreviewButtonLink}
+                                    className="btn-outline"
+                                >
+                                    {pageData?.watchPreviewButtonText}
+                                </Link>
+                            )}
+                        </div>
+
+                        {serializedWatchData?.videos && serializedWatchData.videos.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {[...serializedWatchData.videos]
+                                    .sort((a: any, b: any) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime())
+                                    .slice(0, 3).map((video: any, index: number) => {
+                                    const videoImage = getMediaUrl(video.thumbnail)
+                                    return (
+                                        <a
+                                            key={index}
+                                            href={video.videoUrl || '#'}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group block"
+                                        >
+                                            <div className="relative overflow-hidden aspect-video mb-4 rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-0.5 bg-muted">
+                                                {videoImage && (
+                                                    <Image
+                                                        alt={video.title}
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                        src={videoImage}
+                                                        fill
+                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <div className="w-14 h-14 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                                            <path d="M8 5v14l11-7z" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h3 className="font-display text-lg group-hover:text-primary transition-colors">
+                                                {video.title}
+                                            </h3>
+                                            {video.category && (
+                                                <p className="text-[10px] uppercase tracking-widest font-bold mt-1 text-secondary">{video.category}</p>
+                                            )}
+                                            {video.views && (
+                                                <p className="text-foreground/40 text-xs mt-0.5">{video.views} views</p>
+                                            )}
+                                        </a>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 text-foreground/50">
+                                <div className="material-symbols-outlined text-4xl mb-3 opacity-40">smart_display</div>
+                                <p>Videos coming soon</p>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            )}
+
+            {/* Contact Preview Section */}
+            {pageData?.contactPreviewEnabled && (
+                <section className="py-24 px-6 bg-beige border-y border-accent/10 text-center" id="contact">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="space-y-6">
+                            {pageData?.contactPreviewSectionLabel && (
+                                <span
+                                    className="section-label"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.contactPreviewSectionLabelFont),
+                                        color: pageData?.contactPreviewSectionLabelColor || undefined
+                                    }}
+                                >
+                                    {pageData?.contactPreviewSectionLabel}
+                                </span>
+                            )}
+                            <h2
+                                className="font-display text-5xl md:text-6xl"
+                                style={{
+                                    fontFamily: getFontFamily(pageData?.contactPreviewHeadingNormalFont),
+                                    color: pageData?.contactPreviewHeadingNormalColor || undefined
+                                }}
+                            >
+                                {pageData?.contactPreviewHeadingNormal || 'Get in'}{' '}
+                                <span
+                                    className="text-serif-accent"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.contactPreviewHeadingAccentFont),
+                                        color: pageData?.contactPreviewHeadingAccentColor || undefined
+                                    }}
+                                >
+                                    {pageData?.contactPreviewHeadingAccent || 'Touch'}
+                                </span>
+                            </h2>
+                            {pageData?.contactPreviewDescription && (
+                                <p
+                                    className="text-foreground/60 text-lg max-w-xl mx-auto leading-relaxed"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.contactPreviewDescriptionFont),
+                                        color: pageData?.contactPreviewDescriptionColor || undefined
+                                    }}
+                                >
+                                    {pageData?.contactPreviewDescription}
+                                </p>
+                            )}
+                        </div>
+                        {pageData?.contactPreviewButtonText && pageData?.contactPreviewButtonLink && (
+                            <div className="mt-10">
+                                <Link
+                                    href={pageData?.contactPreviewButtonLink}
+                                    className="btn-primary"
+                                >
+                                    {pageData?.contactPreviewButtonText}
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </section>
             )}

@@ -43,3 +43,5 @@ pnpm-debug.log*
 
 # Misc
 *.pem
+
+fonts/

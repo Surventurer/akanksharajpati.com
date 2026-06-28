@@ -161,15 +161,16 @@ const Header = ({ data }: HeaderProps) => {
 
           {/* Center Logo */}
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]">
-            <div className="relative h-16 w-32 md:h-24 md:w-48">
-              <Image
-                src={logoUrl!}
-                alt="Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+              <div className="relative h-16 w-32 md:h-24 md:w-48">
+                <Image
+                  src={logoUrl!}
+                  alt="Logo"
+                  fill
+                  sizes="(max-width: 768px) 128px, 192px"
+                  className="object-contain"
+                  priority
+                />
+              </div>
           </Link>
 
           {/* Right Side Icons */}
@@ -243,6 +244,32 @@ const Header = ({ data }: HeaderProps) => {
 
               return null;
             })}
+            {/* Search - icon on mobile, text on desktop */}
+            <button
+              className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
+              aria-label="Search"
+              style={{ color: data.headerTextColor || '#4a4b34' }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+            </button>
+            <button
+              className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              aria-label="Search"
+              style={{ color: data.headerTextColor || '#4a4b34' }}
+            >
+              Search
+            </button>
+            {/* Shop - desktop only */}
+            <Link
+              href="/shop"
+              className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              style={{ color: data.headerTextColor || '#4a4b34' }}
+            >
+              Shop
+            </Link>
           </div>
         </div>
       </header>
@@ -279,6 +306,7 @@ const Header = ({ data }: HeaderProps) => {
                     src={logoUrl!}
                     alt="Logo"
                     fill
+                    sizes="128px"
                     className="object-contain"
                   />
                 </div>
@@ -355,6 +383,32 @@ const Header = ({ data }: HeaderProps) => {
 
                   return null;
                 })}
+                {/* Search - icon on mobile, text on desktop */}
+                <button
+                  className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
+                  aria-label="Search"
+                  style={{ color: data.headerTextColor || '#4a4b34' }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                  </svg>
+                </button>
+                <button
+                  className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label="Search"
+                  style={{ color: data.headerTextColor || '#4a4b34' }}
+                >
+                  Search
+                </button>
+                {/* Shop - desktop only */}
+                <Link
+                  href="/shop"
+                  className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  style={{ color: data.headerTextColor || '#4a4b34' }}
+                >
+                  Shop
+                </Link>
               </div>
             </div>
 
@@ -391,7 +445,7 @@ const Header = ({ data }: HeaderProps) => {
               <div className="flex flex-col items-center gap-5">
                 {/* Social Links */}
                 {socialLinks && socialLinks.length > 0 && (
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-col md:flex-row items-center gap-3">
                     {socialLinks.map((social, i) => {
                       const socialIconUrl = getMediaUrl(social.icon as Media);
                       
@@ -424,7 +478,7 @@ const Header = ({ data }: HeaderProps) => {
                           </a>
                           {i < socialLinks.length - 1 && (
                             <span 
-                              className="mx-3 opacity-20"
+                              className="hidden md:inline mx-3 opacity-20"
                               style={{ color: data.headerTextColor || '#4a4b34' }}
                             >
                               •
@@ -443,6 +497,7 @@ const Header = ({ data }: HeaderProps) => {
                       src={logoUrl}
                       alt="Logo"
                       fill
+                      sizes="112px"
                       className="object-contain"
                     />
                   </div>

@@ -4,7 +4,6 @@ import Footer from '@/components/layout/Footer'
 import { Plus_Jakarta_Sans, Playfair_Display, Libre_Baskerville } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import '../globals.css'
-import './fonts.css'
 
 export const metadata = {
     title: 'Autumn Stories',
@@ -68,13 +67,6 @@ export default async function FrontendLayout({
         <html lang="en" suppressHydrationWarning>
             <head>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-                <link
-                    rel="preload"
-                    href="/fonts/MyClientFont-Regular.woff2"
-                    as="font"
-                    type="font/woff2"
-                    crossOrigin="anonymous"
-                />
                 <style dangerouslySetInnerHTML={{
                     __html: fontFaces
                 }} />
