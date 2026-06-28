@@ -26,6 +26,10 @@ export async function seedGlobals(payload: Payload, mediaMap: MediaMap | null, f
                 { platform: 'YouTube', url: 'https://youtube.com', font: fontMap?.nunito },
                 { platform: 'Pinterest', url: 'https://pinterest.com', font: fontMap?.nunito },
             ],
+            navIcons: [
+                { type: 'search', showIcon: true, showLabel: false, showIconOnMobile: true, showIconOnDesktop: true, label: 'Search', enabled: true },
+                { type: 'link', link: '/shop', showIcon: true, showLabel: false, showIconOnMobile: false, showIconOnDesktop: true, label: 'Shop', enabled: true },
+            ],
             primaryColor: '#B88078',
             secondaryColor: '#C49A48',
             backgroundColor: '#F2EBD0',

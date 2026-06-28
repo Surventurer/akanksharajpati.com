@@ -144,7 +144,7 @@ const Header = ({ data }: HeaderProps) => {
           color: data.headerTextColor || '#4a4b34'
         }}
       >
-        <div className="relative max-w-7xl mx-auto px-6 py-3 flex justify-between items-center h-24 md:h-32">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-3 flex justify-between items-center h-16 md:h-32">
           {/* Hamburger Menu Button - Left */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -180,24 +180,34 @@ const Header = ({ data }: HeaderProps) => {
 
               const iconUrl = getMediaUrl(iconItem.icon as Media);
               
-              // Check if icon should be visible on current device
               const shouldShowIcon = iconItem.showIcon === true;
               const showIconOnDevice = shouldShowIcon && (isMobile ? iconItem.showIconOnMobile !== false : iconItem.showIconOnDesktop !== false);
               
-              // Check if label should be visible on current device
               const shouldShowLabel = iconItem.showLabel === true;
               const showLabelOnDevice = shouldShowLabel && (isMobile ? iconItem.showLabelOnMobile !== false : iconItem.showLabelOnDesktop !== false);
               
-              // Icon or label, not both
-              const iconContent = showIconOnDevice && iconUrl ? (
-                <div className="relative w-5 h-5">
-                  <Image
-                    src={iconUrl}
-                    alt={iconItem.label || 'Icon'}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
+              const iconContent = showIconOnDevice ? (
+                iconUrl ? (
+                  <div className="relative w-5 h-5">
+                    <Image
+                      src={iconUrl}
+                      alt={iconItem.label || 'Icon'}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ) : iconItem.type === 'search' ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                  </svg>
+                ) : iconItem.type === 'link' ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="9" cy="21" r="1" />
+                    <circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+                  </svg>
+                ) : null
               ) : null;
 
               const labelContent = showLabelOnDevice && iconItem.label ? (
@@ -212,7 +222,6 @@ const Header = ({ data }: HeaderProps) => {
                 </span>
               ) : null;
 
-              // Display either icon or label, not both
               const displayContent = iconContent || labelContent;
 
               if (!displayContent) return null;
@@ -223,6 +232,7 @@ const Header = ({ data }: HeaderProps) => {
                       key={i}
                       className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       aria-label={iconItem.label || 'Search'}
+                      style={{ color: data.headerTextColor || '#4a4b34' }}
                     >
                       {displayContent}
                     </button>
@@ -236,6 +246,7 @@ const Header = ({ data }: HeaderProps) => {
                       href={iconItem.link}
                       target={iconItem.newTab ? "_blank" : "_self"}
                       className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      style={{ color: data.headerTextColor || '#4a4b34' }}
                     >
                       {displayContent}
                     </Link>
@@ -244,32 +255,6 @@ const Header = ({ data }: HeaderProps) => {
 
               return null;
             })}
-            {/* Search - icon on mobile, text on desktop */}
-            <button
-              className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
-              aria-label="Search"
-              style={{ color: data.headerTextColor || '#4a4b34' }}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
-            </button>
-            <button
-              className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              aria-label="Search"
-              style={{ color: data.headerTextColor || '#4a4b34' }}
-            >
-              Search
-            </button>
-            {/* Shop - desktop only */}
-            <Link
-              href="/shop"
-              className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              style={{ color: data.headerTextColor || '#4a4b34' }}
-            >
-              Shop
-            </Link>
           </div>
         </div>
       </header>
@@ -285,7 +270,7 @@ const Header = ({ data }: HeaderProps) => {
         >
           <div className="min-h-screen flex flex-col">
             {/* Top Bar in Overlay */}
-            <div className="relative px-6 py-3 flex justify-between items-center h-24" style={{ borderBottom: `1px solid ${data.headerTextColor}12` }}>
+            <div className="relative px-4 md:px-6 py-2 md:py-3 flex justify-between items-center h-16 md:h-24" style={{ borderBottom: `1px solid ${data.headerTextColor}12` }}>
               {/* Close Button */}
               <button
                 onClick={() => setMenuOpen(false)}
@@ -319,24 +304,34 @@ const Header = ({ data }: HeaderProps) => {
 
                   const iconUrl = getMediaUrl(iconItem.icon as Media);
                   
-                  // Check if icon should be visible on current device
                   const shouldShowIcon = iconItem.showIcon === true;
                   const showIconOnDevice = shouldShowIcon && (isMobile ? iconItem.showIconOnMobile !== false : iconItem.showIconOnDesktop !== false);
                   
-                  // Check if label should be visible on current device
                   const shouldShowLabel = iconItem.showLabel === true;
                   const showLabelOnDevice = shouldShowLabel && (isMobile ? iconItem.showLabelOnMobile !== false : iconItem.showLabelOnDesktop !== false);
                   
-                  // Icon or label, not both
-                  const iconContent = showIconOnDevice && iconUrl ? (
-                    <div className="relative w-6 h-6">
-                      <Image
-                        src={iconUrl}
-                        alt={iconItem.label || 'Icon'}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
+                  const iconContent = showIconOnDevice ? (
+                    iconUrl ? (
+                      <div className="relative w-6 h-6">
+                        <Image
+                          src={iconUrl}
+                          alt={iconItem.label || 'Icon'}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    ) : iconItem.type === 'search' ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                      </svg>
+                    ) : iconItem.type === 'link' ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+                      </svg>
+                    ) : null
                   ) : null;
 
                   const labelContent = showLabelOnDevice && iconItem.label ? (
@@ -351,7 +346,6 @@ const Header = ({ data }: HeaderProps) => {
                     </span>
                   ) : null;
 
-                  // Display either icon or label, not both
                   const displayContent = iconContent || labelContent;
 
                   if (!displayContent) return null;
@@ -362,6 +356,7 @@ const Header = ({ data }: HeaderProps) => {
                         key={i}
                         className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         aria-label={iconItem.label || 'Search'}
+                        style={{ color: data.headerTextColor || '#4a4b34' }}
                       >
                         {displayContent}
                       </button>
@@ -375,6 +370,7 @@ const Header = ({ data }: HeaderProps) => {
                         href={iconItem.link}
                         target={iconItem.newTab ? "_blank" : "_self"}
                         className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        style={{ color: data.headerTextColor || '#4a4b34' }}
                       >
                         {displayContent}
                       </Link>
@@ -383,38 +379,12 @@ const Header = ({ data }: HeaderProps) => {
 
                   return null;
                 })}
-                {/* Search - icon on mobile, text on desktop */}
-                <button
-                  className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
-                  aria-label="Search"
-                  style={{ color: data.headerTextColor || '#4a4b34' }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                  </svg>
-                </button>
-                <button
-                  className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  aria-label="Search"
-                  style={{ color: data.headerTextColor || '#4a4b34' }}
-                >
-                  Search
-                </button>
-                {/* Shop - desktop only */}
-                <Link
-                  href="/shop"
-                  className="hidden md:inline-block text-xs uppercase tracking-widest font-bold hover:opacity-70 active:opacity-50 transition-all duration-200 px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  style={{ color: data.headerTextColor || '#4a4b34' }}
-                >
-                  Shop
-                </Link>
               </div>
             </div>
 
             {/* Navigation Menu - Centered */}
-            <div className="flex-1 flex flex-col items-center justify-center min-h-0 py-8 md:py-12 px-6">
-              <nav className="flex flex-col items-center gap-6 md:gap-8">
+            <div className="flex-1 flex flex-col items-center justify-center min-h-0 py-4 md:py-12 px-4 md:px-6">
+              <nav className="flex flex-col items-center gap-4 md:gap-8">
                 {navLinks.map((link, i) => (
                   <Link
                     key={link.label + link.href}
@@ -441,7 +411,7 @@ const Header = ({ data }: HeaderProps) => {
             </div>
 
             {/* Bottom Section - Social Links */}
-            <div className="mt-auto py-6 md:py-8 px-6">
+            <div className="mt-auto py-4 md:py-8 px-4 md:px-6">
               <div className="flex flex-col items-center gap-5">
                 {/* Social Links */}
                 {socialLinks && socialLinks.length > 0 && (
