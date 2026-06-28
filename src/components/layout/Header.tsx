@@ -144,7 +144,7 @@ const Header = ({ data }: HeaderProps) => {
           color: data.headerTextColor || '#4a4b34'
         }}
       >
-        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-3 flex justify-between items-center h-16 md:h-32">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-3 flex justify-between items-center h-20 md:h-32">
           {/* Hamburger Menu Button - Left */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -270,7 +270,7 @@ const Header = ({ data }: HeaderProps) => {
         >
           <div className="min-h-screen flex flex-col">
             {/* Top Bar in Overlay */}
-            <div className="relative px-4 md:px-6 py-2 md:py-3 flex justify-between items-center h-16 md:h-24" style={{ borderBottom: `1px solid ${data.headerTextColor}12` }}>
+            <div className="relative px-4 md:px-6 py-2 md:py-3 flex justify-between items-center h-20 md:h-24" style={{ borderBottom: `1px solid ${data.headerTextColor}12` }}>
               {/* Close Button */}
               <button
                 onClick={() => setMenuOpen(false)}
