@@ -99,7 +99,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                 {data.heroEnabled && (
                     <div className="mb-10 text-center">
                         <h1 
-                            className="tracking-[0.1em] text-4xl md:text-5xl font-display font-bold leading-tight uppercase mb-2"
+                            className="tracking-[0.15em] text-4xl md:text-5xl font-display font-bold leading-tight uppercase mb-2"
                             style={{ 
                                 color: data.heroHeadingColor || textColor,
                                 fontFamily: getFontFamily(data.heroHeadingFont)
@@ -125,7 +125,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                 {data.featuredVideoEnabled && (
                     <div className="mb-16">
                         <div 
-                            className={`${data.playerBorderEnabled ? 'p-[2px] bg-gradient-to-br from-primary via-primary/50 to-primary/10' : ''} shadow-lg`}
+                            className={`${data.playerBorderEnabled ? 'p-[2px] bg-gradient-to-br from-primary via-primary/50 to-primary/10' : ''} shadow-xl rounded-xl overflow-hidden`}
                             style={data.playerBorderEnabled && data.playerBorderColor ? {
                                 background: `linear-gradient(to bottom right, ${data.playerBorderColor}, ${data.playerBorderColor}50, ${data.playerBorderColor}10)`
                             } : undefined}
@@ -153,7 +153,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                         {/* Play Button */}
                                         <button 
                                             onClick={() => setFeaturedPlaying(true)}
-                                            className="play-button relative z-10 group-hover:scale-110 transition-transform w-20 h-20 rounded-full flex items-center justify-center"
+                                            className="play-button relative z-10 hover:scale-110 active:scale-95 transition-transform duration-300 w-20 h-20 rounded-full flex items-center justify-center shadow-2xl"
                                             style={{ backgroundColor: data.playButtonColor || primaryAccentColor }}
                                         >
                                             <span className="material-symbols-outlined text-5xl text-white translate-x-1">play_arrow</span>
@@ -162,26 +162,26 @@ export default function WatchClient({ data }: WatchClientProps) {
                                         {/* Video Controls Bar (Decorative) */}
                                         <div className="absolute inset-x-0 bottom-0 px-6 py-6 z-10">
                                             <div className="flex h-1.5 items-center justify-center mb-4 cursor-pointer">
-                                                <div className="h-full flex-1" style={{ backgroundColor: primaryAccentColor }}></div>
+                                                <div className="h-full flex-1 rounded-full" style={{ backgroundColor: primaryAccentColor }}></div>
                                                 <div className="relative">
                                                     <div 
-                                                        className="absolute -left-2 -top-1.5 w-4 h-4 rounded-full border-4 border-foreground shadow-lg"
+                                                        className="absolute -left-2 -top-1.5 w-4 h-4 rounded-full border-4 border-foreground shadow-xl"
                                                         style={{ backgroundColor: primaryAccentColor }}
                                                     ></div>
                                                 </div>
-                                                <div className="h-full flex-[4] bg-card/20"></div>
+                                                <div className="h-full flex-[4] bg-card/20 rounded-full"></div>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-4 text-card">
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer">pause</span>
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer">volume_up</span>
+                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">pause</span>
+                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">volume_up</span>
                                                     <p className="text-xs font-medium tracking-widest uppercase">
                                                         00:00 / {data.featuredVideoDuration || '15:45'}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center gap-4 text-card">
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer">settings</span>
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer">fullscreen</span>
+                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">settings</span>
+                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">fullscreen</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -190,7 +190,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                         <div className="absolute top-8 left-8 text-left max-w-lg text-card z-10">
                                             {data.featuredVideoBadge && (
                                                 <span 
-                                                    className="px-3 py-1 text-[10px] font-bold tracking-widest uppercase mb-3 inline-block"
+                                                    className="px-3 py-1 text-[10px] font-bold tracking-widest uppercase mb-3 inline-block rounded-md shadow-lg"
                                                     style={{ 
                                                         backgroundColor: data.featuredVideoBadgeColor || primaryAccentColor,
                                                         color: data.featuredVideoBadgeTextColor || '#ffffff'
@@ -231,10 +231,10 @@ export default function WatchClient({ data }: WatchClientProps) {
                                     <button
                                         key={category.slug || category.name}
                                         onClick={() => setActiveCategory(category.slug || category.name?.toLowerCase().replace(/\s+/g, '-') || 'all')}
-                                        className={`whitespace-nowrap px-4 py-2 text-sm font-medium rounded-full transition-all ${
+                                        className={`whitespace-nowrap px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                                             activeCategory === (category.slug || category.name?.toLowerCase().replace(/\s+/g, '-'))
-                                                ? 'shadow-md'
-                                                : 'hover:opacity-80'
+                                                ? 'shadow-lg'
+                                                : 'hover:border-primary/30 hover:shadow-md'
                                         }`}
                                         style={
                                             activeCategory === (category.slug || category.name?.toLowerCase().replace(/\s+/g, '-'))
@@ -259,7 +259,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                         {data.galleryEnabled && (
                             <>
                                 <h2 
-                                    className="text-2xl font-display font-bold tracking-tight uppercase border-l-4 pl-4 mb-8"
+                                    className="text-2xl font-display font-bold tracking-tight uppercase border-l-[3px] rounded-r-sm pl-4 mb-8"
                                     style={{ 
                                         color: data.gallerySectionTitleColor || textColor,
                                         fontFamily: getFontFamily(data.gallerySectionTitleFont),
@@ -268,12 +268,12 @@ export default function WatchClient({ data }: WatchClientProps) {
                                 >
                                     {data.gallerySectionTitle || 'Latest Vlogs'}
                                 </h2>
-
+                                
                                 {/* Video Grid */}
                                 <div className={`grid grid-cols-1 ${gridCols} ${gridGap}`}>
                                     {filteredVideos.map((video, index) => (
                                         <div key={video.slug || index} className="group cursor-pointer">
-                                            <div className="relative aspect-video bg-black/5 overflow-hidden group">
+                                            <div className="relative aspect-video bg-black/5 overflow-hidden rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-0.5">
                                                 {playingVideo === (video.slug || String(index)) && video.videoUrl ? (
                                                     <iframe
                                                         src={getEmbedUrl(video.videoUrl) || ''}
@@ -293,19 +293,19 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                             />
                                                         )}
                                                         <div 
-                                                            className="video-overlay absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                            className="video-overlay absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                                             onClick={() => setPlayingVideo(video.slug || String(index))}
                                                         >
-                                                            <div 
-                                                                className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-                                                                style={{ backgroundColor: data.videoCardPlayButtonColor || primaryAccentColor }}
-                                                            >
-                                                                <span className="material-symbols-outlined text-white text-3xl">play_arrow</span>
-                                                            </div>
+                                                        <div 
+                                                            className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl backdrop-blur-sm transition-transform duration-300 group-hover:scale-110"
+                                                            style={{ backgroundColor: data.videoCardPlayButtonColor || primaryAccentColor }}
+                                                        >
+                                                            <span className="material-symbols-outlined text-white text-3xl">play_arrow</span>
                                                         </div>
-                                                        {video.duration && (
-                                                            <div 
-                                                                className="absolute bottom-2 right-2 px-2 py-1 text-[10px] font-bold"
+                                                    </div>
+                                                    {video.duration && (
+                                                        <div 
+                                                            className="badge-premium absolute bottom-2 right-2 shadow-md"
                                                                 style={{ 
                                                                     backgroundColor: data.videoCardDurationBgColor || 'rgba(0,0,0,0.7)',
                                                                     color: data.videoCardDurationTextColor || '#ffffff'
@@ -316,7 +316,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                         )}
                                                         {video.showNewBadge && (
                                                             <div 
-                                                                className="absolute top-2 left-2 px-2 py-1 text-[10px] font-bold uppercase"
+                                                                className="badge-premium absolute top-2 left-2 shadow-md"
                                                                 style={{ 
                                                                     backgroundColor: primaryAccentColor,
                                                                     color: '#ffffff'
@@ -329,13 +329,13 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                 )}
                                             </div>
                                             <span 
-                                                className="text-[10px] uppercase tracking-widest font-bold mt-2 block"
+                                                className="text-[10px] uppercase tracking-widest font-bold mt-3 block"
                                                 style={{ color: data.videoCardCategoryColor || primaryAccentColor }}
                                             >
                                                 {data.categories?.find(c => c.slug === video.category)?.name || video.category}
                                             </span>
                                             <h3 
-                                                className="font-display text-lg font-bold group-hover:opacity-80 transition-colors"
+                                                className="font-display text-lg font-bold group-hover:opacity-80 transition-opacity mt-1"
                                                 style={{ 
                                                     color: data.videoCardTitleColor || textColor,
                                                     fontFamily: getFontFamily(data.videoCardTitleFont)
@@ -344,7 +344,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                 {video.title}
                                             </h3>
                                             <p 
-                                                className="text-sm"
+                                                className="text-sm mt-0.5"
                                                 style={{ color: data.videoCardViewsColor || mutedTextColor }}
                                             >
                                                 {formatViews(video.views || 0)}
@@ -372,7 +372,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                 {data.playlistsEnabled && data.playlists && data.playlists.length > 0 && (
                     <section className="mt-16">
                         <h2 
-                            className="text-2xl font-display font-bold tracking-tight uppercase border-l-4 pl-4 mb-8"
+                            className="text-2xl font-display font-bold tracking-tight uppercase border-l-[3px] rounded-r-sm pl-4 mb-8"
                             style={{ 
                                 color: data.playlistsSectionHeadingColor || textColor,
                                 fontFamily: getFontFamily(data.playlistsSectionHeadingFont),
@@ -388,19 +388,19 @@ export default function WatchClient({ data }: WatchClientProps) {
                                     href={playlist.youtubePlaylistUrl || '#'}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group block p-6 rounded-lg border transition-all hover:shadow-lg"
+                                    className="group block p-6 rounded-xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                                     style={{ 
                                         backgroundColor: data.playlistCardBgColor || cardBackgroundColor,
                                         borderColor: data.playlistCardBorderColor || borderColor
                                     }}
                                 >
                                     {playlist.coverImage && (
-                                        <div className="relative aspect-video mb-4 overflow-hidden rounded">
+                                        <div className="relative aspect-video mb-4 overflow-hidden rounded-lg">
                                             <Image
                                                 src={getMediaUrl(playlist.coverImage)}
                                                 alt={playlist.name || ''}
                                                 fill
-                                                className="object-cover group-hover:scale-105 transition-transform"
+                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
                                             <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                                                 <span className="material-symbols-outlined text-white text-4xl">playlist_play</span>
@@ -448,7 +448,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                     href={social.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="transition-colors text-3xl"
+                                    className="transition-all duration-300 text-3xl hover:scale-110"
                                     style={{ color: data.socialIconColor || mutedTextColor }}
                                     onMouseEnter={(e) => {
                                         if (data.socialIconHoverColor) {
@@ -502,7 +502,7 @@ function Sidebar({
             {/* Subscribe Card */}
             {data.subscribeCardEnabled && (
                 <div 
-                    className="p-8"
+                    className="p-8 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md"
                     style={{ backgroundColor: data.subscribeCardBackgroundColor || cardBackgroundColor }}
                 >
                     <h3 
@@ -540,7 +540,7 @@ function Sidebar({
                         href={data.subscribeButtonUrl || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full block text-center py-3 text-[10px] uppercase tracking-widest font-bold hover:opacity-90 transition-colors"
+                        className="w-full block text-center py-3 rounded-lg text-[10px] uppercase tracking-widest font-bold hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 shadow-sm hover:shadow-md"
                         style={{ 
                             backgroundColor: data.subscribeButtonBgColor || primaryAccentColor,
                             color: data.subscribeButtonTextColor || '#ffffff'
@@ -554,7 +554,7 @@ function Sidebar({
             {/* Must Watch Section */}
             {data.mustWatchEnabled && data.mustWatchItems && data.mustWatchItems.length > 0 && (
                 <div 
-                    className="p-6 border"
+                    className="p-6 border rounded-xl shadow-sm transition-all duration-200 hover:shadow-md"
                     style={{ 
                         backgroundColor: data.mustWatchBackgroundColor || cardBackgroundColor,
                         borderColor: data.mustWatchBorderColor || borderColor
@@ -579,20 +579,20 @@ function Sidebar({
                                 rel="noopener noreferrer"
                                 className="flex gap-4 group cursor-pointer"
                             >
-                                <div className="w-16 h-16 shrink-0 overflow-hidden bg-gray-200">
+                                <div className="w-16 h-16 shrink-0 overflow-hidden bg-gray-200 rounded-lg shadow-sm">
                                     {item.image && (
                                         <Image
                                             src={getMediaUrl(item.image)}
                                             alt={item.title || ''}
                                             width={64}
                                             height={64}
-                                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                                         />
                                     )}
                                 </div>
                                 <div>
                                     <h4 
-                                        className="text-xs font-bold uppercase group-hover:opacity-80 transition-colors"
+                                        className="text-xs font-bold uppercase group-hover:opacity-80 transition-all duration-200"
                                         style={{ color: data.mustWatchTitleColor || textColor }}
                                     >
                                         {item.title}

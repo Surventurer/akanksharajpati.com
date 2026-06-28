@@ -184,21 +184,21 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                         className="flex flex-col md:flex-row md:items-center justify-between border-y py-6 gap-4"
                         style={{ borderColor: pageData.borderColor || 'rgba(var(--accent), 0.1)' }}
                     >
-                        <div className="flex flex-wrap gap-4 md:gap-8">
+                        <div className="flex flex-wrap gap-2 md:gap-4">
                             {categories.map((category, index) => (
                                 <button
                                     key={index}
                                     onClick={() => setActiveCategory(category.slug || 'all')}
-                                    className={
+                                    className={`rounded-lg transition-all duration-200 px-4 py-2 text-xs uppercase tracking-widest font-bold ${
                                         activeCategory === (category.slug || 'all')
-                                            ? "font-medium border-b pb-1"
-                                            : "font-medium text-foreground/50 hover:text-foreground transition-colors pb-1"
-                                    }
+                                            ? "bg-primary text-primary-foreground shadow-md"
+                                            : "text-foreground/50 hover:text-foreground hover:bg-foreground/5"
+                                    }`}
                                     style={{
                                         fontFamily: getFontFamily(pageData.categoryFont),
                                         ...(activeCategory === (category.slug || 'all') ? {
-                                            color: pageData.categoryActiveColor || 'var(--primary)',
-                                            borderColor: pageData.categoryActiveColor || 'var(--primary)',
+                                            color: pageData.categoryActiveColor || undefined,
+                                            backgroundColor: pageData.categoryActiveColor || undefined,
                                         } : {
                                             color: pageData.categoryInactiveColor || undefined,
                                         }),
@@ -216,7 +216,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                 <select 
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value)}
-                                    className="bg-transparent border-none focus:ring-0 cursor-pointer font-medium uppercase tracking-widest text-xs focus:outline-none"
+                                    className="bg-background rounded-lg border border-border/40 px-3 py-2 cursor-pointer font-medium uppercase tracking-widest text-xs focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-200"
                                 >
                                     {sortOptions.map((option, index) => (
                                         <option key={index} value={option.value}>
@@ -244,7 +244,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                 return (
                                     <div key={index} className="group">
                                         <div 
-                                            className={`relative overflow-hidden product-card mb-6 transition-all duration-700 ${pageData.cardHoverEffect === 'shadow' ? 'group-hover:shadow-2xl' : ''} ${pageData.cardHoverEffect === 'border' ? 'border group-hover:border-primary' : ''}`}
+                                            className={`relative overflow-hidden mb-6 rounded-xl shadow-sm transition-all duration-300 ${pageData.cardHoverEffect === 'shadow' ? 'group-hover:shadow-xl' : 'hover:shadow-lg'} ${pageData.cardHoverEffect === 'border' ? 'border group-hover:border-primary' : ''} ${pageData.cardHoverEffect !== 'border' ? 'group-hover:-translate-y-1' : ''}`}
                                             style={{ 
                                                 height: `${pageData.productCardHeight || 450}px`,
                                                 backgroundColor: pageData.cardBackgroundColor || undefined,
@@ -262,7 +262,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                             {/* Badge */}
                                             {product.badge && (
                                                 <div 
-                                                    className="absolute top-4 left-4 px-3 py-1 text-[10px] uppercase tracking-widest font-bold"
+                                                    className="badge-premium absolute top-4 left-4"
                                                     style={{ 
                                                         backgroundColor: product.badgeColor || pageData.saleBadgeColor || 'var(--accent)',
                                                         color: '#fff',
@@ -274,7 +274,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                             {/* Sale Badge */}
                                             {pageData.showSaleBadge && product.salePrice && !product.badge && (
                                                 <div 
-                                                    className="absolute top-4 left-4 px-3 py-1 text-[10px] uppercase tracking-widest font-bold"
+                                                    className="badge-premium absolute top-4 left-4 shadow-sm"
                                                     style={{ 
                                                         backgroundColor: pageData.saleBadgeColor || 'var(--destructive)',
                                                         color: '#fff',
@@ -285,8 +285,8 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                             )}
                                             {/* Quick View Button */}
                                             {pageData.showQuickViewButton && (
-                                                <div className="absolute inset-0 bg-foreground/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                    <button className="bg-background text-foreground px-6 py-2 font-medium tracking-wide shadow-xl">
+                                                <div className="absolute inset-0 bg-foreground/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                                                    <button className="bg-background text-foreground px-6 py-2.5 font-medium tracking-wide rounded-lg shadow-lg hover:shadow-xl transition-all">
                                                         {pageData.quickViewButtonText || 'Quick View'}
                                                     </button>
                                                 </div>
@@ -352,14 +352,14 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                                 href={product.link}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="mt-4 inline-block bg-primary text-primary-foreground px-6 py-2 text-[10px] uppercase tracking-widest font-bold hover:bg-primary/90 transition-colors"
+                                                className="mt-4 inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground px-6 py-2.5 text-[10px] uppercase tracking-widest font-bold hover:bg-primary/90 transition-all duration-300 shadow-sm hover:shadow-md"
                                             >
                                                 {pageData.externalCheckoutButtonText || 'Shop Now'}
                                             </Link>
                                         )}
                                         {/* Add to Cart Button */}
                                         {pageData.showAddToCartButton && (
-                                            <button className="mt-4 bg-foreground text-background px-6 py-2 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground/90 transition-colors">
+                                            <button className="mt-4 inline-flex items-center justify-center rounded-lg bg-foreground text-background px-6 py-2.5 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground/90 transition-all duration-300 shadow-sm hover:shadow-md">
                                                 {pageData.addToCartButtonText || 'Add to Cart'}
                                             </button>
                                         )}
@@ -375,7 +375,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                         src={getMediaUrl(pageData.emptyStateIcon)}
                                         alt="No products"
                                         fill
-                                        className="object-contain opacity-40"
+                                        className="object-contain opacity-30 hover:opacity-50 transition-opacity duration-200"
                                     />
                                 </div>
                             )}
@@ -393,7 +393,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
             {/* Featured Banner */}
             {pageData.bannerEnabled && (
                 <section 
-                    className="py-20 px-6"
+                    className="py-20 px-6 shadow-inner border-t border-accent/10"
                     style={{ backgroundColor: pageData.bannerBackgroundColor || 'var(--secondary)' }}
                 >
                     <div className="max-w-4xl mx-auto text-center">
@@ -433,7 +433,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                         {pageData.bannerButtonText && (
                             <Link
                                 href={pageData.bannerButtonLink || '#'}
-                                className="inline-block px-12 py-4 text-[10px] uppercase tracking-widest font-bold hover:opacity-90 transition-colors"
+                                className="inline-block px-12 py-4 text-[10px] uppercase tracking-widest font-bold hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
                                 style={{
                                     fontFamily: getFontFamily(pageData.bannerButtonFont),
                                     backgroundColor: pageData.bannerButtonBgColor || 'var(--accent)',

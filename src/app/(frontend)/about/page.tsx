@@ -31,7 +31,7 @@ export default async function About() {
     // Helper to get image URL safely
     const getImageUrl = (imageField: string | number | Media | null | undefined) => {
         if (!imageField) return "";
-        if (typeof imageField === 'string' || typeof imageField === 'number') return ""; // Numbers or strings are usually IDs, not URLs
+        if (typeof imageField === 'string' || typeof imageField === 'number') return "";
         return imageField.url || "";
     };
 
@@ -53,16 +53,20 @@ export default async function About() {
 
             {/* About Section - only show if enabled */}
             {serializedPageData.heroEnabled !== false && (
-                <section className="py-20 px-6 bg-card" id="about">
+                <section className="py-24 px-6 bg-card" id="about">
                     <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16 items-center">
                         {serializedPageData.showHeroImage !== false && heroImage && (
-                            <div className="md:col-span-5 relative">
-                                <div className="absolute -inset-4 border border-accent/40 translate-x-8 translate-y-8 -z-0"></div>
-                                <img
-                                    alt="Sarah in a curated interior"
-                                    className="relative z-10 w-full aspect-[4/5] object-cover grayscale-[0.2] sepia-[0.1]"
-                                    src={heroImage}
-                                />
+                            <div className="md:col-span-5 relative group">
+                                <div className="absolute -inset-4 border-2 border-accent/20 translate-x-6 translate-y-6 -z-0 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"></div>
+                                <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-lg">
+                                    <Image
+                                        alt="Featured portrait"
+                                        className="object-cover grayscale-[0.2] sepia-[0.1] transition-transform duration-700 group-hover:scale-105"
+                                        src={heroImage}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 40vw"
+                                    />
+                                </div>
                             </div>
                         )}
                         <div className={serializedPageData.showHeroImage !== false && heroImage ? "md:col-span-7 space-y-10 pl-0 md:pl-12" : "md:col-span-12 space-y-10 text-center"}>
@@ -93,10 +97,12 @@ export default async function About() {
                             </div>
                             {serializedPageData.showSignatureImage !== false && signatureImage && (
                                 <div className="flex items-center gap-8">
-                                    <img
+                                    <Image
                                         alt="Signature"
-                                        className="h-12 opacity-80"
+                                        className="h-12 w-auto opacity-80"
                                         src={signatureImage}
+                                        width={120}
+                                        height={48}
                                         style={{ filter: "invert(1)", mixBlendMode: "multiply" }}
                                     />
                                 </div>
@@ -108,15 +114,16 @@ export default async function About() {
 
             {/* Philosophy Section - only show if data exists and is enabled */}
             {serializedPageData.philosophyEnabled !== false && (serializedPageData.philosophyLabel || serializedPageData.philosophyQuote || serializedPageData.philosophyText) && (
-                <section className="py-20 px-6 bg-beige">
-                    <div className="max-w-4xl mx-auto text-center">
+                <section className="py-24 px-6 bg-beige relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.03] to-transparent pointer-events-none"></div>
+                    <div className="max-w-4xl mx-auto text-center relative z-10">
                         {/* @ts-ignore */}
                         {serializedPageData.philosophyLabel && (
                             <span className="section-label mb-4 block" style={getStyle(serializedPageData?.philosophyLabelFont, serializedPageData?.philosophyLabelColor)}>{serializedPageData.philosophyLabel}</span>
                         )}
                         {/* @ts-ignore */}
                         {serializedPageData.philosophyQuote && (
-                            <h2 className="font-display text-4xl md:text-5xl mb-8 italic" style={getStyle(serializedPageData?.philosophyQuoteFont, serializedPageData?.philosophyQuoteColor)}>
+                            <h2 className="font-display text-4xl md:text-5xl mb-8 italic leading-snug" style={getStyle(serializedPageData?.philosophyQuoteFont, serializedPageData?.philosophyQuoteColor)}>
                                 {serializedPageData.philosophyQuote}
                             </h2>
                         )}
@@ -132,7 +139,7 @@ export default async function About() {
 
             {/* Values Section - only show if data exists and is enabled */}
             {serializedPageData.valuesEnabled !== false && serializedPageData.values && serializedPageData.values.length > 0 && (
-                <section className="py-20 px-6 bg-card">
+                <section className="py-24 px-6 bg-card">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-16">
                             {/* @ts-ignore */}
@@ -146,16 +153,16 @@ export default async function About() {
                             </h2>
                         </div>
 
-                        <div className="grid md:grid-cols-3 gap-12">
+                        <div className="grid md:grid-cols-3 gap-8">
                             {serializedPageData.values.map((value: any, index: number) => {
                                 /* @ts-ignore */
                                 const iconUrl = value.icon?.url;
                                 /* @ts-ignore */
                                 const shouldShowIcon = value.showIcon !== false;
                                 return (
-                                    <div key={index} className="text-center">
+                                    <div key={index} className="text-center rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-border/40 bg-card">
                                         {shouldShowIcon && (
-                                            <div className="w-16 h-16 mx-auto mb-6 border border-accent/40 rounded-full flex items-center justify-center relative overflow-hidden">
+                                            <div className="w-16 h-16 mx-auto mb-6 border-2 border-accent/20 rounded-full flex items-center justify-center relative overflow-hidden bg-accent/10 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-accent/40">
                                                 {iconUrl ? (
                                                     <Image
                                                         src={iconUrl}

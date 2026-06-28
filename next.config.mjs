@@ -3,7 +3,9 @@ import withPlaiceholder from '@plaiceholder/next'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Your Next.js config here
+    turbopack: {
+        root: process.cwd(),
+    },
     webpack: (webpackConfig) => {
         webpackConfig.resolve.extensionAlias = {
             '.cjs': ['.cts', '.cjs'],

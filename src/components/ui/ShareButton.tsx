@@ -131,7 +131,7 @@ const ShareButton = ({ title, slug, variant = 'popup', socialPlatforms }: ShareB
                         <React.Fragment key={index}>
                             <button
                                 onClick={handleShare(item)}
-                                className="text-foreground/60 hover:text-primary transition-colors flex items-center justify-center gap-2 p-1"
+                                className="text-foreground/60 hover:text-primary transition-all duration-200 flex items-center justify-center gap-2 p-2 rounded-lg hover:bg-foreground/5"
                                 aria-label={`Share on ${item.platform}`}
                                 style={{
                                     fontFamily: textFont || undefined,
@@ -166,12 +166,12 @@ const ShareButton = ({ title, slug, variant = 'popup', socialPlatforms }: ShareB
 
             <DropdownMenu.Portal>
                 <DropdownMenu.Content
-                    className="min-w-[160px] bg-background border border-border rounded-md shadow-lg p-1 z-50 animate-in fade-in zoom-in-95 duration-200"
+                    className="min-w-[180px] bg-background border border-border/80 rounded-xl shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-200"
                     sideOffset={5}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <DropdownMenu.Item
-                        className="flex items-center px-2 py-2 text-sm text-foreground/80 hover:bg-secondary/50 rounded-sm cursor-pointer outline-none focus:bg-secondary/50 transition-colors"
+                        className="flex items-center px-3 py-2.5 text-sm text-foreground/80 hover:bg-accent/50 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-150"
                         onClick={handleShare('Facebook')}
                     >
                         {renderIcon('Facebook', null)}
@@ -179,7 +179,7 @@ const ShareButton = ({ title, slug, variant = 'popup', socialPlatforms }: ShareB
                     </DropdownMenu.Item>
 
                     <DropdownMenu.Item
-                        className="flex items-center px-2 py-2 text-sm text-foreground/80 hover:bg-secondary/50 rounded-sm cursor-pointer outline-none focus:bg-secondary/50 transition-colors"
+                        className="flex items-center px-3 py-2.5 text-sm text-foreground/80 hover:bg-accent/50 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-150"
                         onClick={handleShare('Twitter')}
                     >
                         {renderIcon('Twitter', null)}
@@ -187,7 +187,7 @@ const ShareButton = ({ title, slug, variant = 'popup', socialPlatforms }: ShareB
                     </DropdownMenu.Item>
 
                     <DropdownMenu.Item
-                        className="flex items-center px-2 py-2 text-sm text-foreground/80 hover:bg-secondary/50 rounded-sm cursor-pointer outline-none focus:bg-secondary/50 transition-colors"
+                        className="flex items-center px-3 py-2.5 text-sm text-foreground/80 hover:bg-accent/50 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-150"
                         onClick={handleShare('LinkedIn')}
                     >
                         {renderIcon('LinkedIn', null)}
@@ -195,17 +195,17 @@ const ShareButton = ({ title, slug, variant = 'popup', socialPlatforms }: ShareB
                     </DropdownMenu.Item>
 
                     <DropdownMenu.Item
-                        className="flex items-center px-2 py-2 text-sm text-foreground/80 hover:bg-secondary/50 rounded-sm cursor-pointer outline-none focus:bg-secondary/50 transition-colors"
+                        className="flex items-center px-3 py-2.5 text-sm text-foreground/80 hover:bg-accent/50 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-150"
                         onClick={handleShare('Instagram')}
                     >
                         {renderIcon('Instagram', null)}
                         <span className="ml-2">Instagram</span>
                     </DropdownMenu.Item>
 
-                    <DropdownMenu.Separator className="h-px bg-border my-1" />
+                    <DropdownMenu.Separator className="h-px bg-border/60 my-1.5" />
 
                     <DropdownMenu.Item
-                        className="flex items-center px-2 py-2 text-sm text-foreground/80 hover:bg-secondary/50 rounded-sm cursor-pointer outline-none focus:bg-secondary/50 transition-colors"
+                        className="flex items-center px-3 py-2.5 text-sm text-foreground/80 hover:bg-accent/50 rounded-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all duration-150"
                         onClick={handleCopy}
                     >
                         {renderIcon('Copy Link', null)}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import ShareButton from "./ShareButton";
 
 interface BlogCardProps {
@@ -23,17 +24,19 @@ const BlogCard = ({
     readTime,
 }: BlogCardProps) => {
     return (
-        <article className="bg-card group relative h-full flex flex-col border border-border hover:border-accent/40 transition-all duration-300 hover:shadow-lg overflow-hidden">
+        <article className="bg-card group relative h-full flex flex-col border border-border/80 hover:border-accent/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden rounded-xl">
             {/* Image Container */}
             <div className="relative aspect-[4/3] overflow-hidden bg-beige">
-                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors z-10" />
-                <img
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300 z-10" />
+                <Image
                     src={image}
                     alt={title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    className="object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 <div className="absolute top-4 left-4 z-20">
-                    <span className="bg-background/90 backdrop-blur-sm px-3 py-1 text-[10px] uppercase tracking-widest font-bold text-foreground">
+                    <span className="badge-premium bg-background/90 backdrop-blur-sm text-foreground shadow-sm">
                         {category}
                     </span>
                 </div>
@@ -63,9 +66,9 @@ const BlogCard = ({
                 </p>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
-                    <span className="text-xs uppercase tracking-wider font-bold text-foreground/60 group-hover:text-primary transition-colors flex items-center gap-1">
-                        Read Story <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+                <div className="flex items-center justify-between pt-4 border-t border-border/60 mt-auto">
+                    <span className="text-xs uppercase tracking-wider font-bold text-foreground/60 group-hover:text-primary transition-all duration-300 flex items-center gap-1">
+                        Read Story <span className="material-symbols-outlined text-[16px] transition-all duration-300 group-hover:translate-x-1">arrow_forward</span>
                     </span>
                 </div>
             </div>

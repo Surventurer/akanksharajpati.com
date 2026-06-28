@@ -60,7 +60,7 @@ export default async function Home() {
                                     src={getMediaUrl(pageData?.heroImage) || 'https://via.assets.so/img.jpg?w=1920&h=1080&tc=white&bg=333333&t=Hero+Image'}
                                     alt={pageData?.heroHeadingLine1 || 'Hero Image'}
                                     fill
-                                    className="object-cover opacity-90"
+                                    className="object-cover opacity-90 scale-105 transition-transform duration-[2s]"
                                     priority
                                 />
                             )}
@@ -68,7 +68,7 @@ export default async function Home() {
                         </div>
                     )}
                     <div className="absolute inset-0 hero-gradient"></div>
-                    <div className="relative z-10 text-center px-6 max-w-4xl">
+                    <div className="relative z-10 text-center px-6 max-w-4xl animate-fade-in-up">
                         <h1
                             className="text-6xl md:text-9xl mb-6 drop-shadow-sm leading-none"
                             style={{
@@ -117,11 +117,11 @@ export default async function Home() {
 
             {/* About Preview Section */}
             {pageData?.aboutPreviewEnabled && (
-                <section className="py-32 px-6 bg-card" id="about">
+                <section className="py-24 px-6 bg-card" id="about">
                     <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16 items-center">
                         {pageData?.showAboutPreviewImage !== false && (
-                            <div className="md:col-span-5 relative">
-                                <div className="absolute -inset-4 border border-accent/40 translate-x-8 translate-y-8 -z-0"></div>
+                            <div className="md:col-span-5 relative group">
+                                <div className="absolute -inset-4 border-2 border-accent/20 translate-x-6 translate-y-6 -z-0 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"></div>
                                 {pageData?.aboutPreviewImage && (
                                     <Image
                                         alt={pageData?.aboutPreviewHeadingNormal || 'About Image'}
@@ -192,9 +192,10 @@ export default async function Home() {
                                 <div className="flex items-center gap-8">
                                     <Link
                                         href={pageData?.aboutPreviewButtonLink}
-                                        className="text-[10px] uppercase tracking-widest font-bold border-b border-accent pb-1 hover:text-primary hover:border-primary transition-colors"
+                                        className="group inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold border-b border-accent pb-1 hover:text-primary hover:border-primary transition-all duration-300"
                                     >
                                         {pageData?.aboutPreviewButtonText}
+                                        <span className="material-symbols-outlined text-sm transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
                                     </Link>
                                 </div>
                             )}
@@ -267,7 +268,7 @@ export default async function Home() {
                                     const productImage = getMediaUrl(product.image)
                                     return (
                                         <div key={index} className="group">
-                                            <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card">
+                                            <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
                                                 {productImage && (
                                                     <Image
                                                         alt={product.name}
@@ -279,7 +280,7 @@ export default async function Home() {
                                                 )}
                                                 {product.badge && (
                                                     <div
-                                                        className="absolute top-3 left-3 px-3 py-1 text-[10px] uppercase tracking-widest font-bold"
+                                                        className="badge-premium absolute top-3 left-3"
                                                         style={{ backgroundColor: product.badgeColor || 'var(--accent)', color: '#fff' }}
                                                     >
                                                         {product.badge}
@@ -312,6 +313,7 @@ export default async function Home() {
                             </div>
                         ) : (
                             <div className="text-center py-12 text-foreground/50">
+                                <div className="material-symbols-outlined text-4xl mb-3 opacity-40">shopping_bag</div>
                                 <p>Products coming soon</p>
                             </div>
                         )}
@@ -370,7 +372,7 @@ export default async function Home() {
                             {recentPosts.length > 0 ? recentPosts.map((post: any) => (
                                 <article key={post.id} className="group cursor-pointer">
                                     <Link href={`/blog/${post.slug}`}>
-                                        <div className="relative mb-6 overflow-hidden aspect-[4/3]">
+                                        <div className="relative mb-6 overflow-hidden aspect-[4/3] rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-0.5">
                                             {post.image && (
                                                 <Image
                                                     alt={post.title}
@@ -380,7 +382,7 @@ export default async function Home() {
                                                 />
                                             )}
                                             <div className="absolute top-4 left-4">
-                                                <span className="bg-background/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-widest font-bold">
+                                                <span className="badge-premium bg-background/90 backdrop-blur-sm text-foreground shadow-sm">
                                                     {post.category}
                                                 </span>
                                             </div>
@@ -393,6 +395,7 @@ export default async function Home() {
                                 </article>
                             )) : (
                                 <div className="col-span-3 text-center py-12 text-foreground/50">
+                                    <div className="material-symbols-outlined text-4xl mb-3 opacity-40">auto_stories</div>
                                     <p>No blog posts available yet.</p>
                                 </div>
                             )}
@@ -405,10 +408,10 @@ export default async function Home() {
             <div className="fixed bottom-8 right-8 z-40">
                 <Link
                     href="/shop"
-                    className="bg-secondary text-secondary-foreground w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group border border-accent/30"
+                    className="bg-secondary text-secondary-foreground w-14 h-14 rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center hover:scale-110 hover:-translate-y-0.5 active:scale-100 transition-all duration-300 group border border-accent/20"
                 >
                     <span className="material-symbols-outlined">menu_book</span>
-                    <span className="absolute right-full mr-4 bg-secondary text-secondary-foreground px-4 py-2 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none tracking-widest uppercase border border-accent/30">
+                    <span className="absolute right-full mr-4 bg-secondary text-secondary-foreground px-4 py-2 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none tracking-widest uppercase border border-accent/30 rounded-lg shadow-lg">
                         Atelier Shop
                     </span>
                 </Link>

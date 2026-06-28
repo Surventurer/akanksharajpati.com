@@ -10,7 +10,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="px-6 py-2 bg-primary text-primary-foreground font-bold text-xs uppercase hover:bg-primary/90 transition-colors disabled:opacity-50 rounded-full"
+            className="px-6 py-2 bg-primary text-primary-foreground font-bold text-xs uppercase hover:bg-primary/90 transition-all duration-300 disabled:opacity-50 rounded-lg shadow-sm hover:shadow-md"
         >
             {pending ? 'Sending...' : 'Send'}
         </button>
@@ -58,7 +58,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                             <div key={comment.id} className="group">
                                 {/* Parent Comment */}
                                 <div className="flex gap-3 relative z-10">
-                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isAuthor ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
+                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${isAuthor ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
                                         }`}>
                                         {isAuthor ? <span className="material-symbols-outlined text-[14px]">stars</span> : initial}
                                     </div>
@@ -89,7 +89,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                                             {/* From User Avatar Center (16px) down and right */}
                                             <div className="absolute -top-7 left-[15px] w-5 h-10 border-l border-b border-foreground/20 rounded-bl-xl"></div>
 
-                                            <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ml-8 relative z-10 bg-background ring-2 ring-background">
+                                            <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ml-8 relative z-10 bg-background ring-2 ring-background shadow-sm">
                                                 <div className={`w-full h-full rounded-full flex items-center justify-center ${replyIsAuthor ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
                                                     }`}>
                                                     {replyIsAuthor ? <span className="material-symbols-outlined text-[14px]">stars</span> : replyInitial}
@@ -121,17 +121,17 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
             {/* Comment Form - Gated */}
             <div className="relative">
                 {state?.success ? (
-                    <div className="bg-green-50 p-3 rounded-lg border border-green-200 text-green-800 text-xs mb-4 text-center">
+                    <div className="bg-green-50/80 backdrop-blur-sm p-3 rounded-xl border border-green-200 text-green-800 text-xs mb-4 text-center">
                         {state.message}
                     </div>
                 ) : state?.message ? (
-                    <div className="bg-red-50 p-3 rounded-lg border border-red-200 text-red-800 text-xs mb-4 text-center">
+                    <div className="bg-red-50/80 backdrop-blur-sm p-3 rounded-xl border border-red-200 text-red-800 text-xs mb-4 text-center">
                         {state.message}
                     </div>
                 ) : null}
 
                 <div className={`relative transition-all duration-300 ${!isUnlocked ? 'blur-[2px] pointer-events-none select-none' : ''}`}>
-                    <form action={formAction} className="bg-background border border-border rounded-xl p-2 flex flex-col gap-2 shadow-sm focus-within:ring-1 focus-within:ring-primary/50">
+                    <form action={formAction} className="bg-background border border-border/80 rounded-xl p-2 flex flex-col gap-2 shadow-sm focus-within:ring-1 focus-within:ring-primary/50 transition-all duration-200">
                         <input type="hidden" name="articleId" value={articleId || ''} />
                         <input type="hidden" name="slug" value={slug || ''} />
 
@@ -142,7 +142,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                                 name="name"
                                 placeholder="Your Name"
                                 required
-                                className="w-full bg-transparent border-b border-border/50 px-0 py-1 text-sm focus:border-primary outline-none transition-colors placeholder:text-muted-foreground/50 font-bold"
+                                className="w-full bg-transparent border-b border-border/50 px-0 py-1.5 text-sm focus:border-primary outline-none transition-colors placeholder:text-muted-foreground/50 font-bold"
                             />
                         </div>
 
@@ -170,7 +170,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/60 z-10 rounded-xl backdrop-blur-[1px]">
                         <button
                             onClick={handleUnlock}
-                            className="bg-accent text-foreground px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-accent/90 shadow-lg transform hover:scale-105 transition-all flex items-center gap-2"
+                            className="bg-accent text-foreground px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-accent/90 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
                         >
                             <span className="material-symbols-outlined text-sm">lock_open</span>
                             Join Circle to Comment

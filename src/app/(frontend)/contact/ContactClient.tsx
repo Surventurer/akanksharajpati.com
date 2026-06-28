@@ -68,7 +68,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                 <section className="pt-32 pb-16 px-4">
                     <div className="max-w-4xl mx-auto text-center">
                         <h1 
-                            className="text-5xl md:text-6xl font-bold mb-6"
+                            className="text-5xl md:text-6xl font-bold mb-6 tracking-tight leading-tight"
                             style={{ 
                                 color: data.heroHeadingColor || textColor,
                                 fontFamily: getFontFamily(data.heroHeadingFont)
@@ -78,7 +78,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                         </h1>
                         {data.heroDescription && (
                             <p 
-                                className="text-lg md:text-xl max-w-2xl mx-auto"
+                                className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
                                 style={{ 
                                     color: data.heroDescriptionColor || mutedTextColor,
                                     fontFamily: getFontFamily(data.heroDescriptionFont)
@@ -119,14 +119,14 @@ export default function ContactClient({ data }: ContactClientProps) {
                                         {data.contactMethods?.map((method, index) => (
                                             <div 
                                                 key={index}
-                                                className="flex items-start gap-4 p-4 rounded-lg border"
+                                                className="flex items-start gap-4 p-4 rounded-xl border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                                                 style={{ 
                                                     backgroundColor: cardBackgroundColor,
                                                     borderColor: borderColor
                                                 }}
                                             >
                                                 <div 
-                                                    className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
+                                                    className="w-12 h-12 rounded-xl shadow-sm flex items-center justify-center flex-shrink-0"
                                                     style={{ backgroundColor: method.iconColor || primaryAccentColor }}
                                                 >
                                                     {method.icon ? (
@@ -160,7 +160,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                                                         method.link ? (
                                                             <a 
                                                                 href={method.link}
-                                                                className="font-medium hover:underline"
+                                                                className="font-medium hover:underline underline-offset-2"
                                                                 style={{ color: primaryAccentColor }}
                                                             >
                                                                 {method.value}
@@ -179,7 +179,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                                     {/* Quick Response Promise */}
                                     {data.quickResponseEnabled && (
                                         <div 
-                                            className="mt-6 p-4 rounded-lg flex items-start gap-4"
+                                            className="mt-6 p-4 rounded-xl shadow-sm border border-white/10 flex items-start gap-4"
                                             style={{ backgroundColor: data.quickResponseBgColor || primaryAccentColor }}
                                         >
                                             <span 
@@ -210,10 +210,11 @@ export default function ContactClient({ data }: ContactClientProps) {
                             {/* Contact Form */}
                             {data.formEnabled && (
                                 <div 
-                                    className="p-8 rounded-2xl border"
+                                    className="p-8 rounded-2xl shadow-md"
                                     style={{ 
                                         backgroundColor: data.formBackgroundColor || cardBackgroundColor,
-                                        borderColor: data.formBorderColor || borderColor
+                                        borderColor: data.formBorderColor || 'transparent',
+                                        borderWidth: data.formBorderColor ? 1 : 0,
                                     }}
                                 >
                                     <div className="flex items-center gap-3 mb-6">
@@ -240,7 +241,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                                     </div>
 
                                     {submitted ? (
-                                        <div className="text-center py-8">
+                                        <div className="text-center py-8 animate-fade-in-up">
                                             <span 
                                                 className="material-symbols-outlined text-5xl mb-4"
                                                 style={{ color: primaryAccentColor }}
@@ -255,7 +256,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                                             </p>
                                             <button
                                                 onClick={() => setSubmitted(false)}
-                                                className="mt-4 px-6 py-2 rounded-lg transition-opacity hover:opacity-80"
+                                                className="mt-4 px-6 py-2 rounded-lg transition-all duration-200 hover:opacity-80 hover:-translate-y-0.5 shadow-sm"
                                                 style={{ 
                                                     backgroundColor: primaryAccentColor,
                                                     color: '#F2EBD0'
@@ -279,14 +280,13 @@ export default function ContactClient({ data }: ContactClientProps) {
                                                     value={formData.name}
                                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                     placeholder={data.nameFieldPlaceholder || 'Your Name'}
-                                                    className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all"
+                                                    className="premium-input"
                                                     style={{ 
                                                         backgroundColor: data.inputBackgroundColor || pageBackgroundColor,
                                                         borderColor: data.inputBorderColor || borderColor,
                                                         color: data.inputTextColor || textColor,
-                                                        // @ts-ignore
                                                         '--tw-ring-color': primaryAccentColor
-                                                    }}
+                                                    } as React.CSSProperties}
                                                 />
                                             </div>
                                             <div>
@@ -302,14 +302,13 @@ export default function ContactClient({ data }: ContactClientProps) {
                                                     value={formData.email}
                                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                     placeholder={data.emailFieldPlaceholder || 'your.email@example.com'}
-                                                    className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all"
+                                                    className="premium-input"
                                                     style={{ 
                                                         backgroundColor: data.inputBackgroundColor || pageBackgroundColor,
                                                         borderColor: data.inputBorderColor || borderColor,
                                                         color: data.inputTextColor || textColor,
-                                                        // @ts-ignore
                                                         '--tw-ring-color': primaryAccentColor
-                                                    }}
+                                                    } as React.CSSProperties}
                                                 />
                                             </div>
                                             <div>
@@ -325,20 +324,19 @@ export default function ContactClient({ data }: ContactClientProps) {
                                                     value={formData.message}
                                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                                     placeholder={data.messageFieldPlaceholder || 'Tell me about your project, ideas, or just say hello...'}
-                                                    className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all resize-none"
+                                                    className="premium-input resize-none"
                                                     style={{ 
                                                         backgroundColor: data.inputBackgroundColor || pageBackgroundColor,
                                                         borderColor: data.inputBorderColor || borderColor,
                                                         color: data.inputTextColor || textColor,
-                                                        // @ts-ignore
                                                         '--tw-ring-color': primaryAccentColor
-                                                    }}
+                                                    } as React.CSSProperties}
                                                 />
                                             </div>
                                             <button
                                                 type="submit"
                                                 disabled={isSubmitting}
-                                                className="w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90 disabled:opacity-50"
+                                                className="w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 shadow-md hover:shadow-xl"
                                                 style={{ 
                                                     backgroundColor: data.submitButtonBgColor || primaryAccentColor,
                                                     color: data.submitButtonTextColor || '#F2EBD0'
@@ -383,7 +381,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                             </h2>
                             {data.servicesDescription && (
                                 <p 
-                                    className="max-w-3xl mx-auto"
+                                    className="max-w-3xl mx-auto leading-relaxed"
                                     style={{ 
                                         color: data.servicesDescriptionColor || mutedTextColor,
                                         fontFamily: getFontFamily(data.servicesDescriptionFont)
@@ -398,7 +396,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                             {data.services.map((service, index) => (
                                 <div 
                                     key={index}
-                                    className="p-6 rounded-xl border transition-all hover:scale-[1.02]"
+                                    className="p-6 rounded-xl border hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                                     style={{ 
                                         backgroundColor: data.serviceCardBackgroundColor || cardBackgroundColor,
                                         borderColor: data.serviceCardBorderColor || borderColor
@@ -459,7 +457,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                             </h2>
                             {data.faqDescription && (
                                 <p 
-                                    className="max-w-3xl mx-auto"
+                                    className="max-w-3xl mx-auto leading-relaxed"
                                     style={{ 
                                         color: data.faqDescriptionColor || mutedTextColor,
                                         fontFamily: getFontFamily(data.faqDescriptionFont)
@@ -474,7 +472,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                             {data.faqs.map((faq, index) => (
                                 <div 
                                     key={index}
-                                    className="rounded-xl border overflow-hidden"
+                                    className="rounded-xl border overflow-hidden transition-all duration-200 hover:shadow-md"
                                     style={{ 
                                         backgroundColor: data.faqCardBackgroundColor || cardBackgroundColor,
                                         borderColor: data.faqCardBorderColor || borderColor
@@ -482,7 +480,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                                 >
                                     <button
                                         onClick={() => toggleFaq(index)}
-                                        className="w-full p-5 text-left flex items-center justify-between gap-4"
+                                        className="w-full p-5 text-left flex items-center justify-between gap-4 transition-colors duration-200 hover:bg-black/5"
                                     >
                                         <span 
                                             className="font-medium"
@@ -494,14 +492,14 @@ export default function ContactClient({ data }: ContactClientProps) {
                                             {faq.question}
                                         </span>
                                         <span 
-                                            className={`material-symbols-outlined transition-transform ${openFaqIndex === index ? 'rotate-180' : ''}`}
+                                            className={`material-symbols-outlined transition-transform duration-300 ${openFaqIndex === index ? 'rotate-180' : ''}`}
                                             style={{ color: primaryAccentColor }}
                                         >
                                             expand_more
                                         </span>
                                     </button>
                                     <div 
-                                        className={`overflow-hidden transition-all duration-300 ${openFaqIndex === index ? 'max-h-96' : 'max-h-0'}`}
+                                        className={`overflow-hidden transition-all duration-300 ease-in-out ${openFaqIndex === index ? 'max-h-96' : 'max-h-0'}`}
                                     >
                                         <p 
                                             className="px-5 pb-5 text-sm leading-relaxed"
@@ -521,7 +519,7 @@ export default function ContactClient({ data }: ContactClientProps) {
             {data.businessBannerEnabled && (
                 <section className="py-16 px-4">
                     <div 
-                        className="max-w-4xl mx-auto p-8 md:p-12 rounded-2xl text-center"
+                        className="max-w-4xl mx-auto p-8 md:p-12 rounded-2xl shadow-md border border-white/5 text-center"
                         style={{ backgroundColor: data.businessBannerBackgroundColor || cardBackgroundColor }}
                     >
                         <h2 
@@ -535,7 +533,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                         </h2>
                         {data.businessBannerDescription && (
                             <p 
-                                className="mb-6 max-w-2xl mx-auto"
+                                className="mb-6 max-w-2xl mx-auto leading-relaxed"
                                 style={{ 
                                     color: data.businessBannerDescriptionColor || mutedTextColor,
                                     fontFamily: getFontFamily(data.businessBannerDescriptionFont)

@@ -16,8 +16,7 @@ const RichTextRenderer = ({ content }: { content: any }) => {
         switch (node.type) {
             case 'heading':
                 const Tag = node.tag as React.ElementType;
-                const className = `font-display font-bold mb-4 mt-8 ${node.tag === 'h1' ? 'text-4xl' : node.tag === 'h2' ? 'text-3xl' : 'text-2xl'}`;
-                // @ts-ignore
+                const className = `font-display font-bold mb-4 mt-10 ${node.tag === 'h1' ? 'text-4xl' : node.tag === 'h2' ? 'text-3xl' : 'text-2xl'}`;
                 return (
                     <Tag key={index} className={className}>
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
@@ -33,7 +32,7 @@ const RichTextRenderer = ({ content }: { content: any }) => {
 
             case 'quote':
                 return (
-                    <blockquote key={index} className="my-12 py-8 px-10 border-l-4 border-primary bg-primary/5 italic text-2xl font-light text-foreground font-serif">
+                    <blockquote key={index} className="my-12 py-8 px-10 border-l-4 border-primary bg-primary/5 italic text-2xl font-light text-foreground font-serif rounded-r-xl shadow-sm">
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
                     </blockquote>
                 );
@@ -71,7 +70,7 @@ const RichTextRenderer = ({ content }: { content: any }) => {
                     );
                 }
                 return (
-                    <a key={index} href={node.fields.url} target={node.fields?.newTab ? "_blank" : "_self"} className="text-primary hover:underline">
+                    <a key={index} href={node.fields.url} target={node.fields?.newTab ? "_blank" : "_self"} className="text-primary hover:underline underline-offset-2">
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
                     </a>
                 );
@@ -128,11 +127,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <main className="max-w-7xl mx-auto px-6 py-10">
                 {/* Breadcrumbs */}
                 <div className="flex items-center gap-2 mb-8 text-foreground/50 text-sm font-medium">
-                    <Link href="/" className="hover:text-primary">Home</Link>
-                    <span>/</span>
-                    <Link href="/blog" className="hover:text-primary">Blog</Link>
-                    <span>/</span>
-                    <span className="text-foreground truncate max-w-[200px]">{post.category}</span>
+                    <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+                    <span className="text-foreground/20 text-lg leading-none">/</span>
+                    <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
+                    <span className="text-foreground/20 text-lg leading-none">/</span>
+                    <span className="text-foreground/40 truncate max-w-[200px]">{post.category}</span>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -159,7 +158,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         </div>
 
                         {/* Hero Image */}
-                        <div className="mb-12 group overflow-hidden bg-beige relative w-full aspect-video">
+                        <div className="mb-12 group overflow-hidden bg-beige relative w-full aspect-video rounded-xl shadow-sm">
                             {post.image && (
                                 <Image
                                     src={post.image}
@@ -175,7 +174,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {/* Article Body */}
                         <div className="prose prose-lg max-w-none text-foreground/80 leading-relaxed">
                             {/* Intro Excerpt as lead paragraph */}
-                            <p className="text-xl mb-8 font-light italic text-foreground font-serif">
+                            <p className="text-xl mb-8 font-light italic text-foreground font-serif leading-relaxed">
                                 {post.excerpt}
                             </p>
 
@@ -203,7 +202,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             <RichTextRenderer content={post.content} />
 
                             {/* Share Section Footer */}
-                            <div className="my-8 flex flex-col items-center justify-center gap-6 border-t border-b border-foreground py-4">
+                            <div className="my-8 flex flex-col items-center justify-center gap-6 border-t border-b border-border/60 py-8">
                                 <div className="flex flex-col gap-2 text-center">
                                     <span
                                         className="font-display font-bold text-2xl md:text-xl"
@@ -238,7 +237,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
                             {/* Shop The Look - Dynamic */}
                             {post.relatedProducts && post.relatedProducts.length > 0 && (
-                                <section className="my-16 bg-beige p-8 border border-primary/20">
+                                <section className="my-16 bg-beige p-8 rounded-xl shadow-sm border border-primary/10">
                                     <div className="flex items-center justify-between mb-8">
                                         <h4 className="text-xl font-display font-bold tracking-tight uppercase">Shop The Look</h4>
                                         <span className="text-primary material-symbols-outlined">auto_awesome</span>
@@ -247,13 +246,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                         {post.relatedProducts.map((product: any, index: number) => (
                                             <div
                                                 key={index}
-                                                className="bg-card p-4 border border-primary/10 hover:border-primary transition-all group"
+                                                className="bg-card p-4 border border-primary/10 hover:border-primary/30 transition-all duration-300 group rounded-xl card-hover"
                                             >
-                                                <div className="aspect-square mb-4 overflow-hidden bg-beige relative">
+                                                <div className="aspect-square mb-4 overflow-hidden bg-beige relative rounded-lg">
                                                     {product.image ? (
                                                         <Image
                                                             fill
-                                                            className="object-cover group-hover:scale-110 transition-transform"
+                                                            className="object-cover group-hover:scale-110 transition-transform duration-500"
                                                             alt={product.name}
                                                             src={product.image.url || product.image}
                                                             sizes="(max-width: 768px) 50vw, 25vw"
@@ -267,7 +266,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                                 <div className="flex justify-between items-center">
                                                     <span className="font-display text-primary font-bold">{product.price}</span>
                                                     {product.link && (
-                                                        <a href={product.link} target="_blank" className="px-4 py-2 bg-primary text-primary-foreground font-bold text-xs uppercase hover:bg-primary/80 transition-colors inline-block">
+                                                        <a href={product.link} target="_blank" className="px-4 py-2 bg-primary text-primary-foreground font-bold text-xs uppercase hover:bg-primary/80 transition-all duration-300 rounded-lg inline-block shadow-sm hover:shadow-md">
                                                             Shop
                                                         </a>
                                                     )}
@@ -290,7 +289,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {/* Newsletter - Join Our Inner Circle */}
                         {innerCircleData?.enabled !== false && (
                             <div 
-                                className="bg-secondary text-secondary-foreground p-8"
+                                className="bg-secondary text-secondary-foreground p-8 rounded-xl shadow-sm"
                                 style={{ backgroundColor: innerCircleData?.backgroundColor || undefined }}
                             >
                                 <h3 
@@ -306,7 +305,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                     {innerCircleData?.description || 'Subscribe to get exclusive updates, offers, and early access.'}
                                 </p>
                                 <button 
-                                    className="w-full bg-accent text-foreground py-3 text-[10px] uppercase tracking-widest font-bold hover:bg-accent/90 transition-colors"
+                                    className="w-full bg-accent text-foreground py-3 text-[10px] uppercase tracking-widest font-bold hover:bg-accent/90 transition-all duration-300 rounded-lg shadow-sm hover:shadow-md"
                                     style={{ 
                                         color: innerCircleData?.buttonTextColor || undefined,
                                         backgroundColor: innerCircleData?.buttonBackgroundColor || undefined 

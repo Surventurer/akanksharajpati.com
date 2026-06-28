@@ -18,16 +18,27 @@ const Header = ({ data }: HeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loadedFonts, setLoadedFonts] = useState<Set<string>>(new Set());
   const [isMobile, setIsMobile] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // Detect mobile view
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+  // Track scroll position for header styling
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Helper to load custom fonts
@@ -121,10 +132,15 @@ const Header = ({ data }: HeaderProps) => {
     <>
       {/* Top Header Bar - Minimal */}
       <header 
-        className="fixed w-full z-50 backdrop-blur-sm border-b"
+        className="fixed w-full z-50 transition-all duration-500 ease-out will-change-transform"
         style={{
-          backgroundColor: data.headerBackgroundColor || '#F2EBD0',
-          borderBottomColor: data.headerTextColor ? `${data.headerTextColor}20` : 'rgba(74,75,52,0.15)',
+          backgroundColor: scrolled 
+            ? `${data.headerBackgroundColor || '#F2EBD0'}e6` 
+            : (data.headerBackgroundColor || '#F2EBD0'),
+          backdropFilter: scrolled ? 'blur(24px) saturate(1.2)' : 'blur(12px)',
+          WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(1.2)' : 'blur(12px)',
+          borderBottom: `1px solid ${data.headerTextColor ? `${data.headerTextColor}12` : 'rgba(74,75,52,0.08)'}`,
+          boxShadow: scrolled ? '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)' : 'none',
           color: data.headerTextColor || '#4a4b34'
         }}
       >
@@ -132,26 +148,19 @@ const Header = ({ data }: HeaderProps) => {
           {/* Hamburger Menu Button - Left */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 hover:opacity-70 rounded-md transition-opacity"
+            className="group p-2.5 hover:bg-black/5 active:bg-black/10 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             style={{ color: data.headerTextColor || '#4a4b34' }}
           >
-            {menuOpen ? (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            ) : (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M3 12H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <path d="M3 6H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <path d="M3 18H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            )}
+            <div className="relative w-6 h-6 flex items-center justify-center">
+              <span className={`absolute block h-px w-5 bg-current transition-all duration-300 ease-out ${menuOpen ? 'rotate-45 translate-y-0' : '-translate-y-1.5'}`} />
+              <span className={`absolute block h-px w-5 bg-current transition-all duration-300 ease-out ${menuOpen ? 'opacity-0' : 'opacity-100'}`} />
+              <span className={`absolute block h-px w-5 bg-current transition-all duration-300 ease-out ${menuOpen ? '-rotate-45 translate-y-0' : 'translate-y-1.5'}`} />
+            </div>
           </button>
 
           {/* Center Logo */}
-          <Link href="/" className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]">
             <div className="relative h-16 w-32 md:h-24 md:w-48">
               <Image
                 src={logoUrl!}
@@ -164,7 +173,7 @@ const Header = ({ data }: HeaderProps) => {
           </Link>
 
           {/* Right Side Icons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 md:gap-2">
             {navIcons && navIcons.map((iconItem, i) => {
               if (iconItem.enabled === false) return null;
 
@@ -210,25 +219,25 @@ const Header = ({ data }: HeaderProps) => {
               if (iconItem.type === 'search') {
                 return (
                   <button
-                    key={i}
-                    className="hover:opacity-70 transition-opacity flex items-center justify-center"
-                    aria-label={iconItem.label || 'Search'}
-                  >
-                    {displayContent}
-                  </button>
+                      key={i}
+                      className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      aria-label={iconItem.label || 'Search'}
+                    >
+                      {displayContent}
+                    </button>
                 );
               }
 
               if (iconItem.type === 'link' && iconItem.link) {
                 return (
-                  <Link
-                    key={i}
-                    href={iconItem.link}
-                    target={iconItem.newTab ? "_blank" : "_self"}
-                    className="hover:opacity-70 transition-opacity flex items-center justify-center"
-                  >
-                    {displayContent}
-                  </Link>
+                    <Link
+                      key={i}
+                      href={iconItem.link}
+                      target={iconItem.newTab ? "_blank" : "_self"}
+                      className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >
+                      {displayContent}
+                    </Link>
                 );
               }
 
@@ -241,7 +250,7 @@ const Header = ({ data }: HeaderProps) => {
       {/* Full-Screen Overlay Menu */}
       {menuOpen && (
         <div 
-          className="fixed inset-0 z-40 overflow-y-auto"
+          className="fixed inset-0 z-40 overflow-y-auto animate-fade-in"
           style={{ 
             backgroundColor: data.headerBackgroundColor || '#F2EBD0',
             color: data.headerTextColor || '#4a4b34'
@@ -249,14 +258,14 @@ const Header = ({ data }: HeaderProps) => {
         >
           <div className="min-h-screen flex flex-col">
             {/* Top Bar in Overlay */}
-            <div className="relative px-6 py-3 flex justify-between items-center h-24" style={{ borderBottom: `1px solid ${data.headerTextColor}20` }}>
+            <div className="relative px-6 py-3 flex justify-between items-center h-24" style={{ borderBottom: `1px solid ${data.headerTextColor}12` }}>
               {/* Close Button */}
               <button
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold hover:opacity-70 transition-opacity"
+                className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold hover:opacity-70 transition-all duration-300 group"
                 style={{ color: data.headerTextColor || '#4a4b34' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="transition-transform duration-300 group-hover:-translate-x-0.5">
                   <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
@@ -264,7 +273,7 @@ const Header = ({ data }: HeaderProps) => {
               </button>
 
               {/* Center Logo */}
-              <Link href="/" onClick={() => setMenuOpen(false)} className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+              <Link href="/" onClick={() => setMenuOpen(false)} className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]">
                 <div className="relative h-16 w-32">
                   <Image
                     src={logoUrl!}
@@ -323,7 +332,7 @@ const Header = ({ data }: HeaderProps) => {
                     return (
                       <button
                         key={i}
-                        className="hover:opacity-70 transition-opacity flex items-center justify-center"
+                        className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         aria-label={iconItem.label || 'Search'}
                       >
                         {displayContent}
@@ -337,7 +346,7 @@ const Header = ({ data }: HeaderProps) => {
                         key={i}
                         href={iconItem.link}
                         target={iconItem.newTab ? "_blank" : "_self"}
-                        className="hover:opacity-70 transition-opacity flex items-center justify-center"
+                        className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       >
                         {displayContent}
                       </Link>
@@ -350,33 +359,39 @@ const Header = ({ data }: HeaderProps) => {
             </div>
 
             {/* Navigation Menu - Centered */}
-            <div className="flex-1 flex flex-col items-center justify-center min-h-0 py-4 px-6">
-              <nav className="flex flex-col items-center gap-6">
-                {navLinks.map((link) => (
+            <div className="flex-1 flex flex-col items-center justify-center min-h-0 py-8 md:py-12 px-6">
+              <nav className="flex flex-col items-center gap-6 md:gap-8">
+                {navLinks.map((link, i) => (
                   <Link
                     key={link.label + link.href}
                     href={link.href}
                     target={link.newTab ? "_blank" : "_self"}
                     onClick={() => setMenuOpen(false)}
-                    className="text-2xl md:text-3xl uppercase tracking-[0.3em] font-bold transition-all hover:opacity-70"
+                    className="group text-2xl md:text-3xl uppercase tracking-[0.3em] font-bold transition-all duration-500 relative inline-block"
                     style={{
                       fontFamily: getFontFamily(link.font),
                       color: link.color || data.headerTextColor || '#4a4b34',
-                      opacity: pathname === link.href ? 1 : 0.8
+                      opacity: pathname === link.href ? 1 : 0.6,
+                      animationDelay: `${i * 80}ms`,
                     }}
                   >
-                    {link.label}
+                    <span className="relative inline-block transition-all duration-500 group-hover:tracking-[0.45em]">
+                      {link.label}
+                    </span>
+                    <span className="absolute -bottom-2 left-0 h-[1.5px] bg-current transition-all duration-500 origin-left scale-x-0 group-hover:scale-x-100" 
+                      style={{ width: pathname === link.href ? '100%' : '0%' }}
+                    />
                   </Link>
                 ))}
               </nav>
             </div>
 
             {/* Bottom Section - Social Links */}
-            <div className="mt-auto py-4 px-6">
-              <div className="flex flex-col items-center gap-3">
+            <div className="mt-auto py-6 md:py-8 px-6">
+              <div className="flex flex-col items-center gap-5">
                 {/* Social Links */}
                 {socialLinks && socialLinks.length > 0 && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     {socialLinks.map((social, i) => {
                       const socialIconUrl = getMediaUrl(social.icon as Media);
                       
@@ -386,7 +401,7 @@ const Header = ({ data }: HeaderProps) => {
                             href={social.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:opacity-70 transition-opacity flex items-center justify-center"
+                            className="hover:opacity-80 active:opacity-60 transition-all duration-300 hover:scale-110 flex items-center justify-center"
                             style={{
                               fontFamily: getFontFamily(social.font as Font),
                               color: social.color || data.headerTextColor || '#4a4b34'
@@ -409,7 +424,7 @@ const Header = ({ data }: HeaderProps) => {
                           </a>
                           {i < socialLinks.length - 1 && (
                             <span 
-                              className="mx-2 opacity-30"
+                              className="mx-3 opacity-20"
                               style={{ color: data.headerTextColor || '#4a4b34' }}
                             >
                               •
@@ -423,7 +438,7 @@ const Header = ({ data }: HeaderProps) => {
 
                 {/* Logo at Bottom */}
                 {logoUrl && (
-                  <div className="relative h-32 w-32 opacity-60">
+                  <div className="relative h-28 w-28 opacity-40 hover:opacity-60 transition-opacity duration-500">
                     <Image
                       src={logoUrl}
                       alt="Logo"

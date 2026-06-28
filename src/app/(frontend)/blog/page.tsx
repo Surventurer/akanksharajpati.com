@@ -93,14 +93,14 @@ const Blog = () => {
                     )}
 
                     {/* Category Filter */}
-                    <div className="flex flex-wrap justify-center gap-4 mb-16">
+                    <div className="flex flex-wrap justify-center gap-3 mb-16">
                         {categories.map((category) => (
                             <button
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
-                                className={`text-xs uppercase tracking-widest font-bold px-4 py-2 border transition-all duration-300 ${selectedCategory === category
-                                    ? "border-primary bg-primary text-primary-foreground"
-                                    : "border-transparent text-foreground/60 hover:text-primary hover:border-primary/20"
+                                className={`text-xs uppercase tracking-widest font-bold px-4 py-2 border transition-all duration-300 rounded-lg ${selectedCategory === category
+                                    ? "border-primary bg-primary text-primary-foreground shadow-md scale-105"
+                                    : "border-border/60 text-foreground/60 hover:text-primary hover:border-primary/40 hover:scale-105"
                                     }`}
                             >
                                 {category}
@@ -111,7 +111,19 @@ const Blog = () => {
                     {/* Loading State */}
                     {loading && (
                         <div className="text-center py-20">
-                            <p className="text-foreground/50 font-serif italic text-lg">Loading stories...</p>
+                            <div className="space-y-6 max-w-2xl mx-auto">
+                                <div className="animate-pulse bg-muted/70 rounded-xl h-8 w-48 mx-auto" />
+                                <div className="animate-pulse bg-muted/70 rounded-xl h-4 w-72 mx-auto" />
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+                                    {[1, 2, 3].map((i) => (
+                                        <div key={i} className="space-y-4">
+                                            <div className="animate-pulse bg-muted/70 rounded-xl aspect-[4/3]" />
+                                            <div className="animate-pulse bg-muted/70 rounded-xl h-4 w-3/4" />
+                                            <div className="animate-pulse bg-muted/70 rounded-xl h-4 w-1/2" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -128,6 +140,7 @@ const Blog = () => {
 
                     {!loading && blogPosts.length === 0 && (
                         <div className="text-center py-20">
+                            <span className="material-symbols-outlined text-5xl mb-4 opacity-30 text-foreground/50">search</span>
                             <p className="text-foreground/50 font-serif italic text-lg">No stories found in this category.</p>
                         </div>
                     )}
@@ -135,25 +148,26 @@ const Blog = () => {
                     {/* Newsletter Section - Join Our Inner Circle */}
                     {innerCircleData?.enabled !== false && (
                         <div 
-                            className="mt-24 p-12 bg-secondary text-secondary-foreground text-center rounded-sm relative overflow-hidden"
+                            className="mt-24 p-12 md:p-16 bg-secondary text-secondary-foreground text-center rounded-2xl shadow-lg relative overflow-hidden"
                             style={sectionStyle}
                         >
-                            <div className="absolute top-0 left-0 w-full h-1 bg-accent/30"></div>
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent/40 via-accent to-accent/40"></div>
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/[0.02] to-transparent pointer-events-none"></div>
                             <div className="relative z-10 max-w-xl mx-auto">
                                 <h2 
-                                    className="font-display text-3xl mb-4"
+                                    className="font-display text-3xl md:text-4xl mb-4"
                                     style={titleStyle}
                                 >
                                     {innerCircleData?.title || "Join Our Inner Circle"}
                                 </h2>
                                 <p 
-                                    className="mb-8 font-serif leading-relaxed opacity-90"
+                                    className="mb-8 font-serif leading-relaxed opacity-90 text-balance"
                                     style={descriptionStyle}
                                 >
                                     {innerCircleData?.description || "Subscribe to get exclusive updates, offers, and early access."}
                                 </p>
                                 <button 
-                                    className="bg-accent text-accent-foreground px-8 py-3 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-secondary transition-colors"
+                                    className="bg-accent text-accent-foreground px-8 py-3.5 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-secondary transition-all duration-300 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
                                     style={buttonStyle}
                                 >
                                     {innerCircleData?.buttonText || "Subscribe"}
