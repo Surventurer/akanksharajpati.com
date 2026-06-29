@@ -36,7 +36,7 @@ const fontSerif = Libre_Baskerville({
     style: ['normal', 'italic'],
 })
 
-import { fetchHeader, fetchFonts } from "@/lib/cms.server";
+import { fetchHeader, fetchFonts } from "@/lib/cms";
 import { Media } from "@/payload-types";
 
 export default async function FrontendLayout({

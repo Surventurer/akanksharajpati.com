@@ -1,5 +1,7 @@
 import { GlobalConfig } from 'payload'
 import { globalAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const JoinOurInnerCircle: GlobalConfig = {
     slug: 'join-our-inner-circle',
@@ -204,4 +206,7 @@ export const JoinOurInnerCircle: GlobalConfig = {
             ],
         },
     ],
+    hooks: {
+        afterChange: [createRevalidateHook(CACHE_TAGS.JOIN_INNER_CIRCLE)],
+    },
 }

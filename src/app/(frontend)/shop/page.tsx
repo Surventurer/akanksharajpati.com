@@ -1,4 +1,4 @@
-import { fetchShopPage } from "@/lib/cms.server";
+import { fetchShopPage } from "@/lib/cms";
 import ShopClient from "./ShopClient";
 
 // Force dynamic rendering to always fetch fresh CMS data

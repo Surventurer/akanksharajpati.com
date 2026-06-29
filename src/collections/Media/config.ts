@@ -2,6 +2,8 @@ import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { generateBlurDataURL, isEligibleForBlurDataURL } from './lib/generate-blur-data-url'
 import { collectionAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const Media: CollectionConfig = {
     slug: 'media',
@@ -78,9 +80,9 @@ export const Media: CollectionConfig = {
                 // 3. set it to data.blurDataUrl
                 data.blurDataUrl = base64
                 console.log(`Generated blur data URL for ${data.filename}`)
-                // 4. return data
                 return data
             },
         ],
+        afterChange: [createRevalidateHook(CACHE_TAGS.MEDIA)],
     },
 }

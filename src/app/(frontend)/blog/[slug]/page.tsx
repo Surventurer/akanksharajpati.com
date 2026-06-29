@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { fetchArticleBySlug, fetchBlogPage, fetchJoinOurInnerCircle } from "@/lib/cms.server";
+import { fetchArticleBySlug, fetchBlogPage, fetchJoinOurInnerCircle, fetchApprovedComments } from "@/lib/cms";
 import { notFound } from "next/navigation";
 import { ViewCounter } from "@/components/blog/ViewCounter";
 import { Comments } from "@/components/blog/Comments";
 import ShareButton from "@/components/ui/ShareButton";
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 
 // Simple Rich Text Renderer for Payload Lexical JSON
 const RichTextRenderer = ({ content }: { content: any }) => {
@@ -85,38 +83,18 @@ const RichTextRenderer = ({ content }: { content: any }) => {
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const payload = await getPayload({ config: configPromise });
 
-    // Parallel fetch for post and global config
     const [post, blogGlobal, innerCircleData] = await Promise.all([
         fetchArticleBySlug(slug),
         fetchBlogPage(),
-        fetchJoinOurInnerCircle()
+        fetchJoinOurInnerCircle(),
     ]);
 
     if (!post) {
         return notFound();
     }
 
-    // Fetch approved comments
-    const comments = await payload.find({
-        collection: 'comments',
-        where: {
-            and: [
-                {
-                    article: {
-                        equals: post.id,
-                    },
-                },
-                {
-                    status: {
-                        equals: 'approved',
-                    },
-                },
-            ],
-        },
-        sort: '-createdAt',
-    });
+    const approvedComments = await fetchApprovedComments(post.id);
 
     return (
         <>
@@ -284,7 +262,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     {/* Sidebar */}
                     <aside className="lg:col-span-4 space-y-8">
                         {/* Comments Section - Moved to Sidebar */}
-                        <Comments articleId={post.id} slug={slug} comments={comments.docs} />
+                        <Comments articleId={post.id} slug={slug} comments={approvedComments} />
 
                         {/* Newsletter - Join Our Inner Circle */}
                         {innerCircleData?.enabled !== false && (

@@ -1,9 +1,11 @@
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import type { CollectionConfig } from 'payload'
-import { CACHE_TAG_ARTICLES, STATUS_OPTIONS } from './constants'
+import { STATUS_OPTIONS } from './constants'
 import { generateContentSummaryHook } from './hooks/generate-content-summary.hook'
 import { generateSlugHook } from './hooks/generate-slug.hook'
 import { collectionAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const Articles: CollectionConfig = {
     slug: 'articles',
@@ -157,16 +159,6 @@ export const Articles: CollectionConfig = {
         },
     ],
     hooks: {
-        afterChange: [
-            async () => {
-                try {
-                    const { revalidateTag } = await import('next/cache')
-                    // @ts-expect-error - Next.js 15+ type mismatch
-                    revalidateTag(CACHE_TAG_ARTICLES)
-                } catch (e) {
-                    // Ignore error during seeding or outside Next.js context
-                }
-            },
-        ],
+        afterChange: [createRevalidateHook(CACHE_TAGS.ARTICLES)],
     },
 }

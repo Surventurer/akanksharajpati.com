@@ -1,6 +1,8 @@
 // import { ColorPickerField } from '@/components/payload/ColorPickerField'
 import { GlobalConfig } from 'payload'
 import { globalAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const Header: GlobalConfig = {
     slug: 'header',
@@ -378,4 +380,7 @@ export const Header: GlobalConfig = {
             ],
         },
     ],
+    hooks: {
+        afterChange: [createRevalidateHook(CACHE_TAGS.HEADER)],
+    },
 }

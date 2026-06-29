@@ -1,4 +1,4 @@
-import { fetchWatchPage } from '@/lib/cms.server';
+import { fetchWatchPage } from '@/lib/cms';
 import WatchClient from './WatchClient';
 import { Metadata } from 'next';
 

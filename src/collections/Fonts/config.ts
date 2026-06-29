@@ -1,6 +1,8 @@
 import { CollectionConfig } from 'payload'
 import path from 'path'
 import { collectionAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const Fonts: CollectionConfig = {
     slug: 'fonts',
@@ -30,4 +32,7 @@ export const Fonts: CollectionConfig = {
             label: 'Font Name (e.g. My Custom Font)',
         },
     ],
+    hooks: {
+        afterChange: [createRevalidateHook(CACHE_TAGS.FONTS)],
+    },
 }

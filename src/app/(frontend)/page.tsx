@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import { fetchHomePage, fetchArticles, fetchShopPage, fetchWatchPage, fetchContactPage } from '@/lib/cms.server'
+import { fetchHomePage, fetchArticles, fetchShopPage, fetchWatchPage, fetchContactPage } from '@/lib/cms'
 import { Media, Font } from '@/payload-types'
 
 // Force dynamic rendering to always fetch fresh CMS data

@@ -1,4 +1,4 @@
-import { fetchContactPage } from '@/lib/cms.server';
+import { fetchContactPage } from '@/lib/cms';
 import ContactClient from './ContactClient';
 
 // Force dynamic rendering to always fetch fresh CMS data

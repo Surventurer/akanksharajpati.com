@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { fetchFooter } from "@/lib/cms.server";
+import { fetchFooter } from "@/lib/cms";
 import { Font } from "@/payload-types";
 
 const Footer = async () => {

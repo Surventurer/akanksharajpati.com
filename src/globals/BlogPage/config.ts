@@ -1,5 +1,7 @@
 import { GlobalConfig } from 'payload'
 import { globalAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const BlogPage: GlobalConfig = {
     slug: 'blog-page',
@@ -407,4 +409,7 @@ export const BlogPage: GlobalConfig = {
             ],
         },
     ],
+    hooks: {
+        afterChange: [createRevalidateHook(CACHE_TAGS.BLOG_PAGE)],
+    },
 }

@@ -1,5 +1,5 @@
 
-import { fetchAboutPage } from "@/lib/cms.server";
+import { fetchAboutPage } from "@/lib/cms";
 import { Media } from "@/payload-types";
 import Image from "next/image";
 

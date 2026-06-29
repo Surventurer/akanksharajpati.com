@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { collectionAccess } from '@/payload/access'
+import { createRevalidateHook } from '@/lib/revalidate'
+import { CACHE_TAGS } from '@/lib/cache-tags'
 
 export const Comments: CollectionConfig = {
     slug: 'comments',
@@ -60,12 +62,11 @@ export const Comments: CollectionConfig = {
             required: false,
             label: 'Reply To (Parent Comment)',
             filterOptions: ({ siblingData }) => {
-                // Prevent self-reference if editing (basic check)
                 return {}
             },
         },
     ],
     hooks: {
-        // Optional: Email notification hook on create could go here
-    }
+        afterChange: [createRevalidateHook(CACHE_TAGS.COMMENTS)],
+    },
 }
