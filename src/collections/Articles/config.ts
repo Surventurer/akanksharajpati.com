@@ -7,7 +7,7 @@ import { generateSlugHook } from './hooks/generate-slug.hook'
 export const Articles: CollectionConfig = {
     slug: 'articles',
     admin: {
-        group: 'Blog',
+        group: 'Content',
     },
     fields: [
         {

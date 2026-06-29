@@ -1,0 +1,357 @@
+/* ============================================
+   Akanksha Rajpati — Payload Admin Theme
+   Brand: Cream/Beige + Dusty Rose + Olive + Gold
+   Supports: Light Mode + Dark Mode
+   ============================================ */
+
+/* =============================================
+   LIGHT THEME (Default)
+   ============================================= */
+:root {
+  /* --- Base --- */
+  --theme-bg: #f2ebd0;
+  --theme-text: #4a4b34;
+
+  /* --- Elevation / Surface Scale --- */
+  --theme-elevation-0: #faf6ea;
+  --theme-elevation-50: #f5efdb;
+  --theme-elevation-100: #efe8cc;
+  --theme-elevation-150: #e8e0bd;
+  --theme-elevation-200: #e0d7ae;
+  --theme-elevation-250: #d4c99b;
+  --theme-elevation-300: #c7bb88;
+  --theme-elevation-350: #b8ab76;
+  --theme-elevation-400: #a99b65;
+  --theme-elevation-450: #9a8d57;
+  --theme-elevation-500: #8c804b;
+  --theme-elevation-550: #7f7442;
+  --theme-elevation-600: #73683a;
+  --theme-elevation-650: #675d33;
+  --theme-elevation-700: #5c532d;
+  --theme-elevation-750: #524927;
+  --theme-elevation-800: #484022;
+  --theme-elevation-850: #3f381e;
+  --theme-elevation-900: #36301a;
+  --theme-elevation-950: #2e2917;
+
+  /* --- Borders & Inputs --- */
+  --theme-border-color: rgba(74, 75, 52, 0.12);
+  --theme-input-bg: #f7f1dc;
+  --theme-input-bg-hover: #f5efd5;
+
+  /* --- Success (Olive) --- */
+  --theme-success-50: #f0f4eb;
+  --theme-success-100: #dbe5cf;
+  --theme-success-150: #c4d4b0;
+  --theme-success-200: #abc292;
+  --theme-success-250: #92b077;
+  --theme-success-300: #7b9e5e;
+  --theme-success-400: #6b8d4f;
+  --theme-success-500: #5c7c42;
+  --theme-success-600: #4d6b37;
+  --theme-success-650: #405c2e;
+  --theme-success-700: #354e26;
+  --theme-success-750: #2b4120;
+  --theme-success-800: #22351a;
+  --theme-success-850: #1a2a14;
+  --theme-success-900: #13200f;
+
+  /* --- Error (Dusty Rose) --- */
+  --theme-error-50: #fcf4f3;
+  --theme-error-100: #f7e3e0;
+  --theme-error-150: #f1cfcb;
+  --theme-error-200: #eabab4;
+  --theme-error-250: #e2a59d;
+  --theme-error-300: #d99087;
+  --theme-error-400: #c97c73;
+  --theme-error-500: #b96860;
+  --theme-error-600: #a8564e;
+  --theme-error-650: #96463f;
+  --theme-error-700: #843831;
+  --theme-error-750: #722b25;
+  --theme-error-800: #60201b;
+  --theme-error-850: #4e1713;
+  --theme-error-900: #3c0f0c;
+
+  /* --- Warning (Gold / Mustard) --- */
+  --theme-warning-100: #faf0d6;
+  --theme-warning-150: #f4e0b3;
+  --theme-warning-600: #b58a2a;
+  --theme-warning-800: #7a5b17;
+
+  /* --- Fonts --- */
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
+}
+
+/* =============================================
+   DARK THEME
+   ============================================= */
+[data-theme="dark"] {
+  /* --- Base --- */
+  --theme-bg: #151515;
+  --theme-text: #e8e0cc;
+
+  /* --- Elevation / Surface Scale (inverted for dark) --- */
+  --theme-elevation-0: #0f0f0f;
+  --theme-elevation-50: #1a1a1a;
+  --theme-elevation-100: #222222;
+  --theme-elevation-150: #2a2a2a;
+  --theme-elevation-200: #333333;
+  --theme-elevation-250: #3d3d3d;
+  --theme-elevation-300: #474747;
+  --theme-elevation-350: #525252;
+  --theme-elevation-400: #5e5e5e;
+  --theme-elevation-450: #6a6a6a;
+  --theme-elevation-500: #777777;
+  --theme-elevation-550: #858585;
+  --theme-elevation-600: #939393;
+  --theme-elevation-650: #a1a1a1;
+  --theme-elevation-700: #b0b0b0;
+  --theme-elevation-750: #bfbfbf;
+  --theme-elevation-800: #cecece;
+  --theme-elevation-850: #dddddd;
+  --theme-elevation-900: #ebebeb;
+  --theme-elevation-950: #f5f5f5;
+
+  /* --- Borders & Inputs --- */
+  --theme-border-color: rgba(232, 224, 204, 0.12);
+  --theme-input-bg: #1e1e1e;
+  --theme-input-bg-hover: #262626;
+
+  /* --- Success (Olive — adjusted for dark) --- */
+  --theme-success-50: #1a2a14;
+  --theme-success-100: #22351a;
+  --theme-success-150: #2b4120;
+  --theme-success-200: #354e26;
+  --theme-success-250: #405c2e;
+  --theme-success-300: #4d6b37;
+  --theme-success-400: #5c7c42;
+  --theme-success-500: #6b8d4f;
+  --theme-success-600: #7b9e5e;
+  --theme-success-650: #92b077;
+  --theme-success-700: #abc292;
+  --theme-success-750: #c4d4b0;
+  --theme-success-800: #dbe5cf;
+  --theme-success-850: #e8eedd;
+  --theme-success-900: #f0f4eb;
+
+  /* --- Error (Dusty Rose — adjusted for dark) --- */
+  --theme-error-50: #3c0f0c;
+  --theme-error-100: #4e1713;
+  --theme-error-150: #60201b;
+  --theme-error-200: #722b25;
+  --theme-error-250: #843831;
+  --theme-error-300: #96463f;
+  --theme-error-400: #a8564e;
+  --theme-error-500: #b96860;
+  --theme-error-600: #c97c73;
+  --theme-error-650: #d99087;
+  --theme-error-700: #e2a59d;
+  --theme-error-750: #eabab4;
+  --theme-error-800: #f1cfcb;
+  --theme-error-850: #f7e3e0;
+  --theme-error-900: #fcf4f3;
+
+  /* --- Warning (Gold — adjusted for dark) --- */
+  --theme-warning-100: #3d2e0d;
+  --theme-warning-150: #5a4412;
+  --theme-warning-600: #d4a840;
+  --theme-warning-800: #f0d090;
+}
+
+/* =============================================
+   COMPONENT STYLES
+   ============================================= */
+
+/* --- Sidebar / Nav --- */
+.nav {
+  background: var(--theme-elevation-50);
+  border-right: 1px solid var(--theme-border-color);
+}
+
+.nav__group {
+  padding: 0 12px;
+}
+
+.nav__group > .nav__group-header {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--theme-elevation-550);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 8px 6px;
+}
+
+.nav > .nav__wrap > div > a {
+  border-radius: 6px;
+  margin: 1px 12px;
+  padding: 7px 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--theme-elevation-700);
+  transition: all 0.15s ease;
+}
+
+.nav > .nav__wrap > div > a:hover {
+  background: var(--theme-elevation-100);
+  color: var(--theme-text);
+}
+
+.nav > .nav__wrap > div > a.active {
+  background: linear-gradient(135deg, rgba(184,128,120,0.12) 0%, rgba(196,154,72,0.08) 100%);
+  border-left: 3px solid var(--theme-elevation-450);
+  color: var(--theme-text);
+  font-weight: 600;
+}
+
+/* --- Top Nav / Step Nav --- */
+.step-nav {
+  font-family: var(--font-heading);
+}
+
+/* --- Cards / Panels --- */
+.dashboard__card,
+.collection-list__list-item,
+.edit-draft,
+.gutter,
+.gutter--left {
+  border-radius: 8px;
+}
+
+/* --- Buttons --- */
+.btn--style-primary {
+  background: var(--theme-elevation-600) !important;
+  color: #fff !important;
+  border: 1px solid var(--theme-elevation-600) !important;
+  border-radius: 6px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn--style-primary:hover {
+  background: var(--theme-elevation-700) !important;
+}
+
+.btn--style-secondary {
+  border-radius: 6px !important;
+  font-family: var(--font-body) !important;
+}
+
+/* --- Inputs --- */
+input,
+textarea,
+.select,
+.select__value-container,
+.field-type__wrap input,
+.field-type__wrap textarea {
+  border-radius: 6px !important;
+  font-family: var(--font-body) !important;
+}
+
+/* --- Rich Text Editor --- */
+.lexical-editor {
+  border-radius: 8px;
+}
+
+/* --- Dashboard --- */
+.dashboard {
+  font-family: var(--font-body);
+}
+
+.dashboard__label {
+  font-family: var(--font-heading);
+}
+
+/* --- Breadcrumbs --- */
+.breadcrumbs {
+  font-family: var(--font-body);
+}
+
+/* --- Table Views --- */
+.list-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.list-table thead th {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--theme-elevation-100);
+}
+
+/* --- Pill / Badge Styles --- */
+.pill {
+  border-radius: 5px !important;
+  font-family: var(--font-body) !important;
+}
+
+/* --- Login Page --- */
+.login {
+  background: var(--theme-bg);
+}
+
+.login__brand {
+  margin-bottom: 24px;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-elevation-50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-elevation-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-elevation-400);
+}
+
+/* =============================================
+   DARK MODE — Component Overrides
+   ============================================= */
+[data-theme="dark"] .nav > .nav__wrap > div > a.active {
+  background: linear-gradient(135deg, rgba(184,128,120,0.18) 0%, rgba(196,154,72,0.12) 100%);
+}
+
+[data-theme="dark"] .btn--style-primary {
+  background: #B88078 !important;
+  border-color: #B88078 !important;
+  color: #0f0f0f !important;
+}
+
+[data-theme="dark"] .btn--style-primary:hover {
+  background: #c99890 !important;
+  border-color: #c99890 !important;
+}
+
+[data-theme="dark"] .list-table thead th {
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-800);
+}
+
+/* --- Smooth transitions for theme switching --- */
+body,
+.nav,
+.template-default,
+.template-minimal,
+.dashboard,
+input,
+textarea,
+.select,
+.btn {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

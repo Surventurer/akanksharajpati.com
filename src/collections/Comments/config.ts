@@ -4,7 +4,7 @@ export const Comments: CollectionConfig = {
     slug: 'comments',
     admin: {
         useAsTitle: 'content',
-        group: 'Social',
+        group: 'Content',
         defaultColumns: ['content', 'authorName', 'status', 'article', 'createdAt'],
     },
     access: {

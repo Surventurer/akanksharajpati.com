@@ -5,7 +5,7 @@ export const Fonts: CollectionConfig = {
     slug: 'fonts',
     admin: {
         useAsTitle: 'name',
-        group: 'Media & Assets',
+        group: 'Media',
     },
     access: {
         read: () => true,

@@ -67,12 +67,12 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
     articles: Article;
     'article-authors': ArticleAuthor;
-    fonts: Font;
     comments: Comment;
+    media: Media;
+    fonts: Font;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,12 +80,12 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'article-authors': ArticleAuthorsSelect<false> | ArticleAuthorsSelect<true>;
-    fonts: FontsSelect<false> | FontsSelect<true>;
     comments: CommentsSelect<false> | CommentsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    fonts: FontsSelect<false> | FontsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -96,26 +96,26 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'home-page': HomePage;
     'blog-page': BlogPage;
     'about-page': AboutPage;
-    header: Header;
-    'join-our-inner-circle': JoinOurInnerCircle;
-    'home-page': HomePage;
-    footer: Footer;
     'shop-page': ShopPage;
     'contact-page': ContactPage;
     'watch-page': WatchPage;
+    header: Header;
+    footer: Footer;
+    'join-our-inner-circle': JoinOurInnerCircle;
   };
   globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
-    header: HeaderSelect<false> | HeaderSelect<true>;
-    'join-our-inner-circle': JoinOurInnerCircleSelect<false> | JoinOurInnerCircleSelect<true>;
-    'home-page': HomePageSelect<false> | HomePageSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
     'shop-page': ShopPageSelect<false> | ShopPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'watch-page': WatchPageSelect<false> | WatchPageSelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+    'join-our-inner-circle': JoinOurInnerCircleSelect<false> | JoinOurInnerCircleSelect<true>;
   };
   locale: null;
   user: User & {
@@ -143,53 +143,6 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  /**
-   * Leave empty to auto-generate
-   */
-  alt?: string | null;
-  blurDataUrl?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -251,6 +204,29 @@ export interface Article {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  /**
+   * Leave empty to auto-generate
+   */
+  alt?: string | null;
+  blurDataUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "article-authors".
  */
 export interface ArticleAuthor {
@@ -259,6 +235,24 @@ export interface ArticleAuthor {
   avatar?: (string | null) | Media;
   role: string;
   bio?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comments".
+ */
+export interface Comment {
+  id: string;
+  content: string;
+  authorName: string;
+  /**
+   * Kept private, not shown on frontend
+   */
+  authorEmail?: string | null;
+  article: string | Article;
+  status: 'pending' | 'approved' | 'rejected';
+  parent?: (string | null) | Comment;
   updatedAt: string;
   createdAt: string;
 }
@@ -283,21 +277,30 @@ export interface Font {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "comments".
+ * via the `definition` "users".
  */
-export interface Comment {
+export interface User {
   id: string;
-  content: string;
-  authorName: string;
-  /**
-   * Kept private, not shown on frontend
-   */
-  authorEmail?: string | null;
-  article: string | Article;
-  status: 'pending' | 'approved' | 'rejected';
-  parent?: (string | null) | Comment;
+  name: string;
+  avatar?: (string | null) | Media;
+  role: 'admin' | 'editor';
   updatedAt: string;
   createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -324,14 +327,6 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
-      } | null)
-    | ({
-        relationTo: 'media';
-        value: string | Media;
-      } | null)
-    | ({
         relationTo: 'articles';
         value: string | Article;
       } | null)
@@ -340,12 +335,20 @@ export interface PayloadLockedDocument {
         value: string | ArticleAuthor;
       } | null)
     | ({
+        relationTo: 'comments';
+        value: string | Comment;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: string | Media;
+      } | null)
+    | ({
         relationTo: 'fonts';
         value: string | Font;
       } | null)
     | ({
-        relationTo: 'comments';
-        value: string | Comment;
+        relationTo: 'users';
+        value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -388,47 +391,6 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  blurDataUrl?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -475,6 +437,39 @@ export interface ArticleAuthorsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comments_select".
+ */
+export interface CommentsSelect<T extends boolean = true> {
+  content?: T;
+  authorName?: T;
+  authorEmail?: T;
+  article?: T;
+  status?: T;
+  parent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  blurDataUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "fonts_select".
  */
 export interface FontsSelect<T extends boolean = true> {
@@ -493,17 +488,28 @@ export interface FontsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "comments_select".
+ * via the `definition` "users_select".
  */
-export interface CommentsSelect<T extends boolean = true> {
-  content?: T;
-  authorName?: T;
-  authorEmail?: T;
-  article?: T;
-  status?: T;
-  parent?: T;
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  avatar?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -544,6 +550,155 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: string;
+  /**
+   * If disabled, a coming soon message will be shown
+   */
+  pageEnabled?: boolean | null;
+  heroEnabled?: boolean | null;
+  /**
+   * If disabled, the hero section will show without the background image
+   */
+  showHeroImage?: boolean | null;
+  heroImage?: (string | null) | Media;
+  heroHeadingLine1?: string | null;
+  heroHeadingLine1Font?: (string | null) | Font;
+  heroHeadingLine1Color?: string | null;
+  heroHeadingLine2?: string | null;
+  heroHeadingLine2Font?: (string | null) | Font;
+  heroHeadingLine2Color?: string | null;
+  heroDescription?: string | null;
+  heroDescriptionFont?: (string | null) | Font;
+  heroDescriptionColor?: string | null;
+  heroButtonText?: string | null;
+  heroButtonLink?: string | null;
+  heroButtonFont?: (string | null) | Font;
+  heroButtonTextColor?: string | null;
+  heroButtonBgColor?: string | null;
+  aboutPreviewEnabled?: boolean | null;
+  /**
+   * If disabled, the section will show without the image
+   */
+  showAboutPreviewImage?: boolean | null;
+  aboutPreviewImage?: (string | null) | Media;
+  aboutPreviewSectionLabel?: string | null;
+  aboutPreviewSectionLabelFont?: (string | null) | Font;
+  aboutPreviewSectionLabelColor?: string | null;
+  aboutPreviewHeadingNormal?: string | null;
+  aboutPreviewHeadingNormalFont?: (string | null) | Font;
+  aboutPreviewHeadingNormalColor?: string | null;
+  aboutPreviewHeadingAccent?: string | null;
+  aboutPreviewHeadingAccentFont?: (string | null) | Font;
+  aboutPreviewHeadingAccentColor?: string | null;
+  aboutPreviewTextMain?: string | null;
+  aboutPreviewTextMainFont?: (string | null) | Font;
+  aboutPreviewTextMainColor?: string | null;
+  aboutPreviewTextSecondary?: string | null;
+  aboutPreviewTextSecondaryFont?: (string | null) | Font;
+  aboutPreviewTextSecondaryColor?: string | null;
+  aboutPreviewButtonText?: string | null;
+  aboutPreviewButtonLink?: string | null;
+  shopPreviewEnabled?: boolean | null;
+  shopPreviewSectionLabel?: string | null;
+  shopPreviewSectionLabelFont?: (string | null) | Font;
+  shopPreviewSectionLabelColor?: string | null;
+  shopPreviewHeadingNormal?: string | null;
+  shopPreviewHeadingNormalFont?: (string | null) | Font;
+  shopPreviewHeadingNormalColor?: string | null;
+  shopPreviewHeadingAccent?: string | null;
+  shopPreviewHeadingAccentFont?: (string | null) | Font;
+  shopPreviewHeadingAccentColor?: string | null;
+  shopPreviewDescription?: string | null;
+  shopPreviewDescriptionFont?: (string | null) | Font;
+  shopPreviewDescriptionColor?: string | null;
+  shopPreviewButtonText?: string | null;
+  shopPreviewButtonLink?: string | null;
+  blogPreviewEnabled?: boolean | null;
+  blogPreviewSectionLabel?: string | null;
+  blogPreviewSectionLabelFont?: (string | null) | Font;
+  blogPreviewSectionLabelColor?: string | null;
+  blogPreviewHeadingNormal?: string | null;
+  blogPreviewHeadingNormalFont?: (string | null) | Font;
+  blogPreviewHeadingNormalColor?: string | null;
+  blogPreviewHeadingAccent?: string | null;
+  blogPreviewHeadingAccentFont?: (string | null) | Font;
+  blogPreviewHeadingAccentColor?: string | null;
+  blogPreviewButtonText?: string | null;
+  blogPreviewButtonLink?: string | null;
+  watchPreviewEnabled?: boolean | null;
+  watchPreviewSectionLabel?: string | null;
+  watchPreviewSectionLabelFont?: (string | null) | Font;
+  watchPreviewSectionLabelColor?: string | null;
+  watchPreviewHeadingNormal?: string | null;
+  watchPreviewHeadingNormalFont?: (string | null) | Font;
+  watchPreviewHeadingNormalColor?: string | null;
+  watchPreviewHeadingAccent?: string | null;
+  watchPreviewHeadingAccentFont?: (string | null) | Font;
+  watchPreviewHeadingAccentColor?: string | null;
+  watchPreviewDescription?: string | null;
+  watchPreviewDescriptionFont?: (string | null) | Font;
+  watchPreviewDescriptionColor?: string | null;
+  watchPreviewButtonText?: string | null;
+  watchPreviewButtonLink?: string | null;
+  contactPreviewEnabled?: boolean | null;
+  contactPreviewSectionLabel?: string | null;
+  contactPreviewSectionLabelFont?: (string | null) | Font;
+  contactPreviewSectionLabelColor?: string | null;
+  contactPreviewHeadingNormal?: string | null;
+  contactPreviewHeadingNormalFont?: (string | null) | Font;
+  contactPreviewHeadingNormalColor?: string | null;
+  contactPreviewHeadingAccent?: string | null;
+  contactPreviewHeadingAccentFont?: (string | null) | Font;
+  contactPreviewHeadingAccentColor?: string | null;
+  contactPreviewDescription?: string | null;
+  contactPreviewDescriptionFont?: (string | null) | Font;
+  contactPreviewDescriptionColor?: string | null;
+  contactPreviewButtonText?: string | null;
+  contactPreviewButtonLink?: string | null;
+  /**
+   * Main accent color (Dusty Rose)
+   */
+  primaryColor?: string | null;
+  /**
+   * Secondary accent color (Golden)
+   */
+  secondaryColor?: string | null;
+  /**
+   * Main page background color (Cream)
+   */
+  backgroundColor?: string | null;
+  /**
+   * Background color for cards
+   */
+  cardBackgroundColor?: string | null;
+  /**
+   * Main text color (Dark Olive)
+   */
+  textColor?: string | null;
+  /**
+   * Secondary/muted text color (Muted Olive)
+   */
+  mutedTextColor?: string | null;
+  /**
+   * Default border color (Golden)
+   */
+  borderColor?: string | null;
+  /**
+   * Background color for primary buttons
+   */
+  buttonPrimaryBgColor?: string | null;
+  /**
+   * Text color for primary buttons
+   */
+  buttonPrimaryTextColor?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -742,394 +897,6 @@ export interface AboutPage {
   mutedTextColor?: string | null;
   /**
    * Default border color (Golden)
-   */
-  borderColor?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
- */
-export interface Header {
-  id: string;
-  /**
-   * Background color for both the top bar and menu overlay
-   */
-  headerBackgroundColor?: string | null;
-  /**
-   * Default text color for the header (can be overridden per item)
-   */
-  headerTextColor?: string | null;
-  logo?: (string | null) | Media;
-  ownerName?: string | null;
-  ownerFont?: (string | null) | Font;
-  ownerColor?: string | null;
-  navItems?:
-    | {
-        label: string;
-        link: string;
-        newTab?: boolean | null;
-        font?: (string | null) | Font;
-        color?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  socialLinks?:
-    | {
-        platform: string;
-        url: string;
-        icon?: (string | null) | Media;
-        font?: (string | null) | Font;
-        color?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  navIcons?:
-    | {
-        /**
-         * Uncheck to hide this icon from the header
-         */
-        enabled?: boolean | null;
-        type: 'search' | 'link';
-        icon?: (string | null) | Media;
-        /**
-         * Display this icon
-         */
-        showIcon?: boolean | null;
-        /**
-         * Display icon on desktop view
-         */
-        showIconOnDesktop?: boolean | null;
-        /**
-         * Display icon on mobile view
-         */
-        showIconOnMobile?: boolean | null;
-        /**
-         * Display text label independently
-         */
-        showLabel?: boolean | null;
-        /**
-         * Display label on desktop view
-         */
-        showLabelOnDesktop?: boolean | null;
-        /**
-         * Display label on mobile view
-         */
-        showLabelOnMobile?: boolean | null;
-        link?: string | null;
-        newTab?: boolean | null;
-        label?: string | null;
-        font?: (string | null) | Font;
-        color?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Main accent color (Dusty Rose)
-   */
-  primaryColor?: string | null;
-  /**
-   * Secondary accent color (Golden)
-   */
-  secondaryColor?: string | null;
-  /**
-   * Page/section background color (Cream)
-   */
-  backgroundColor?: string | null;
-  /**
-   * Main text color (Dark Olive)
-   */
-  textColor?: string | null;
-  /**
-   * Secondary/muted text color (Muted Olive)
-   */
-  mutedTextColor?: string | null;
-  /**
-   * Default border color
-   */
-  borderColor?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "join-our-inner-circle".
- */
-export interface JoinOurInnerCircle {
-  id: string;
-  enabled?: boolean | null;
-  title?: string | null;
-  titleFont?: (string | null) | Font;
-  titleColor?: string | null;
-  description?: string | null;
-  descriptionFont?: (string | null) | Font;
-  descriptionColor?: string | null;
-  buttonText?: string | null;
-  buttonFont?: (string | null) | Font;
-  buttonTextColor?: string | null;
-  buttonBackgroundColor?: string | null;
-  backgroundColor?: string | null;
-  /**
-   * Main accent color (Dusty Rose)
-   */
-  primaryColor?: string | null;
-  /**
-   * Secondary accent color (Golden)
-   */
-  secondaryColor?: string | null;
-  /**
-   * Main text color (Dark Olive)
-   */
-  textColor?: string | null;
-  /**
-   * Secondary/muted text color (Muted Olive)
-   */
-  mutedTextColor?: string | null;
-  /**
-   * Default border color
-   */
-  borderColor?: string | null;
-  /**
-   * Background color for input fields
-   */
-  inputBackgroundColor?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page".
- */
-export interface HomePage {
-  id: string;
-  /**
-   * If disabled, a coming soon message will be shown
-   */
-  pageEnabled?: boolean | null;
-  heroEnabled?: boolean | null;
-  /**
-   * If disabled, the hero section will show without the background image
-   */
-  showHeroImage?: boolean | null;
-  heroImage?: (string | null) | Media;
-  heroHeadingLine1?: string | null;
-  heroHeadingLine1Font?: (string | null) | Font;
-  heroHeadingLine1Color?: string | null;
-  heroHeadingLine2?: string | null;
-  heroHeadingLine2Font?: (string | null) | Font;
-  heroHeadingLine2Color?: string | null;
-  heroDescription?: string | null;
-  heroDescriptionFont?: (string | null) | Font;
-  heroDescriptionColor?: string | null;
-  heroButtonText?: string | null;
-  heroButtonLink?: string | null;
-  heroButtonFont?: (string | null) | Font;
-  heroButtonTextColor?: string | null;
-  heroButtonBgColor?: string | null;
-  aboutPreviewEnabled?: boolean | null;
-  /**
-   * If disabled, the section will show without the image
-   */
-  showAboutPreviewImage?: boolean | null;
-  aboutPreviewImage?: (string | null) | Media;
-  aboutPreviewSectionLabel?: string | null;
-  aboutPreviewSectionLabelFont?: (string | null) | Font;
-  aboutPreviewSectionLabelColor?: string | null;
-  aboutPreviewHeadingNormal?: string | null;
-  aboutPreviewHeadingNormalFont?: (string | null) | Font;
-  aboutPreviewHeadingNormalColor?: string | null;
-  aboutPreviewHeadingAccent?: string | null;
-  aboutPreviewHeadingAccentFont?: (string | null) | Font;
-  aboutPreviewHeadingAccentColor?: string | null;
-  aboutPreviewTextMain?: string | null;
-  aboutPreviewTextMainFont?: (string | null) | Font;
-  aboutPreviewTextMainColor?: string | null;
-  aboutPreviewTextSecondary?: string | null;
-  aboutPreviewTextSecondaryFont?: (string | null) | Font;
-  aboutPreviewTextSecondaryColor?: string | null;
-  aboutPreviewButtonText?: string | null;
-  aboutPreviewButtonLink?: string | null;
-  shopPreviewEnabled?: boolean | null;
-  shopPreviewSectionLabel?: string | null;
-  shopPreviewSectionLabelFont?: (string | null) | Font;
-  shopPreviewSectionLabelColor?: string | null;
-  shopPreviewHeadingNormal?: string | null;
-  shopPreviewHeadingNormalFont?: (string | null) | Font;
-  shopPreviewHeadingNormalColor?: string | null;
-  shopPreviewHeadingAccent?: string | null;
-  shopPreviewHeadingAccentFont?: (string | null) | Font;
-  shopPreviewHeadingAccentColor?: string | null;
-  shopPreviewDescription?: string | null;
-  shopPreviewDescriptionFont?: (string | null) | Font;
-  shopPreviewDescriptionColor?: string | null;
-  shopPreviewButtonText?: string | null;
-  shopPreviewButtonLink?: string | null;
-  blogPreviewEnabled?: boolean | null;
-  blogPreviewSectionLabel?: string | null;
-  blogPreviewSectionLabelFont?: (string | null) | Font;
-  blogPreviewSectionLabelColor?: string | null;
-  blogPreviewHeadingNormal?: string | null;
-  blogPreviewHeadingNormalFont?: (string | null) | Font;
-  blogPreviewHeadingNormalColor?: string | null;
-  blogPreviewHeadingAccent?: string | null;
-  blogPreviewHeadingAccentFont?: (string | null) | Font;
-  blogPreviewHeadingAccentColor?: string | null;
-  blogPreviewButtonText?: string | null;
-  blogPreviewButtonLink?: string | null;
-  watchPreviewEnabled?: boolean | null;
-  watchPreviewSectionLabel?: string | null;
-  watchPreviewSectionLabelFont?: (string | null) | Font;
-  watchPreviewSectionLabelColor?: string | null;
-  watchPreviewHeadingNormal?: string | null;
-  watchPreviewHeadingNormalFont?: (string | null) | Font;
-  watchPreviewHeadingNormalColor?: string | null;
-  watchPreviewHeadingAccent?: string | null;
-  watchPreviewHeadingAccentFont?: (string | null) | Font;
-  watchPreviewHeadingAccentColor?: string | null;
-  watchPreviewDescription?: string | null;
-  watchPreviewDescriptionFont?: (string | null) | Font;
-  watchPreviewDescriptionColor?: string | null;
-  watchPreviewButtonText?: string | null;
-  watchPreviewButtonLink?: string | null;
-  contactPreviewEnabled?: boolean | null;
-  contactPreviewSectionLabel?: string | null;
-  contactPreviewSectionLabelFont?: (string | null) | Font;
-  contactPreviewSectionLabelColor?: string | null;
-  contactPreviewHeadingNormal?: string | null;
-  contactPreviewHeadingNormalFont?: (string | null) | Font;
-  contactPreviewHeadingNormalColor?: string | null;
-  contactPreviewHeadingAccent?: string | null;
-  contactPreviewHeadingAccentFont?: (string | null) | Font;
-  contactPreviewHeadingAccentColor?: string | null;
-  contactPreviewDescription?: string | null;
-  contactPreviewDescriptionFont?: (string | null) | Font;
-  contactPreviewDescriptionColor?: string | null;
-  contactPreviewButtonText?: string | null;
-  contactPreviewButtonLink?: string | null;
-  /**
-   * Main accent color (Dusty Rose)
-   */
-  primaryColor?: string | null;
-  /**
-   * Secondary accent color (Golden)
-   */
-  secondaryColor?: string | null;
-  /**
-   * Main page background color (Cream)
-   */
-  backgroundColor?: string | null;
-  /**
-   * Background color for cards
-   */
-  cardBackgroundColor?: string | null;
-  /**
-   * Main text color (Dark Olive)
-   */
-  textColor?: string | null;
-  /**
-   * Secondary/muted text color (Muted Olive)
-   */
-  mutedTextColor?: string | null;
-  /**
-   * Default border color (Golden)
-   */
-  borderColor?: string | null;
-  /**
-   * Background color for primary buttons
-   */
-  buttonPrimaryBgColor?: string | null;
-  /**
-   * Text color for primary buttons
-   */
-  buttonPrimaryTextColor?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
- */
-export interface Footer {
-  id: string;
-  enabled?: boolean | null;
-  brandEnabled?: boolean | null;
-  brandName?: string | null;
-  brandNameFont?: (string | null) | Font;
-  brandNameColor?: string | null;
-  brandDescription?: string | null;
-  brandDescriptionFont?: (string | null) | Font;
-  brandDescriptionColor?: string | null;
-  discoverLinksEnabled?: boolean | null;
-  discoverLinksHeading?: string | null;
-  discoverLinks?:
-    | {
-        label: string;
-        link: string;
-        newTab?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  infoLinksEnabled?: boolean | null;
-  infoLinksHeading?: string | null;
-  infoLinks?:
-    | {
-        label: string;
-        link: string;
-        newTab?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  newsletterEnabled?: boolean | null;
-  newsletterHeading?: string | null;
-  newsletterHeadingFont?: (string | null) | Font;
-  newsletterHeadingColor?: string | null;
-  newsletterDescription?: string | null;
-  newsletterDescriptionFont?: (string | null) | Font;
-  newsletterDescriptionColor?: string | null;
-  newsletterButtonText?: string | null;
-  socialLinksEnabled?: boolean | null;
-  socialLinks?:
-    | {
-        platform: string;
-        url: string;
-        /**
-         * If disabled, only the platform name text will be shown
-         */
-        showIcon?: boolean | null;
-        /**
-         * Upload a custom icon, or leave empty to use the default icon
-         */
-        icon?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  copyrightEnabled?: boolean | null;
-  copyrightText?: string | null;
-  copyrightTextFont?: (string | null) | Font;
-  copyrightTextColor?: string | null;
-  /**
-   * Main accent color (Dusty Rose)
-   */
-  primaryColor?: string | null;
-  /**
-   * Secondary accent color (Golden)
-   */
-  secondaryColor?: string | null;
-  /**
-   * Footer background color (Cream)
-   */
-  backgroundColor?: string | null;
-  /**
-   * Main text color (Dark Olive)
-   */
-  textColor?: string | null;
-  /**
-   * Secondary/muted text color (Muted Olive)
-   */
-  mutedTextColor?: string | null;
-  /**
-   * Default border color
    */
   borderColor?: string | null;
   updatedAt?: string | null;
@@ -1592,6 +1359,358 @@ export interface WatchPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: string;
+  /**
+   * Background color for both the top bar and menu overlay
+   */
+  headerBackgroundColor?: string | null;
+  /**
+   * Default text color for the header (can be overridden per item)
+   */
+  headerTextColor?: string | null;
+  logo?: (string | null) | Media;
+  ownerName?: string | null;
+  ownerFont?: (string | null) | Font;
+  ownerColor?: string | null;
+  navItems?:
+    | {
+        label: string;
+        link: string;
+        newTab?: boolean | null;
+        font?: (string | null) | Font;
+        color?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        platform: string;
+        url: string;
+        icon?: (string | null) | Media;
+        font?: (string | null) | Font;
+        color?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  navIcons?:
+    | {
+        /**
+         * Uncheck to hide this icon from the header
+         */
+        enabled?: boolean | null;
+        type: 'search' | 'link';
+        icon?: (string | null) | Media;
+        /**
+         * Display this icon
+         */
+        showIcon?: boolean | null;
+        /**
+         * Display icon on desktop view
+         */
+        showIconOnDesktop?: boolean | null;
+        /**
+         * Display icon on mobile view
+         */
+        showIconOnMobile?: boolean | null;
+        /**
+         * Display text label independently
+         */
+        showLabel?: boolean | null;
+        /**
+         * Display label on desktop view
+         */
+        showLabelOnDesktop?: boolean | null;
+        /**
+         * Display label on mobile view
+         */
+        showLabelOnMobile?: boolean | null;
+        link?: string | null;
+        newTab?: boolean | null;
+        label?: string | null;
+        font?: (string | null) | Font;
+        color?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Main accent color (Dusty Rose)
+   */
+  primaryColor?: string | null;
+  /**
+   * Secondary accent color (Golden)
+   */
+  secondaryColor?: string | null;
+  /**
+   * Page/section background color (Cream)
+   */
+  backgroundColor?: string | null;
+  /**
+   * Main text color (Dark Olive)
+   */
+  textColor?: string | null;
+  /**
+   * Secondary/muted text color (Muted Olive)
+   */
+  mutedTextColor?: string | null;
+  /**
+   * Default border color
+   */
+  borderColor?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: string;
+  enabled?: boolean | null;
+  brandEnabled?: boolean | null;
+  brandName?: string | null;
+  brandNameFont?: (string | null) | Font;
+  brandNameColor?: string | null;
+  brandDescription?: string | null;
+  brandDescriptionFont?: (string | null) | Font;
+  brandDescriptionColor?: string | null;
+  discoverLinksEnabled?: boolean | null;
+  discoverLinksHeading?: string | null;
+  discoverLinks?:
+    | {
+        label: string;
+        link: string;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  infoLinksEnabled?: boolean | null;
+  infoLinksHeading?: string | null;
+  infoLinks?:
+    | {
+        label: string;
+        link: string;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  newsletterEnabled?: boolean | null;
+  newsletterHeading?: string | null;
+  newsletterHeadingFont?: (string | null) | Font;
+  newsletterHeadingColor?: string | null;
+  newsletterDescription?: string | null;
+  newsletterDescriptionFont?: (string | null) | Font;
+  newsletterDescriptionColor?: string | null;
+  newsletterButtonText?: string | null;
+  socialLinksEnabled?: boolean | null;
+  socialLinks?:
+    | {
+        platform: string;
+        url: string;
+        /**
+         * If disabled, only the platform name text will be shown
+         */
+        showIcon?: boolean | null;
+        /**
+         * Upload a custom icon, or leave empty to use the default icon
+         */
+        icon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  copyrightEnabled?: boolean | null;
+  copyrightText?: string | null;
+  copyrightTextFont?: (string | null) | Font;
+  copyrightTextColor?: string | null;
+  /**
+   * Main accent color (Dusty Rose)
+   */
+  primaryColor?: string | null;
+  /**
+   * Secondary accent color (Golden)
+   */
+  secondaryColor?: string | null;
+  /**
+   * Footer background color (Cream)
+   */
+  backgroundColor?: string | null;
+  /**
+   * Main text color (Dark Olive)
+   */
+  textColor?: string | null;
+  /**
+   * Secondary/muted text color (Muted Olive)
+   */
+  mutedTextColor?: string | null;
+  /**
+   * Default border color
+   */
+  borderColor?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "join-our-inner-circle".
+ */
+export interface JoinOurInnerCircle {
+  id: string;
+  enabled?: boolean | null;
+  title?: string | null;
+  titleFont?: (string | null) | Font;
+  titleColor?: string | null;
+  description?: string | null;
+  descriptionFont?: (string | null) | Font;
+  descriptionColor?: string | null;
+  buttonText?: string | null;
+  buttonFont?: (string | null) | Font;
+  buttonTextColor?: string | null;
+  buttonBackgroundColor?: string | null;
+  backgroundColor?: string | null;
+  /**
+   * Main accent color (Dusty Rose)
+   */
+  primaryColor?: string | null;
+  /**
+   * Secondary accent color (Golden)
+   */
+  secondaryColor?: string | null;
+  /**
+   * Main text color (Dark Olive)
+   */
+  textColor?: string | null;
+  /**
+   * Secondary/muted text color (Muted Olive)
+   */
+  mutedTextColor?: string | null;
+  /**
+   * Default border color
+   */
+  borderColor?: string | null;
+  /**
+   * Background color for input fields
+   */
+  inputBackgroundColor?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  pageEnabled?: T;
+  heroEnabled?: T;
+  showHeroImage?: T;
+  heroImage?: T;
+  heroHeadingLine1?: T;
+  heroHeadingLine1Font?: T;
+  heroHeadingLine1Color?: T;
+  heroHeadingLine2?: T;
+  heroHeadingLine2Font?: T;
+  heroHeadingLine2Color?: T;
+  heroDescription?: T;
+  heroDescriptionFont?: T;
+  heroDescriptionColor?: T;
+  heroButtonText?: T;
+  heroButtonLink?: T;
+  heroButtonFont?: T;
+  heroButtonTextColor?: T;
+  heroButtonBgColor?: T;
+  aboutPreviewEnabled?: T;
+  showAboutPreviewImage?: T;
+  aboutPreviewImage?: T;
+  aboutPreviewSectionLabel?: T;
+  aboutPreviewSectionLabelFont?: T;
+  aboutPreviewSectionLabelColor?: T;
+  aboutPreviewHeadingNormal?: T;
+  aboutPreviewHeadingNormalFont?: T;
+  aboutPreviewHeadingNormalColor?: T;
+  aboutPreviewHeadingAccent?: T;
+  aboutPreviewHeadingAccentFont?: T;
+  aboutPreviewHeadingAccentColor?: T;
+  aboutPreviewTextMain?: T;
+  aboutPreviewTextMainFont?: T;
+  aboutPreviewTextMainColor?: T;
+  aboutPreviewTextSecondary?: T;
+  aboutPreviewTextSecondaryFont?: T;
+  aboutPreviewTextSecondaryColor?: T;
+  aboutPreviewButtonText?: T;
+  aboutPreviewButtonLink?: T;
+  shopPreviewEnabled?: T;
+  shopPreviewSectionLabel?: T;
+  shopPreviewSectionLabelFont?: T;
+  shopPreviewSectionLabelColor?: T;
+  shopPreviewHeadingNormal?: T;
+  shopPreviewHeadingNormalFont?: T;
+  shopPreviewHeadingNormalColor?: T;
+  shopPreviewHeadingAccent?: T;
+  shopPreviewHeadingAccentFont?: T;
+  shopPreviewHeadingAccentColor?: T;
+  shopPreviewDescription?: T;
+  shopPreviewDescriptionFont?: T;
+  shopPreviewDescriptionColor?: T;
+  shopPreviewButtonText?: T;
+  shopPreviewButtonLink?: T;
+  blogPreviewEnabled?: T;
+  blogPreviewSectionLabel?: T;
+  blogPreviewSectionLabelFont?: T;
+  blogPreviewSectionLabelColor?: T;
+  blogPreviewHeadingNormal?: T;
+  blogPreviewHeadingNormalFont?: T;
+  blogPreviewHeadingNormalColor?: T;
+  blogPreviewHeadingAccent?: T;
+  blogPreviewHeadingAccentFont?: T;
+  blogPreviewHeadingAccentColor?: T;
+  blogPreviewButtonText?: T;
+  blogPreviewButtonLink?: T;
+  watchPreviewEnabled?: T;
+  watchPreviewSectionLabel?: T;
+  watchPreviewSectionLabelFont?: T;
+  watchPreviewSectionLabelColor?: T;
+  watchPreviewHeadingNormal?: T;
+  watchPreviewHeadingNormalFont?: T;
+  watchPreviewHeadingNormalColor?: T;
+  watchPreviewHeadingAccent?: T;
+  watchPreviewHeadingAccentFont?: T;
+  watchPreviewHeadingAccentColor?: T;
+  watchPreviewDescription?: T;
+  watchPreviewDescriptionFont?: T;
+  watchPreviewDescriptionColor?: T;
+  watchPreviewButtonText?: T;
+  watchPreviewButtonLink?: T;
+  contactPreviewEnabled?: T;
+  contactPreviewSectionLabel?: T;
+  contactPreviewSectionLabelFont?: T;
+  contactPreviewSectionLabelColor?: T;
+  contactPreviewHeadingNormal?: T;
+  contactPreviewHeadingNormalFont?: T;
+  contactPreviewHeadingNormalColor?: T;
+  contactPreviewHeadingAccent?: T;
+  contactPreviewHeadingAccentFont?: T;
+  contactPreviewHeadingAccentColor?: T;
+  contactPreviewDescription?: T;
+  contactPreviewDescriptionFont?: T;
+  contactPreviewDescriptionColor?: T;
+  contactPreviewButtonText?: T;
+  contactPreviewButtonLink?: T;
+  primaryColor?: T;
+  secondaryColor?: T;
+  backgroundColor?: T;
+  cardBackgroundColor?: T;
+  textColor?: T;
+  mutedTextColor?: T;
+  borderColor?: T;
+  buttonPrimaryBgColor?: T;
+  buttonPrimaryTextColor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blog-page_select".
  */
 export interface BlogPageSelect<T extends boolean = true> {
@@ -1710,271 +1829,6 @@ export interface AboutPageSelect<T extends boolean = true> {
   secondaryColor?: T;
   backgroundColor?: T;
   cardBackgroundColor?: T;
-  textColor?: T;
-  mutedTextColor?: T;
-  borderColor?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
- */
-export interface HeaderSelect<T extends boolean = true> {
-  headerBackgroundColor?: T;
-  headerTextColor?: T;
-  logo?: T;
-  ownerName?: T;
-  ownerFont?: T;
-  ownerColor?: T;
-  navItems?:
-    | T
-    | {
-        label?: T;
-        link?: T;
-        newTab?: T;
-        font?: T;
-        color?: T;
-        id?: T;
-      };
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        icon?: T;
-        font?: T;
-        color?: T;
-        id?: T;
-      };
-  navIcons?:
-    | T
-    | {
-        enabled?: T;
-        type?: T;
-        icon?: T;
-        showIcon?: T;
-        showIconOnDesktop?: T;
-        showIconOnMobile?: T;
-        showLabel?: T;
-        showLabelOnDesktop?: T;
-        showLabelOnMobile?: T;
-        link?: T;
-        newTab?: T;
-        label?: T;
-        font?: T;
-        color?: T;
-        id?: T;
-      };
-  primaryColor?: T;
-  secondaryColor?: T;
-  backgroundColor?: T;
-  textColor?: T;
-  mutedTextColor?: T;
-  borderColor?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "join-our-inner-circle_select".
- */
-export interface JoinOurInnerCircleSelect<T extends boolean = true> {
-  enabled?: T;
-  title?: T;
-  titleFont?: T;
-  titleColor?: T;
-  description?: T;
-  descriptionFont?: T;
-  descriptionColor?: T;
-  buttonText?: T;
-  buttonFont?: T;
-  buttonTextColor?: T;
-  buttonBackgroundColor?: T;
-  backgroundColor?: T;
-  primaryColor?: T;
-  secondaryColor?: T;
-  textColor?: T;
-  mutedTextColor?: T;
-  borderColor?: T;
-  inputBackgroundColor?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page_select".
- */
-export interface HomePageSelect<T extends boolean = true> {
-  pageEnabled?: T;
-  heroEnabled?: T;
-  showHeroImage?: T;
-  heroImage?: T;
-  heroHeadingLine1?: T;
-  heroHeadingLine1Font?: T;
-  heroHeadingLine1Color?: T;
-  heroHeadingLine2?: T;
-  heroHeadingLine2Font?: T;
-  heroHeadingLine2Color?: T;
-  heroDescription?: T;
-  heroDescriptionFont?: T;
-  heroDescriptionColor?: T;
-  heroButtonText?: T;
-  heroButtonLink?: T;
-  heroButtonFont?: T;
-  heroButtonTextColor?: T;
-  heroButtonBgColor?: T;
-  aboutPreviewEnabled?: T;
-  showAboutPreviewImage?: T;
-  aboutPreviewImage?: T;
-  aboutPreviewSectionLabel?: T;
-  aboutPreviewSectionLabelFont?: T;
-  aboutPreviewSectionLabelColor?: T;
-  aboutPreviewHeadingNormal?: T;
-  aboutPreviewHeadingNormalFont?: T;
-  aboutPreviewHeadingNormalColor?: T;
-  aboutPreviewHeadingAccent?: T;
-  aboutPreviewHeadingAccentFont?: T;
-  aboutPreviewHeadingAccentColor?: T;
-  aboutPreviewTextMain?: T;
-  aboutPreviewTextMainFont?: T;
-  aboutPreviewTextMainColor?: T;
-  aboutPreviewTextSecondary?: T;
-  aboutPreviewTextSecondaryFont?: T;
-  aboutPreviewTextSecondaryColor?: T;
-  aboutPreviewButtonText?: T;
-  aboutPreviewButtonLink?: T;
-  shopPreviewEnabled?: T;
-  shopPreviewSectionLabel?: T;
-  shopPreviewSectionLabelFont?: T;
-  shopPreviewSectionLabelColor?: T;
-  shopPreviewHeadingNormal?: T;
-  shopPreviewHeadingNormalFont?: T;
-  shopPreviewHeadingNormalColor?: T;
-  shopPreviewHeadingAccent?: T;
-  shopPreviewHeadingAccentFont?: T;
-  shopPreviewHeadingAccentColor?: T;
-  shopPreviewDescription?: T;
-  shopPreviewDescriptionFont?: T;
-  shopPreviewDescriptionColor?: T;
-  shopPreviewButtonText?: T;
-  shopPreviewButtonLink?: T;
-  blogPreviewEnabled?: T;
-  blogPreviewSectionLabel?: T;
-  blogPreviewSectionLabelFont?: T;
-  blogPreviewSectionLabelColor?: T;
-  blogPreviewHeadingNormal?: T;
-  blogPreviewHeadingNormalFont?: T;
-  blogPreviewHeadingNormalColor?: T;
-  blogPreviewHeadingAccent?: T;
-  blogPreviewHeadingAccentFont?: T;
-  blogPreviewHeadingAccentColor?: T;
-  blogPreviewButtonText?: T;
-  blogPreviewButtonLink?: T;
-  watchPreviewEnabled?: T;
-  watchPreviewSectionLabel?: T;
-  watchPreviewSectionLabelFont?: T;
-  watchPreviewSectionLabelColor?: T;
-  watchPreviewHeadingNormal?: T;
-  watchPreviewHeadingNormalFont?: T;
-  watchPreviewHeadingNormalColor?: T;
-  watchPreviewHeadingAccent?: T;
-  watchPreviewHeadingAccentFont?: T;
-  watchPreviewHeadingAccentColor?: T;
-  watchPreviewDescription?: T;
-  watchPreviewDescriptionFont?: T;
-  watchPreviewDescriptionColor?: T;
-  watchPreviewButtonText?: T;
-  watchPreviewButtonLink?: T;
-  contactPreviewEnabled?: T;
-  contactPreviewSectionLabel?: T;
-  contactPreviewSectionLabelFont?: T;
-  contactPreviewSectionLabelColor?: T;
-  contactPreviewHeadingNormal?: T;
-  contactPreviewHeadingNormalFont?: T;
-  contactPreviewHeadingNormalColor?: T;
-  contactPreviewHeadingAccent?: T;
-  contactPreviewHeadingAccentFont?: T;
-  contactPreviewHeadingAccentColor?: T;
-  contactPreviewDescription?: T;
-  contactPreviewDescriptionFont?: T;
-  contactPreviewDescriptionColor?: T;
-  contactPreviewButtonText?: T;
-  contactPreviewButtonLink?: T;
-  primaryColor?: T;
-  secondaryColor?: T;
-  backgroundColor?: T;
-  cardBackgroundColor?: T;
-  textColor?: T;
-  mutedTextColor?: T;
-  borderColor?: T;
-  buttonPrimaryBgColor?: T;
-  buttonPrimaryTextColor?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
- */
-export interface FooterSelect<T extends boolean = true> {
-  enabled?: T;
-  brandEnabled?: T;
-  brandName?: T;
-  brandNameFont?: T;
-  brandNameColor?: T;
-  brandDescription?: T;
-  brandDescriptionFont?: T;
-  brandDescriptionColor?: T;
-  discoverLinksEnabled?: T;
-  discoverLinksHeading?: T;
-  discoverLinks?:
-    | T
-    | {
-        label?: T;
-        link?: T;
-        newTab?: T;
-        id?: T;
-      };
-  infoLinksEnabled?: T;
-  infoLinksHeading?: T;
-  infoLinks?:
-    | T
-    | {
-        label?: T;
-        link?: T;
-        newTab?: T;
-        id?: T;
-      };
-  newsletterEnabled?: T;
-  newsletterHeading?: T;
-  newsletterHeadingFont?: T;
-  newsletterHeadingColor?: T;
-  newsletterDescription?: T;
-  newsletterDescriptionFont?: T;
-  newsletterDescriptionColor?: T;
-  newsletterButtonText?: T;
-  socialLinksEnabled?: T;
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        showIcon?: T;
-        icon?: T;
-        id?: T;
-      };
-  copyrightEnabled?: T;
-  copyrightText?: T;
-  copyrightTextFont?: T;
-  copyrightTextColor?: T;
-  primaryColor?: T;
-  secondaryColor?: T;
-  backgroundColor?: T;
   textColor?: T;
   mutedTextColor?: T;
   borderColor?: T;
@@ -2367,6 +2221,158 @@ export interface WatchPageSelect<T extends boolean = true> {
   metaTitle?: T;
   metaDescription?: T;
   ogImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  headerBackgroundColor?: T;
+  headerTextColor?: T;
+  logo?: T;
+  ownerName?: T;
+  ownerFont?: T;
+  ownerColor?: T;
+  navItems?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        newTab?: T;
+        font?: T;
+        color?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        icon?: T;
+        font?: T;
+        color?: T;
+        id?: T;
+      };
+  navIcons?:
+    | T
+    | {
+        enabled?: T;
+        type?: T;
+        icon?: T;
+        showIcon?: T;
+        showIconOnDesktop?: T;
+        showIconOnMobile?: T;
+        showLabel?: T;
+        showLabelOnDesktop?: T;
+        showLabelOnMobile?: T;
+        link?: T;
+        newTab?: T;
+        label?: T;
+        font?: T;
+        color?: T;
+        id?: T;
+      };
+  primaryColor?: T;
+  secondaryColor?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  mutedTextColor?: T;
+  borderColor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  enabled?: T;
+  brandEnabled?: T;
+  brandName?: T;
+  brandNameFont?: T;
+  brandNameColor?: T;
+  brandDescription?: T;
+  brandDescriptionFont?: T;
+  brandDescriptionColor?: T;
+  discoverLinksEnabled?: T;
+  discoverLinksHeading?: T;
+  discoverLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        newTab?: T;
+        id?: T;
+      };
+  infoLinksEnabled?: T;
+  infoLinksHeading?: T;
+  infoLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        newTab?: T;
+        id?: T;
+      };
+  newsletterEnabled?: T;
+  newsletterHeading?: T;
+  newsletterHeadingFont?: T;
+  newsletterHeadingColor?: T;
+  newsletterDescription?: T;
+  newsletterDescriptionFont?: T;
+  newsletterDescriptionColor?: T;
+  newsletterButtonText?: T;
+  socialLinksEnabled?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        showIcon?: T;
+        icon?: T;
+        id?: T;
+      };
+  copyrightEnabled?: T;
+  copyrightText?: T;
+  copyrightTextFont?: T;
+  copyrightTextColor?: T;
+  primaryColor?: T;
+  secondaryColor?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  mutedTextColor?: T;
+  borderColor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "join-our-inner-circle_select".
+ */
+export interface JoinOurInnerCircleSelect<T extends boolean = true> {
+  enabled?: T;
+  title?: T;
+  titleFont?: T;
+  titleColor?: T;
+  description?: T;
+  descriptionFont?: T;
+  descriptionColor?: T;
+  buttonText?: T;
+  buttonFont?: T;
+  buttonTextColor?: T;
+  buttonBackgroundColor?: T;
+  backgroundColor?: T;
+  primaryColor?: T;
+  secondaryColor?: T;
+  textColor?: T;
+  mutedTextColor?: T;
+  borderColor?: T;
+  inputBackgroundColor?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

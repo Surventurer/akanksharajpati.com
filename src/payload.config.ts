@@ -30,6 +30,18 @@ const dirname = path.dirname(filename)
 export default buildConfig({
     admin: {
         user: Users.slug,
+        meta: {
+            title: 'Akanksha Rajpati',
+            titleSuffix: '— Admin',
+            icons: [{ rel: 'icon', url: '/asset/logo.png' }],
+        },
+        components: {
+            graphics: {
+                Logo: '@/payload/components/Logo#default',
+                Icon: '@/payload/components/Icon#default',
+            },
+            beforeDashboard: ['@/payload/components/Welcome#default'],
+        },
         importMap: {
             baseDir: path.resolve(dirname),
         },
@@ -59,8 +71,8 @@ export default buildConfig({
         'https://akanksharajpati.vercel.app',
         process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
     ].filter(Boolean),
-    collections: [Users, Media, Articles, ArticleAuthors, Fonts, Comments],
-    globals: [BlogPage, AboutPage, Header, JoinOurInnerCircle, HomePage, Footer, ShopPage, ContactPage, WatchPage],
+    collections: [Articles, ArticleAuthors, Comments, Media, Fonts, Users],
+    globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, Header, Footer, JoinOurInnerCircle],
     editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
             ...defaultFeatures,

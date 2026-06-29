@@ -5,7 +5,7 @@ import { generateBlurDataURL, isEligibleForBlurDataURL } from './lib/generate-bl
 export const Media: CollectionConfig = {
     slug: 'media',
     admin: {
-        group: 'Media & Assets',
+        group: 'Media',
     },
     access: {
         read: () => true,

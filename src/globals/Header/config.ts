@@ -8,7 +8,7 @@ export const Header: GlobalConfig = {
         read: () => true,
     },
     admin: {
-        group: 'Layout',
+        group: 'Design',
     },
     fields: [
         {

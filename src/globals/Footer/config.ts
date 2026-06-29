@@ -4,7 +4,7 @@ export const Footer: GlobalConfig = {
     slug: 'footer',
     label: 'Footer',
     admin: {
-        group: 'Layout',
+        group: 'Design',
     },
     access: {
         read: () => true,
