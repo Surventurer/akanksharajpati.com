@@ -127,7 +127,7 @@ export function usersAccess() {
         },
         delete: ({ req }: { req: PayloadRequest }) => checkPermission(req, 'admin', 'users', 'delete'),
         admin: async ({ req }: { req: PayloadRequest }) => {
-            return !!req.user
+            return isOwner(req)
         },
     }
 }
