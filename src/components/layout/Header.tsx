@@ -391,7 +391,7 @@ const Header = ({ data }: HeaderProps) => {
                     href={link.href}
                     target={link.newTab ? "_blank" : "_self"}
                     onClick={() => setMenuOpen(false)}
-                    className="group text-2xl md:text-3xl uppercase tracking-[0.3em] font-bold transition-all duration-500 relative inline-block"
+                    className="group text-xl md:text-2xl lg:text-3xl uppercase tracking-[0.2em] md:tracking-[0.3em] font-bold transition-all duration-500 relative inline-block"
                     style={{
                       fontFamily: getFontFamily(link.font),
                       color: link.color || data.headerTextColor || '#4a4b34',

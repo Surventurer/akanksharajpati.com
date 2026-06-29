@@ -123,7 +123,7 @@ export default async function Home() {
                 <section className="py-24 px-6 bg-card" id="about">
                     <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16 items-center">
                         {pageData?.showAboutPreviewImage !== false && (
-                            <div className="md:col-span-5 relative group">
+                            <div className="md:col-span-5 relative group overflow-hidden md:overflow-visible">
                                 <div className="absolute -inset-4 border-2 border-accent/20 translate-x-6 translate-y-6 -z-0 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"></div>
                                 {pageData?.aboutPreviewImage && (
                                     <Image
