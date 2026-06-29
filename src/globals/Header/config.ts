@@ -1,12 +1,11 @@
 // import { ColorPickerField } from '@/components/payload/ColorPickerField'
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const Header: GlobalConfig = {
     slug: 'header',
     label: 'Header',
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('design', 'header'),
     admin: {
         group: 'Design',
     },

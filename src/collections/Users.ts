@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { usersAccess } from '@/payload/access'
 
 export const Users: CollectionConfig = {
     slug: 'users',
@@ -8,8 +9,10 @@ export const Users: CollectionConfig = {
         defaultColumns: ['name', 'email', 'role'],
     },
     auth: {
-        tokenExpiration: 28800, // 8 hours
+        tokenExpiration: 28800,
+        depth: 1,
     },
+    access: usersAccess(),
     fields: [
         {
             name: 'name',
@@ -25,15 +28,14 @@ export const Users: CollectionConfig = {
         },
         {
             name: 'role',
-            type: 'select',
-            options: [
-                { label: 'Admin', value: 'admin' },
-                { label: 'Editor', value: 'editor' },
-            ],
-            defaultValue: 'editor',
+            type: 'relationship',
+            relationTo: 'roles',
             required: true,
+            label: 'Role',
             admin: {
                 position: 'sidebar',
+                readOnly: true,
+                description: 'Contact an owner to change your role',
             },
         },
     ],

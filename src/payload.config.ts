@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
+import { Roles } from './collections/Roles/config'
 import { Media } from './collections/Media/config'
 import { env } from './lib/env'
 import { Articles } from './collections/Articles/config'
@@ -41,13 +42,13 @@ export default buildConfig({
                 Icon: '@/payload/components/Icon#default',
             },
             beforeDashboard: ['@/payload/components/Welcome#default'],
+            afterNavLinks: ['@/payload/components/LogoutButton#default'],
         },
         importMap: {
             baseDir: path.resolve(dirname),
         },
-        // Only enable auto-login in development
         autoLogin:
-            process.env.NODE_ENV === 'development'
+            process.env.NODE_ENV === 'development' && env.CMS_AUTO_LOGIN !== 'false'
                 ? {
                       email: env.CMS_SEED_ADMIN_EMAIL,
                       password: env.CMS_SEED_ADMIN_PASSWORD,
@@ -71,7 +72,7 @@ export default buildConfig({
         'https://akanksharajpati.vercel.app',
         process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
     ].filter(Boolean),
-    collections: [Articles, ArticleAuthors, Comments, Media, Fonts, Users],
+    collections: [Articles, ArticleAuthors, Comments, Media, Fonts, Users, Roles],
     globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, Header, Footer, JoinOurInnerCircle],
     editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
@@ -93,13 +94,11 @@ export default buildConfig({
     sharp,
     plugins: [
         vercelBlobStorage({
-            enabled: true, // Optional, defaults to true
-            // Specify which collections should use Vercel Blob
+            enabled: true,
             collections: {
                 [Media.slug]: true,
                 [Fonts.slug]: true,
             },
-            // Token provided by Vercel once Blob is added to the project
             token: process.env.BLOB_READ_WRITE_TOKEN,
         }),
     ],

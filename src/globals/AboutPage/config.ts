@@ -1,5 +1,6 @@
 // import { ColorPickerField } from '@/components/payload/ColorPickerField'
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const AboutPage: GlobalConfig = {
     slug: 'about-page',
@@ -7,9 +8,7 @@ export const AboutPage: GlobalConfig = {
     admin: {
         group: 'Pages',
     },
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('pages', 'aboutPage'),
     fields: [
         {
             name: 'pageEnabled',

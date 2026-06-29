@@ -1,4 +1,5 @@
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const WatchPage: GlobalConfig = {
     slug: 'watch-page',
@@ -6,9 +7,7 @@ export const WatchPage: GlobalConfig = {
     admin: {
         group: 'Pages',
     },
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('pages', 'watchPage'),
     fields: [
         {
             name: 'pageEnabled',

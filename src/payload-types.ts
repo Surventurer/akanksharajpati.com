@@ -73,6 +73,7 @@ export interface Config {
     media: Media;
     fonts: Font;
     users: User;
+    roles: Role;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     fonts: FontsSelect<false> | FontsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    roles: RolesSelect<false> | RolesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -224,6 +226,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -283,7 +311,10 @@ export interface User {
   id: string;
   name: string;
   avatar?: (string | null) | Media;
-  role: 'admin' | 'editor';
+  /**
+   * Contact an owner to change your role
+   */
+  role: string | Role;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -301,6 +332,112 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles".
+ */
+export interface Role {
+  id: string;
+  name: string;
+  /**
+   * Brief description of what this role allows
+   */
+  description?: string | null;
+  /**
+   * If checked, this role bypasses ALL permission checks (like Super Admin)
+   */
+  isOwner?: boolean | null;
+  content?: {
+    articles?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    articleAuthors?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    comments?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+  };
+  pages?: {
+    homePage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    blogPage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    aboutPage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    shopPage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    contactPage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    watchPage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+  };
+  design?: {
+    header?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    footer?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    joinOurInnerCircle?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+  };
+  media?: {
+    mediaFiles?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    fonts?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+  };
+  admin?: {
+    users?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    roles?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -349,6 +486,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'roles';
+        value: string | Role;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -467,6 +608,40 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -510,6 +685,147 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles_select".
+ */
+export interface RolesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  isOwner?: T;
+  content?:
+    | T
+    | {
+        articles?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        articleAuthors?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        comments?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+      };
+  pages?:
+    | T
+    | {
+        homePage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        blogPage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        aboutPage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        shopPage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        contactPage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        watchPage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+      };
+  design?:
+    | T
+    | {
+        header?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        footer?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        joinOurInnerCircle?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+      };
+  media?:
+    | T
+    | {
+        mediaFiles?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        fonts?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+      };
+  admin?:
+    | T
+    | {
+        users?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        roles?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

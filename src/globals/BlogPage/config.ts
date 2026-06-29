@@ -1,11 +1,10 @@
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const BlogPage: GlobalConfig = {
     slug: 'blog-page',
     label: 'Blog Page',
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('pages', 'blogPage'),
     admin: {
         group: 'Pages',
     },

@@ -1,4 +1,5 @@
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const ContactPage: GlobalConfig = {
     slug: 'contact-page',
@@ -6,9 +7,7 @@ export const ContactPage: GlobalConfig = {
     admin: {
         group: 'Pages',
     },
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('pages', 'contactPage'),
     fields: [
         {
             name: 'pageEnabled',

@@ -3,12 +3,14 @@ import type { CollectionConfig } from 'payload'
 import { CACHE_TAG_ARTICLES, STATUS_OPTIONS } from './constants'
 import { generateContentSummaryHook } from './hooks/generate-content-summary.hook'
 import { generateSlugHook } from './hooks/generate-slug.hook'
+import { collectionAccess } from '@/payload/access'
 
 export const Articles: CollectionConfig = {
     slug: 'articles',
     admin: {
         group: 'Content',
     },
+    access: collectionAccess('content', 'articles'),
     fields: [
         {
             name: 'title',

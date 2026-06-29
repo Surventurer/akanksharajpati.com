@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
 import path from 'path'
+import { collectionAccess } from '@/payload/access'
 
 export const Fonts: CollectionConfig = {
     slug: 'fonts',
@@ -7,9 +8,7 @@ export const Fonts: CollectionConfig = {
         useAsTitle: 'name',
         group: 'Media',
     },
-    access: {
-        read: () => true,
-    },
+    access: collectionAccess('media', 'fonts', { publicRead: true }),
     upload: {
         staticDir: path.resolve(process.cwd(), 'fonts'),
         mimeTypes: [

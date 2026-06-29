@@ -1,15 +1,14 @@
 import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { generateBlurDataURL, isEligibleForBlurDataURL } from './lib/generate-blur-data-url'
+import { collectionAccess } from '@/payload/access'
 
 export const Media: CollectionConfig = {
     slug: 'media',
     admin: {
         group: 'Media',
     },
-    access: {
-        read: () => true,
-    },
+    access: collectionAccess('media', 'mediaFiles', { publicRead: true }),
     fields: [
         {
             name: 'alt',
@@ -34,6 +33,25 @@ export const Media: CollectionConfig = {
             'application/xml',
             'text/xml',
         ],
+        imageSizes: [
+            {
+                name: 'thumbnail',
+                width: 400,
+                height: 300,
+                position: 'centre',
+            },
+            {
+                name: 'small',
+                width: 768,
+                height: undefined,
+            },
+            {
+                name: 'medium',
+                width: 1200,
+                height: undefined,
+            },
+        ],
+        adminThumbnail: 'thumbnail',
     },
     hooks: {
         beforeValidate: [

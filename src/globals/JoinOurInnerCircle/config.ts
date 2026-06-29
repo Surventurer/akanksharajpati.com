@@ -1,11 +1,10 @@
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const JoinOurInnerCircle: GlobalConfig = {
     slug: 'join-our-inner-circle',
     label: 'Join Our Inner Circle',
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('design', 'joinOurInnerCircle'),
     admin: {
         group: 'Design',
     },

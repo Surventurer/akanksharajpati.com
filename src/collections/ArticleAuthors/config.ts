@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload'
-import { ARTICLE_AUTHOR_ROLE_OPTIONS } from './constants'
+import { collectionAccess } from '@/payload/access'
 
 export const ArticleAuthors: CollectionConfig = {
     slug: 'article-authors',
@@ -7,6 +7,7 @@ export const ArticleAuthors: CollectionConfig = {
         useAsTitle: 'name',
         group: 'Content',
     },
+    access: collectionAccess('content', 'articleAuthors'),
     fields: [
         {
             name: 'name',

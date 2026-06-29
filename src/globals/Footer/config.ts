@@ -1,4 +1,5 @@
 import { GlobalConfig } from 'payload'
+import { globalAccess } from '@/payload/access'
 
 export const Footer: GlobalConfig = {
     slug: 'footer',
@@ -6,9 +7,7 @@ export const Footer: GlobalConfig = {
     admin: {
         group: 'Design',
     },
-    access: {
-        read: () => true,
-    },
+    access: globalAccess('design', 'footer'),
     fields: [
         {
             name: 'enabled',

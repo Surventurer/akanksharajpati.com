@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { collectionAccess } from '@/payload/access'
 
 export const Comments: CollectionConfig = {
     slug: 'comments',
@@ -7,12 +8,7 @@ export const Comments: CollectionConfig = {
         group: 'Content',
         defaultColumns: ['content', 'authorName', 'status', 'article', 'createdAt'],
     },
-    access: {
-        read: () => true, // Publicly readable (frontend needs it)
-        create: () => true, // Anyone can comment
-        update: ({ req: { user } }) => !!user, // Only admin can update status
-        delete: ({ req: { user } }) => !!user, // Only admin can delete
-    },
+    access: collectionAccess('content', 'comments', { publicRead: true, publicCreate: true }),
     fields: [
         {
             name: 'content',
