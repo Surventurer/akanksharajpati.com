@@ -3,8 +3,9 @@ import { z } from 'zod'
 
 export const env = createEnv({
     server: {
-        CMS_SEED_ADMIN_EMAIL: z.string().trim().email(),
-        CMS_SEED_ADMIN_PASSWORD: z.string().trim().min(1),
+        // Optional — only required for seeding scripts (npm run seed), not for the running app
+        CMS_SEED_ADMIN_EMAIL: z.string().trim().email().optional(),
+        CMS_SEED_ADMIN_PASSWORD: z.string().trim().min(1).optional(),
         CMS_AUTO_LOGIN: z.enum(['true', 'false']).optional(),
     },
     client: {

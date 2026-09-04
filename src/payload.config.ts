@@ -24,6 +24,7 @@ import { Footer } from './globals/Footer/config'
 import { ShopPage } from './globals/ShopPage/config'
 import { ContactPage } from './globals/ContactPage/config'
 import { WatchPage } from './globals/WatchPage/config'
+import { NotFoundPage } from './globals/NotFoundPage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
 import { Products } from './collections/Shop/Products/config'
 import { ProductCategories } from './collections/Shop/ProductCategories/config'
@@ -56,10 +57,10 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
         autoLogin:
-            process.env.NODE_ENV === 'development' && env.CMS_AUTO_LOGIN !== 'false'
+            process.env.NODE_ENV === 'development' && env.CMS_AUTO_LOGIN !== 'false' && env.CMS_SEED_ADMIN_EMAIL
                 ? {
                       email: env.CMS_SEED_ADMIN_EMAIL,
-                      password: env.CMS_SEED_ADMIN_PASSWORD,
+                      password: env.CMS_SEED_ADMIN_PASSWORD ?? '',
                   }
                 : false,
     },
@@ -96,7 +97,7 @@ export default buildConfig({
         Users,
         Roles,
     ],
-    globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, Header, Footer, JoinOurInnerCircle, SiteSettings],
+    globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, NotFoundPage, Header, Footer, JoinOurInnerCircle, SiteSettings],
     editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
             ...defaultFeatures,

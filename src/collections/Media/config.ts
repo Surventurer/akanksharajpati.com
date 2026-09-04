@@ -28,7 +28,7 @@ export const Media: CollectionConfig = {
         },
     ],
     upload: {
-        staticDir: path.resolve(process.cwd(), 'media'),
+        staticDir: path.resolve(process.cwd(), 'public/media'),
         mimeTypes: [
             'image/*',
             'image/svg+xml',

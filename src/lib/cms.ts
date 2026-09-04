@@ -15,6 +15,7 @@ import type {
   ShopPage,
   ContactPage,
   WatchPage,
+  NotFoundPage,
   Comment,
 } from '@/payload-types'
 
@@ -368,6 +369,26 @@ export function fetchWatchPage() {
     },
     ['globals', 'watch-page'],
     { tags: [CACHE_TAGS.WATCH_PAGE] },
+  )()
+}
+
+export function fetchNotFoundPage() {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.findGlobal({
+          slug: 'not-found-page',
+          depth: 2,
+        })
+        return data as NotFoundPage
+      } catch (e) {
+        console.error('Error fetching not found page:', e)
+        return null
+      }
+    },
+    ['globals', 'not-found-page'],
+    { tags: [CACHE_TAGS.NOT_FOUND_PAGE] },
   )()
 }
 

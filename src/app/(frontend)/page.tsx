@@ -1,17 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import { fetchHomePage, fetchArticles, fetchShopPage, fetchWatchPage, fetchContactPage } from '@/lib/cms'
+import { fetchHomePage, fetchArticles, fetchShopPage, fetchWatchPage, fetchContactPage, fetchProducts, fetchVideos } from '@/lib/cms'
 import { Media, Font } from '@/payload-types'
 import { Icon } from '@/components/ui/Icon'
 
 export default async function Home() {
-    const [pageData, articles, shopData, watchData, contactData] = await Promise.all([
+    const [pageData, articles, shopData, watchData, contactData, collectionProducts, collectionVideos] = await Promise.all([
         fetchHomePage(),
         fetchArticles(),
         fetchShopPage(),
         fetchWatchPage(),
-        fetchContactPage()
+        fetchContactPage(),
+        fetchProducts({ limit: 3, featured: true }),
+        fetchVideos({ limit: 3, featured: true }),
     ]);
 
     // Serialize data to prevent enqueueModel errors
@@ -19,6 +21,8 @@ export default async function Home() {
     const serializedArticles = JSON.parse(JSON.stringify(articles));
     const serializedShopData = shopData ? JSON.parse(JSON.stringify(shopData)) : null;
     const serializedWatchData = watchData ? JSON.parse(JSON.stringify(watchData)) : null;
+    const serializedProducts = collectionProducts ? JSON.parse(JSON.stringify(collectionProducts)) : [];
+    const serializedVideos = collectionVideos ? JSON.parse(JSON.stringify(collectionVideos)) : [];
 
     // If page is disabled or no data, show placeholder
     if (!serializedPageData || !serializedPageData.pageEnabled) {
@@ -347,63 +351,79 @@ export default async function Home() {
 
                     {/* Products Grid */}
                     <div className="max-w-7xl mx-auto px-6 pb-12">
-                        {serializedShopData?.products && serializedShopData.products.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                {[...serializedShopData.products]
-                                    .sort((a: any, b: any) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime())
-                                    .slice(0, 3).map((product: any, index: number) => {
-                                    const productImage = getMediaUrl(product.image)
-                                    return (
-                                        <div key={index} className="group">
-                                            <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                                                {productImage && (
-                                                    <Image
-                                                        alt={product.name}
-                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                                        src={productImage}
-                                                        fill
-                                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                                    />
+                        {(() => {
+                            const displayProducts = (serializedProducts && serializedProducts.length > 0)
+                                ? serializedProducts.map((p: any) => ({
+                                    name: p.title,
+                                    price: `$${Number(p.price).toFixed(2)}`,
+                                    salePrice: p.compareAtPrice ? `$${Number(p.price).toFixed(2)}` : undefined,
+                                    category: Array.isArray(p.categories) && p.categories[0] ? (typeof p.categories[0] === 'object' ? p.categories[0].name : p.categories[0]) : 'Object',
+                                    image: p.featuredImage,
+                                    link: `/shop/${p.slug}`,
+                                    badge: p.featured ? 'Featured' : undefined,
+                                }))
+                                : (serializedShopData?.products || []);
+
+                            if (displayProducts.length === 0) {
+                                return (
+                                    <div className="text-center py-12 text-foreground/50">
+                                        <Icon name="shopping_bag" size={36} className="mb-3 opacity-40 mx-auto" />
+                                        <p>Products coming soon</p>
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {displayProducts.slice(0, 3).map((product: any, index: number) => {
+                                        const productImage = getMediaUrl(product.image);
+                                        return (
+                                            <div key={index} className="group">
+                                                <div className="relative overflow-hidden aspect-[3/4] mb-4 bg-card rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                                                    {productImage && (
+                                                        <Image
+                                                            alt={product.name}
+                                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                            src={productImage}
+                                                            fill
+                                                            sizes="(max-width: 768px) 100vw, 33vw"
+                                                        />
+                                                    )}
+                                                    {product.badge && (
+                                                        <div
+                                                            className="badge-premium absolute top-3 left-3"
+                                                            style={{ backgroundColor: product.badgeColor || 'var(--accent)', color: '#fff' }}
+                                                        >
+                                                            {product.badge}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {product.category && (
+                                                    <p className="text-[10px] uppercase tracking-widest font-bold mb-1 text-secondary">{product.category}</p>
                                                 )}
-                                                {product.badge && (
-                                                    <div
-                                                        className="badge-premium absolute top-3 left-3"
-                                                        style={{ backgroundColor: product.badgeColor || 'var(--accent)', color: '#fff' }}
-                                                    >
-                                                        {product.badge}
-                                                    </div>
-                                                )}
+                                                <h3 className="text-lg font-display mb-1">
+                                                    {product.link ? (
+                                                        <Link href={product.link} className="hover:text-primary transition-colors">
+                                                            {product.name}
+                                                        </Link>
+                                                    ) : product.name}
+                                                </h3>
+                                                <div className="flex items-center gap-2">
+                                                    {product.salePrice ? (
+                                                        <>
+                                                            <span className="font-display text-base text-primary">{product.salePrice}</span>
+                                                            <span className="text-foreground/40 text-sm line-through">{product.price}</span>
+                                                        </>
+                                                    ) : (
+                                                        <span className="font-display text-base">{product.price}</span>
+                                                    )}
+                                                </div>
                                             </div>
-                                            {product.category && (
-                                                <p className="text-[10px] uppercase tracking-widest font-bold mb-1 text-secondary">{product.category}</p>
-                                            )}
-                                            <h3 className="text-lg font-display mb-1">
-                                                {product.link ? (
-                                                    <Link href={product.link} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                                                        {product.name}
-                                                    </Link>
-                                                ) : product.name}
-                                            </h3>
-                                            <div className="flex items-center gap-2">
-                                                {product.salePrice ? (
-                                                    <>
-                                                        <span className="font-display text-base text-primary">{product.salePrice}</span>
-                                                        <span className="text-foreground/40 text-sm line-through">{product.price}</span>
-                                                    </>
-                                                ) : (
-                                                    <span className="font-display text-base">{product.price}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        ) : (
-                            <div className="text-center py-12 text-foreground/50">
-                                <Icon name="shopping_bag" size={36} className="mb-3 opacity-40 mx-auto" />
-                                <p>Products coming soon</p>
-                            </div>
-                        )}
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })()}
                     </div>
 
                 </section>
@@ -466,57 +486,71 @@ export default async function Home() {
                             )}
                         </div>
 
-                        {serializedWatchData?.videos && serializedWatchData.videos.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                {[...serializedWatchData.videos]
-                                    .sort((a: any, b: any) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime())
-                                    .slice(0, 3).map((video: any, index: number) => {
-                                    const videoImage = getMediaUrl(video.thumbnail)
-                                    return (
-                                        <a
-                                            key={index}
-                                            href={video.videoUrl || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="group block"
-                                        >
-                                            <div className="relative overflow-hidden aspect-video mb-4 rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-0.5 bg-muted">
-                                                {videoImage && (
-                                                    <Image
-                                                        alt={video.title}
-                                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                                        src={videoImage}
-                                                        fill
-                                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                                    />
-                                                )}
-                                                <div className="absolute inset-0 flex items-center justify-center">
-                                                    <div className="w-14 h-14 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg">
-                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M8 5v14l11-7z" />
-                                                        </svg>
+                        {(() => {
+                            const displayVideos = (serializedVideos && serializedVideos.length > 0)
+                                ? serializedVideos.map((v: any) => ({
+                                    title: v.title,
+                                    thumbnail: v.thumbnail,
+                                    category: v.category || 'Cinematic',
+                                    views: v.views || 0,
+                                    videoUrl: v.videoUrl,
+                                    slug: v.slug,
+                                    link: `/watch/${v.slug}`,
+                                }))
+                                : (serializedWatchData?.videos || []);
+
+                            if (displayVideos.length === 0) {
+                                return (
+                                    <div className="text-center py-12 text-foreground/50">
+                                        <Icon name="smart_display" size={36} className="mb-3 opacity-40 mx-auto" />
+                                        <p>Videos coming soon</p>
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {displayVideos.slice(0, 3).map((video: any, index: number) => {
+                                        const videoImage = getMediaUrl(video.thumbnail);
+                                        return (
+                                            <Link
+                                                key={index}
+                                                href={video.link || video.videoUrl || '#'}
+                                                className="group block"
+                                            >
+                                                <div className="relative overflow-hidden aspect-video mb-4 rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-0.5 bg-muted">
+                                                    {videoImage && (
+                                                        <Image
+                                                            alt={video.title}
+                                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                            src={videoImage}
+                                                            fill
+                                                            sizes="(max-width: 768px) 100vw, 33vw"
+                                                        />
+                                                    )}
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <div className="w-14 h-14 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg">
+                                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                                                <path d="M8 5v14l11-7z" />
+                                                            </svg>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <h3 className="font-display text-lg group-hover:text-primary transition-colors">
-                                                {video.title}
-                                            </h3>
-                                            {video.category && (
-                                                <p className="text-[10px] uppercase tracking-widest font-bold mt-1 text-secondary">{video.category}</p>
-                                            )}
-                                            {video.views && (
-                                                <p className="text-foreground/40 text-xs mt-0.5">{video.views} views</p>
-                                            )}
-                                        </a>
-                                    )
-                                })}
-                            </div>
-                        ) : (
-                            <div className="text-center py-12 text-foreground/50">
-                                <Icon name="smart_display" size={36} className="mb-3 opacity-40 mx-auto" />
-                                <p>Videos coming soon</p>
-                            </div>
-                        )}
+                                                <h3 className="font-display text-lg group-hover:text-primary transition-colors">
+                                                    {video.title}
+                                                </h3>
+                                                {video.category && (
+                                                    <p className="text-[10px] uppercase tracking-widest font-bold mt-1 text-secondary">{video.category}</p>
+                                                )}
+                                                {video.views ? (
+                                                    <p className="text-foreground/40 text-xs mt-0.5">{video.views} views</p>
+                                                ) : null}
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })()}
                     </div>
                 </section>
             )}

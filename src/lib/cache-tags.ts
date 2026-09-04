@@ -21,6 +21,7 @@ export const CACHE_TAGS = {
   PLAYLISTS: 'playlists',
   TAGS: 'tags',
   CATEGORIES: 'categories',
+  NOT_FOUND_PAGE: 'not-found-page',
 } as const
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS]

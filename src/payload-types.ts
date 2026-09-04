@@ -118,6 +118,7 @@ export interface Config {
     'shop-page': ShopPage;
     'contact-page': ContactPage;
     'watch-page': WatchPage;
+    'not-found-page': NotFoundPage;
     header: Header;
     footer: Footer;
     'join-our-inner-circle': JoinOurInnerCircle;
@@ -130,6 +131,7 @@ export interface Config {
     'shop-page': ShopPageSelect<false> | ShopPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'watch-page': WatchPageSelect<false> | WatchPageSelect<true>;
+    'not-found-page': NotFoundPageSelect<false> | NotFoundPageSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'join-our-inner-circle': JoinOurInnerCircleSelect<false> | JoinOurInnerCircleSelect<true>;
@@ -636,6 +638,48 @@ export interface Role {
       update?: boolean | null;
       delete?: boolean | null;
     };
+    categories?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    tags?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    products?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    productCategories?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    orders?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    videos?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
+    playlists?: {
+      read?: boolean | null;
+      create?: boolean | null;
+      update?: boolean | null;
+      delete?: boolean | null;
+    };
     articleAuthors?: {
       read?: boolean | null;
       create?: boolean | null;
@@ -674,6 +718,10 @@ export interface Role {
       read?: boolean | null;
       update?: boolean | null;
     };
+    notFoundPage?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
   };
   design?: {
     header?: {
@@ -685,6 +733,10 @@ export interface Role {
       update?: boolean | null;
     };
     joinOurInnerCircle?: {
+      read?: boolean | null;
+      update?: boolean | null;
+    };
+    siteSettings?: {
       read?: boolean | null;
       update?: boolean | null;
     };
@@ -1158,6 +1210,62 @@ export interface RolesSelect<T extends boolean = true> {
               update?: T;
               delete?: T;
             };
+        categories?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        tags?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        products?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        productCategories?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        orders?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        videos?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
+        playlists?:
+          | T
+          | {
+              read?: T;
+              create?: T;
+              update?: T;
+              delete?: T;
+            };
         articleAuthors?:
           | T
           | {
@@ -1214,6 +1322,12 @@ export interface RolesSelect<T extends boolean = true> {
               read?: T;
               update?: T;
             };
+        notFoundPage?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
       };
   design?:
     | T
@@ -1231,6 +1345,12 @@ export interface RolesSelect<T extends boolean = true> {
               update?: T;
             };
         joinOurInnerCircle?:
+          | T
+          | {
+              read?: T;
+              update?: T;
+            };
+        siteSettings?:
           | T
           | {
               read?: T;
@@ -2123,6 +2243,39 @@ export interface WatchPage {
   metaTitle?: string | null;
   metaDescription?: string | null;
   ogImage?: (string | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Manage the 404 error page typography, copy, colors, and quick navigation links.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "not-found-page".
+ */
+export interface NotFoundPage {
+  id: string;
+  sectionLabel: string;
+  sectionLabelFont?: (string | null) | Font;
+  sectionLabelColor?: string | null;
+  headingNormal: string;
+  headingNormalFont?: (string | null) | Font;
+  headingNormalColor?: string | null;
+  headingAccent: string;
+  headingAccentFont?: (string | null) | Font;
+  headingAccentColor?: string | null;
+  description: string;
+  descriptionFont?: (string | null) | Font;
+  descriptionColor?: string | null;
+  primaryButtonText?: string | null;
+  primaryButtonLink?: string | null;
+  primaryButtonIcon?: string | null;
+  secondaryButtonText?: string | null;
+  secondaryButtonLink?: string | null;
+  secondaryButtonIcon?: string | null;
+  tertiaryButtonText?: string | null;
+  tertiaryButtonLink?: string | null;
+  tertiaryButtonIcon?: string | null;
+  backgroundColor?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3034,6 +3187,37 @@ export interface WatchPageSelect<T extends boolean = true> {
   metaTitle?: T;
   metaDescription?: T;
   ogImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "not-found-page_select".
+ */
+export interface NotFoundPageSelect<T extends boolean = true> {
+  sectionLabel?: T;
+  sectionLabelFont?: T;
+  sectionLabelColor?: T;
+  headingNormal?: T;
+  headingNormalFont?: T;
+  headingNormalColor?: T;
+  headingAccent?: T;
+  headingAccentFont?: T;
+  headingAccentColor?: T;
+  description?: T;
+  descriptionFont?: T;
+  descriptionColor?: T;
+  primaryButtonText?: T;
+  primaryButtonLink?: T;
+  primaryButtonIcon?: T;
+  secondaryButtonText?: T;
+  secondaryButtonLink?: T;
+  secondaryButtonIcon?: T;
+  tertiaryButtonText?: T;
+  tertiaryButtonLink?: T;
+  tertiaryButtonIcon?: T;
+  backgroundColor?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

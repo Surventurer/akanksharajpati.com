@@ -12,6 +12,11 @@ export async function seedAdmin(payload: Payload, roleMap: RoleMap) {
         return
     }
 
+    if (!env.CMS_SEED_ADMIN_EMAIL || !env.CMS_SEED_ADMIN_PASSWORD) {
+        console.error('CMS_SEED_ADMIN_EMAIL and CMS_SEED_ADMIN_PASSWORD are required to seed the admin user. Please set them in .env or .env.local')
+        return
+    }
+
     // ─── Admin / Owner user ───────────────────────────────
     try {
         await payload.create({

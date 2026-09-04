@@ -15,7 +15,7 @@ const nextConfig = {
         return webpackConfig
     },
     outputFileTracingIncludes: {
-        '/**': ['./media/**/*', './fonts/**/*'],
+        '/**': ['./public/media/**/*', './public/fonts/**/*'],
     },
     images: {
         remotePatterns: [
@@ -49,10 +49,12 @@ const nextConfig = {
     },
     async rewrites() {
         return [
+            // Payload generates /api/media/file/... URLs — map them to Next.js static /media/... path (served from public/media/)
             {
                 source: '/api/media/file/:path*',
                 destination: '/media/:path*',
             },
+            // Payload generates /api/fonts/file/... URLs — map them to Next.js static /fonts/... path (served from public/fonts/)
             {
                 source: '/api/fonts/file/:path*',
                 destination: '/fonts/:path*',

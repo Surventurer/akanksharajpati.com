@@ -12,7 +12,7 @@ export const Fonts: CollectionConfig = {
     },
     access: collectionAccess('media', 'fonts', { publicRead: true }),
     upload: {
-        staticDir: path.resolve(process.cwd(), 'fonts'),
+        staticDir: path.resolve(process.cwd(), 'public/fonts'),
         mimeTypes: [
             'font/woff',
             'font/woff2',
