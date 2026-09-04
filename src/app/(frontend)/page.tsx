@@ -3,9 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 import { fetchHomePage, fetchArticles, fetchShopPage, fetchWatchPage, fetchContactPage } from '@/lib/cms'
 import { Media, Font } from '@/payload-types'
-
-// Force dynamic rendering to always fetch fresh CMS data
-export const dynamic = 'force-dynamic'
+import { Icon } from '@/components/ui/Icon'
 
 export default async function Home() {
     const [pageData, articles, shopData, watchData, contactData] = await Promise.all([
@@ -56,17 +54,16 @@ export default async function Home() {
             {/* Hero Section */}
             {serializedPageData.heroEnabled && (
                 <header className="relative h-screen flex items-center justify-center overflow-hidden">
-                    {pageData?.showHeroImage !== false && (
+                    {pageData?.showHeroImage !== false && getMediaUrl(pageData?.heroImage) && (
                         <div className="absolute inset-0 z-0">
-                            {pageData?.heroImage && (
-                                <Image
-                                    src={getMediaUrl(pageData?.heroImage) || 'https://via.assets.so/img.jpg?w=1920&h=1080&tc=white&bg=333333&t=Hero+Image'}
-                                    alt={pageData?.heroHeadingLine1 || 'Hero Image'}
-                                    fill
-                                    className="object-cover opacity-90 scale-105 transition-transform duration-[2s]"
-                                    priority
-                                />
-                            )}
+                            <Image
+                                src={getMediaUrl(pageData?.heroImage)}
+                                alt={pageData?.heroHeadingLine1 || 'Hero Image'}
+                                fill
+                                sizes="100vw"
+                                className="object-cover opacity-90 scale-105 transition-transform duration-[2s]"
+                                priority
+                            />
                             <div className="absolute inset-0 bg-black/20"></div>
                         </div>
                     )}
@@ -79,16 +76,18 @@ export default async function Home() {
                                 color: pageData?.heroHeadingLine1Color || undefined
                             }}
                         >
-                            {pageData?.heroHeadingLine1 || 'Between Summer'} <br />
-                            <span
-                                className="text-serif-accent"
-                                style={{
-                                    fontFamily: getFontFamily(pageData?.heroHeadingLine2Font),
-                                    color: pageData?.heroHeadingLine2Color || undefined
-                                }}
-                            >
-                                {pageData?.heroHeadingLine2 || '& Autumn'}
-                            </span>
+                            {pageData?.heroHeadingLine1 || ''} {pageData?.heroHeadingLine2 && <br />}
+                            {pageData?.heroHeadingLine2 && (
+                                <span
+                                    className="text-serif-accent"
+                                    style={{
+                                        fontFamily: getFontFamily(pageData?.heroHeadingLine2Font),
+                                        color: pageData?.heroHeadingLine2Color || undefined
+                                    }}
+                                >
+                                    {pageData?.heroHeadingLine2}
+                                </span>
+                            )}
                         </h1>
                         {pageData?.heroDescription && (
                             <p
@@ -122,21 +121,19 @@ export default async function Home() {
             {pageData?.aboutPreviewEnabled && (
                 <section className="py-24 px-6 bg-card" id="about">
                     <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16 items-center">
-                        {pageData?.showAboutPreviewImage !== false && (
+                        {pageData?.showAboutPreviewImage !== false && getMediaUrl(pageData?.aboutPreviewImage) && (
                             <div className="md:col-span-5 relative group overflow-hidden md:overflow-visible">
                                 <div className="absolute -inset-4 border-2 border-accent/20 translate-x-6 translate-y-6 -z-0 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"></div>
-                                {pageData?.aboutPreviewImage && (
-                                    <Image
-                                        alt={pageData?.aboutPreviewHeadingNormal || 'About Image'}
-                                        className="relative z-10 object-cover grayscale-[0.2] sepia-[0.1]"
-                                        src={getMediaUrl(pageData?.aboutPreviewImage) || 'https://via.assets.so/img.jpg?w=400&h=500&tc=white&bg=333333&t=About+Me'}
-                                        width={400}
-                                        height={500}
-                                    />
-                                )}
+                                <Image
+                                    alt={pageData?.aboutPreviewHeadingNormal || 'About Image'}
+                                    className="relative z-10 object-cover grayscale-[0.2] sepia-[0.1]"
+                                    src={getMediaUrl(pageData?.aboutPreviewImage)}
+                                    width={400}
+                                    height={500}
+                                />
                             </div>
                         )}
-                        <div className={pageData?.showAboutPreviewImage !== false ? "md:col-span-7 space-y-10 pl-0 md:pl-12" : "md:col-span-12 space-y-10 text-center"}>
+                        <div className={pageData?.showAboutPreviewImage !== false && getMediaUrl(pageData?.aboutPreviewImage) ? "md:col-span-7 space-y-10 pl-0 md:pl-12" : "md:col-span-12 space-y-10 text-center"}>
                             <div className="space-y-4">
                                 {pageData?.aboutPreviewSectionLabel && (
                                     <span
@@ -156,16 +153,18 @@ export default async function Home() {
                                         color: pageData?.aboutPreviewHeadingNormalColor || undefined
                                     }}
                                 >
-                                    {pageData?.aboutPreviewHeadingNormal || "Hello, I'm"}{' '}
-                                    <span
-                                        className="text-serif-accent"
-                                        style={{
-                                            fontFamily: getFontFamily(pageData?.aboutPreviewHeadingAccentFont),
-                                            color: pageData?.aboutPreviewHeadingAccentColor || undefined
-                                        }}
-                                    >
-                                        {pageData?.aboutPreviewHeadingAccent || 'Sarah'}
-                                    </span>
+                                    {pageData?.aboutPreviewHeadingNormal || ''}{' '}
+                                    {pageData?.aboutPreviewHeadingAccent && (
+                                        <span
+                                            className="text-serif-accent"
+                                            style={{
+                                                fontFamily: getFontFamily(pageData?.aboutPreviewHeadingAccentFont),
+                                                color: pageData?.aboutPreviewHeadingAccentColor || undefined
+                                            }}
+                                        >
+                                            {pageData.aboutPreviewHeadingAccent}
+                                        </span>
+                                    )}
                                 </h2>
                             </div>
                             <div className="space-y-6 body-editorial">
@@ -198,7 +197,7 @@ export default async function Home() {
                                         className="group inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold border-b border-accent pb-1 hover:text-primary hover:border-primary transition-all duration-300"
                                     >
                                         {pageData?.aboutPreviewButtonText}
-                                        <span className="material-symbols-outlined text-sm transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+                                        <Icon name="arrow_forward" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                                     </Link>
                                 </div>
                             )}
@@ -264,6 +263,7 @@ export default async function Home() {
                                                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                                                     src={post.image}
                                                     fill
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
                                                 />
                                             )}
                                             <div className="absolute top-4 left-4">
@@ -280,7 +280,7 @@ export default async function Home() {
                                 </article>
                             )) : (
                                 <div className="col-span-3 text-center py-12 text-foreground/50">
-                                    <div className="material-symbols-outlined text-4xl mb-3 opacity-40">auto_stories</div>
+                                    <Icon name="auto_stories" size={36} className="mb-3 opacity-40 mx-auto" />
                                     <p>No blog posts available yet.</p>
                                 </div>
                             )}
@@ -400,7 +400,7 @@ export default async function Home() {
                             </div>
                         ) : (
                             <div className="text-center py-12 text-foreground/50">
-                                <div className="material-symbols-outlined text-4xl mb-3 opacity-40">shopping_bag</div>
+                                <Icon name="shopping_bag" size={36} className="mb-3 opacity-40 mx-auto" />
                                 <p>Products coming soon</p>
                             </div>
                         )}
@@ -513,7 +513,7 @@ export default async function Home() {
                             </div>
                         ) : (
                             <div className="text-center py-12 text-foreground/50">
-                                <div className="material-symbols-outlined text-4xl mb-3 opacity-40">smart_display</div>
+                                <Icon name="smart_display" size={36} className="mb-3 opacity-40 mx-auto" />
                                 <p>Videos coming soon</p>
                             </div>
                         )}
@@ -587,7 +587,7 @@ export default async function Home() {
                     href="/shop"
                     className="bg-secondary text-secondary-foreground w-14 h-14 rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center hover:scale-110 hover:-translate-y-0.5 active:scale-100 transition-all duration-300 group border border-accent/20"
                 >
-                    <span className="material-symbols-outlined">menu_book</span>
+                    <Icon name="menu_book" size={24} />
                     <span className="absolute right-full mr-4 bg-secondary text-secondary-foreground px-4 py-2 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none tracking-widest uppercase border border-accent/30 rounded-lg shadow-lg">
                         Atelier Shop
                     </span>

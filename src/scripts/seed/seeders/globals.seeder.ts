@@ -5,6 +5,33 @@ import { FontMap } from './fonts.seeder'
 export async function seedGlobals(payload: Payload, mediaMap: MediaMap | null, fontMap: FontMap | null) {
     console.log('🌱 Seeding globals...')
 
+    // Seed Site Settings
+    await payload.updateGlobal({
+        slug: 'site-settings',
+        data: {
+            siteTitle: 'Akanksha Rajpati',
+            siteTagline: 'A Luxury Lifestyle Journal',
+            siteDescription: 'A luxury lifestyle journal dedicated to the refined aesthetics of the transitional seasons. Curated for the modern romantic.',
+            primaryColor: '#B88078',
+            secondaryColor: '#868753',
+            accentColor: '#C49A48',
+            backgroundColor: '#F2EBD0',
+            cardBackgroundColor: '#f7f3e8',
+            textColor: '#4a4b34',
+            mutedTextColor: '#6b6c4f',
+            borderColor: '#868753',
+            displayFont: fontMap?.playfairDisplay,
+            serifFont: fontMap?.cormorantGaramond,
+            sansFont: fontMap?.nunito,
+            socialLinks: [
+                { platform: 'instagram', url: 'https://instagram.com' },
+                { platform: 'youtube', url: 'https://youtube.com' },
+                { platform: 'pinterest', url: 'https://pinterest.com' },
+            ],
+        },
+    })
+    console.log('✅ Site Settings seeded')
+
     // Seed Header
     await payload.updateGlobal({
         slug: 'header',

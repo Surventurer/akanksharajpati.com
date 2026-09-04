@@ -393,3 +393,24 @@ export function fetchFonts() {
     { tags: [CACHE_TAGS.FONTS] },
   )()
 }
+
+export function fetchSiteSettings() {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.findGlobal({
+          slug: 'site-settings',
+          depth: 2,
+        })
+        return data as any
+      } catch (e) {
+        console.error('Error fetching site settings:', e)
+        return null
+      }
+    },
+    ['globals', 'site-settings'],
+    { tags: [CACHE_TAGS.SITE_SETTINGS] },
+  )()
+}
+

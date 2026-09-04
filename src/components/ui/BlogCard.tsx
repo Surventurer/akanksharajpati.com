@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ShareButton from "./ShareButton";
+import { Icon } from "./Icon";
 
 interface BlogCardProps {
     slug: string;
@@ -68,7 +69,7 @@ const BlogCard = ({
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-border/60 mt-auto">
                     <span className="text-xs uppercase tracking-wider font-bold text-foreground/60 group-hover:text-primary transition-all duration-300 flex items-center gap-1">
-                        Read Story <span className="material-symbols-outlined text-[16px] transition-all duration-300 group-hover:translate-x-1">arrow_forward</span>
+                        Read Story <Icon name="arrow_forward" size={16} className="transition-all duration-300 group-hover:translate-x-1" />
                     </span>
                 </div>
             </div>

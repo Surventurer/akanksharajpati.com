@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ContactPage, Media, Font } from '@/payload-types';
+import { Icon } from '@/components/ui/Icon';
 
 interface ContactClientProps {
     data: ContactPage;
@@ -136,9 +137,7 @@ export default function ContactClient({ data }: ContactClientProps) {
                                                             className="w-6 h-6 object-contain"
                                                         />
                                                     ) : (
-                                                        <span className="material-symbols-outlined text-white text-2xl">
-                                                            {method.iconMaterialSymbol || 'mail'}
-                                                        </span>
+                                                        <Icon name={method.iconMaterialSymbol || 'mail'} size={24} className="text-white" />
                                                     )}
                                                 </div>
                                                 <div className="flex-1">
@@ -182,12 +181,11 @@ export default function ContactClient({ data }: ContactClientProps) {
                                             className="mt-6 p-4 rounded-xl shadow-sm border border-white/10 flex items-start gap-4"
                                             style={{ backgroundColor: data.quickResponseBgColor || primaryAccentColor }}
                                         >
-                                            <span 
-                                                className="material-symbols-outlined text-2xl"
-                                                style={{ color: data.quickResponseTextColor || '#F2EBD0' }}
-                                            >
-                                                {data.quickResponseIcon || 'schedule'}
-                                            </span>
+                                            <Icon 
+                                                name={data.quickResponseIcon || 'schedule'} 
+                                                size={24} 
+                                                style={{ color: data.quickResponseTextColor || '#F2EBD0' }} 
+                                            />
                                             <div>
                                                 <h4 
                                                     className="font-semibold"
@@ -222,12 +220,11 @@ export default function ContactClient({ data }: ContactClientProps) {
                                             className="w-10 h-10 rounded-lg flex items-center justify-center"
                                             style={{ backgroundColor: `${data.formIconColor || primaryAccentColor}20` }}
                                         >
-                                            <span 
-                                                className="material-symbols-outlined"
-                                                style={{ color: data.formIconColor || primaryAccentColor }}
-                                            >
-                                                {data.formIcon || 'send'}
-                                            </span>
+                                            <Icon 
+                                                name={data.formIcon || 'send'} 
+                                                size={20} 
+                                                style={{ color: data.formIconColor || primaryAccentColor }} 
+                                            />
                                         </div>
                                         <h2 
                                             className="text-2xl font-bold"
@@ -242,12 +239,12 @@ export default function ContactClient({ data }: ContactClientProps) {
 
                                     {submitted ? (
                                         <div className="text-center py-8 animate-fade-in-up">
-                                            <span 
-                                                className="material-symbols-outlined text-5xl mb-4"
-                                                style={{ color: primaryAccentColor }}
-                                            >
-                                                check_circle
-                                            </span>
+                                            <Icon 
+                                                name="check_circle" 
+                                                size={48} 
+                                                className="mb-4 mx-auto" 
+                                                style={{ color: primaryAccentColor }} 
+                                            />
                                             <h3 className="text-xl font-semibold mb-2" style={{ color: textColor }}>
                                                 Message Sent!
                                             </h3>
@@ -344,15 +341,13 @@ export default function ContactClient({ data }: ContactClientProps) {
                                             >
                                                 {isSubmitting ? (
                                                     <>
-                                                        <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                                                        <Icon name="progress_activity" size={18} className="animate-spin" />
                                                         Sending...
                                                     </>
                                                 ) : (
                                                     <>
                                                         {data.submitButtonText || 'Send Message'}
-                                                        <span className="material-symbols-outlined">
-                                                            {data.submitButtonIcon || 'send'}
-                                                        </span>
+                                                        <Icon name={data.submitButtonIcon || 'send'} size={18} />
                                                     </>
                                                 )}
                                             </button>
@@ -491,12 +486,12 @@ export default function ContactClient({ data }: ContactClientProps) {
                                         >
                                             {faq.question}
                                         </span>
-                                        <span 
-                                            className={`material-symbols-outlined transition-transform duration-300 ${openFaqIndex === index ? 'rotate-180' : ''}`}
+                                        <Icon 
+                                            name="keyboard_arrow_down"
+                                            size={20}
+                                            className={`transition-transform duration-300 ${openFaqIndex === index ? 'rotate-180' : ''}`}
                                             style={{ color: primaryAccentColor }}
-                                        >
-                                            expand_more
-                                        </span>
+                                        />
                                     </button>
                                     <div 
                                         className={`overflow-hidden transition-all duration-300 ease-in-out ${openFaqIndex === index ? 'max-h-96' : 'max-h-0'}`}

@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { WatchPage, Media, Font } from '@/payload-types';
+import { Icon } from '@/components/ui/Icon';
 
 interface WatchClientProps {
     data: WatchPage;
@@ -132,11 +133,9 @@ export default function WatchClient({ data }: WatchClientProps) {
                         >
                             <div
                                 className="relative flex items-center justify-center bg-foreground bg-cover bg-center aspect-video overflow-hidden group"
-                                style={{
-                                    backgroundImage: data.featuredVideoThumbnail 
-                                        ? `url("${getMediaUrl(data.featuredVideoThumbnail)}")` 
-                                        : `url("https://via.assets.so/img.jpg?w=1920&h=1080&tc=white&bg=333333&t=Featured+Video")`,
-                                }}
+                                style={data.featuredVideoThumbnail ? {
+                                    backgroundImage: `url("${getMediaUrl(data.featuredVideoThumbnail)}")`,
+                                } : undefined}
                             >
                                 {featuredPlaying && data.featuredVideoUrl ? (
                                     <iframe
@@ -156,7 +155,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                             className="play-button relative z-10 hover:scale-110 active:scale-95 transition-transform duration-300 w-20 h-20 rounded-full flex items-center justify-center shadow-2xl"
                                             style={{ backgroundColor: data.playButtonColor || primaryAccentColor }}
                                         >
-                                            <span className="material-symbols-outlined text-5xl text-white translate-x-1">play_arrow</span>
+                                            <Icon name="play_arrow" className="text-white translate-x-0.5 fill-current" size={44} />
                                         </button>
 
                                         {/* Video Controls Bar (Decorative) */}
@@ -173,15 +172,15 @@ export default function WatchClient({ data }: WatchClientProps) {
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-4 text-card">
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">pause</span>
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">volume_up</span>
+                                                    <Icon name="pause" size={22} className="cursor-pointer hover:opacity-80 transition-opacity" />
+                                                    <Icon name="volume_up" size={22} className="cursor-pointer hover:opacity-80 transition-opacity" />
                                                     <p className="text-xs font-medium tracking-widest uppercase">
                                                         00:00 / {data.featuredVideoDuration || '15:45'}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center gap-4 text-card">
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">settings</span>
-                                                    <span className="material-symbols-outlined text-2xl cursor-pointer hover:opacity-80 transition-opacity">fullscreen</span>
+                                                    <Icon name="settings" size={22} className="cursor-pointer hover:opacity-80 transition-opacity" />
+                                                    <Icon name="fullscreen" size={22} className="cursor-pointer hover:opacity-80 transition-opacity" />
                                                 </div>
                                             </div>
                                         </div>
@@ -300,7 +299,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                             className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl backdrop-blur-sm transition-transform duration-300 group-hover:scale-110"
                                                             style={{ backgroundColor: data.videoCardPlayButtonColor || primaryAccentColor }}
                                                         >
-                                                            <span className="material-symbols-outlined text-white text-3xl">play_arrow</span>
+                                                            <Icon name="play_arrow" className="text-white fill-current translate-x-0.5" size={26} />
                                                         </div>
                                                     </div>
                                                     {video.duration && (
@@ -400,10 +399,11 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                 src={getMediaUrl(playlist.coverImage)}
                                                 alt={playlist.name || ''}
                                                 fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
                                             <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                                <span className="material-symbols-outlined text-white text-4xl">playlist_play</span>
+                                                <Icon name="playlist_play" className="text-white" size={36} />
                                             </div>
                                         </div>
                                     )}
@@ -467,9 +467,7 @@ export default function WatchClient({ data }: WatchClientProps) {
                                             height={30}
                                         />
                                     ) : (
-                                        <span className="material-symbols-outlined">
-                                            {social.materialIcon || 'link'}
-                                        </span>
+                                        <Icon name={social.materialIcon || 'link'} size={24} />
                                     )}
                                 </a>
                             ))}
@@ -523,14 +521,14 @@ function Sidebar({
                     {data.showYouTubeStats && (
                         <div className="flex gap-4 mb-4 text-sm">
                             {data.youtubeSubscriberCount && (
-                                <div className="flex items-center gap-1">
-                                    <span className="material-symbols-outlined text-lg" style={{ color: primaryAccentColor }}>group</span>
+                                <div className="flex items-center gap-1.5">
+                                    <Icon name="group" size={18} style={{ color: primaryAccentColor }} />
                                     <span style={{ color: textColor }}>{data.youtubeSubscriberCount}</span>
                                 </div>
                             )}
                             {data.youtubeTotalViews && (
-                                <div className="flex items-center gap-1">
-                                    <span className="material-symbols-outlined text-lg" style={{ color: primaryAccentColor }}>visibility</span>
+                                <div className="flex items-center gap-1.5">
+                                    <Icon name="visibility" size={18} style={{ color: primaryAccentColor }} />
                                     <span style={{ color: textColor }}>{data.youtubeTotalViews}</span>
                                 </div>
                             )}

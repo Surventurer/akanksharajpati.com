@@ -2,6 +2,7 @@ import Link from "next/link";
 import BlogCard from "@/components/ui/BlogCard";
 import { fetchArticles, fetchBlogPage, fetchJoinOurInnerCircle } from "@/lib/cms";
 import { Font } from "@/payload-types";
+import { Icon } from "@/components/ui/Icon";
 
 interface BlogPageProps {
     searchParams: Promise<{ category?: string }>;
@@ -100,7 +101,7 @@ export default async function Blog({ searchParams }: BlogPageProps) {
                         </div>
                     ) : (
                         <div className="text-center py-20">
-                            <span className="material-symbols-outlined text-5xl mb-4 opacity-30 text-foreground/50">search</span>
+                            <Icon name="search" size={48} className="mb-4 opacity-30 text-foreground/50 mx-auto" />
                             <p className="text-foreground/50 font-serif italic text-lg">No stories found in this category.</p>
                         </div>
                     )}

@@ -2,10 +2,7 @@
 import { fetchAboutPage } from "@/lib/cms";
 import { Media } from "@/payload-types";
 import Image from "next/image";
-
-// Force dynamic rendering to always fetch fresh CMS data
-export const dynamic = 'force-dynamic'
-
+import { Icon } from "@/components/ui/Icon";
 
 export default async function About() {
     const pageData = await fetchAboutPage();
@@ -168,10 +165,11 @@ export default async function About() {
                                                         src={iconUrl}
                                                         alt={value.title}
                                                         fill
+                                                        sizes="64px"
                                                         className="object-contain p-3"
                                                     />
                                                 ) : (
-                                                    <span className="material-symbols-outlined text-primary">star</span>
+                                                    <Icon name="star" size={24} className="text-primary" />
                                                 )}
                                             </div>
                                         )}

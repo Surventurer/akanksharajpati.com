@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Header as HeaderType, Media, Font } from "@/payload-types";
+import { Icon } from "@/components/ui/Icon";
 
 // Default fallback logo
 const defaultLogo = "/asset/logo.png";
@@ -16,7 +17,6 @@ interface HeaderProps {
 const Header = ({ data }: HeaderProps) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loadedFonts, setLoadedFonts] = useState<Set<string>>(new Set());
   const [isMobile, setIsMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -40,52 +40,6 @@ const Header = ({ data }: HeaderProps) => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Helper to load custom fonts
-  useEffect(() => {
-    const fontsToLoad: Font[] = [];
-    
-    if (data?.ownerFont && typeof data.ownerFont !== 'string') {
-      fontsToLoad.push(data.ownerFont);
-    }
-    
-    data?.navItems?.forEach(item => {
-      if (item.font && typeof item.font !== 'string') {
-        fontsToLoad.push(item.font as Font);
-      }
-    });
-
-    data?.socialLinks?.forEach(item => {
-      if (item.font && typeof item.font !== 'string') {
-        fontsToLoad.push(item.font as Font);
-      }
-    });
-
-    data?.navIcons?.forEach(item => {
-      if (item.font && typeof item.font !== 'string') {
-        fontsToLoad.push(item.font as Font);
-      }
-    });
-
-    // Load fonts dynamically
-    fontsToLoad.forEach(font => {
-      const fontName = font.name;
-      const fontUrl = font.url;
-      
-      if (fontUrl && fontName && !loadedFonts.has(fontName)) {
-        const style = document.createElement('style');
-        style.textContent = `
-          @font-face {
-            font-family: '${fontName}';
-            src: url('${fontUrl}');
-            font-display: swap;
-          }
-        `;
-        document.head.appendChild(style);
-        setLoadedFonts(prev => new Set([...prev, fontName]));
-      }
-    });
-  }, [data, loadedFonts]);
 
   // Parse Logo
   const logoUrl = data?.logo && typeof data.logo !== 'string' && (data.logo as Media).url
@@ -193,20 +147,14 @@ const Header = ({ data }: HeaderProps) => {
                       src={iconUrl}
                       alt={iconItem.label || 'Icon'}
                       fill
+                      sizes="20px"
                       className="object-contain"
                     />
                   </div>
                 ) : iconItem.type === 'search' ? (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                  </svg>
+                  <Icon name="search" size={18} />
                 ) : iconItem.type === 'link' ? (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="9" cy="21" r="1" />
-                    <circle cx="20" cy="21" r="1" />
-                    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
-                  </svg>
+                  <Icon name="shopping_bag" size={18} />
                 ) : null
               ) : null;
 
@@ -277,10 +225,7 @@ const Header = ({ data }: HeaderProps) => {
                 className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold hover:opacity-70 transition-all duration-300 group"
                 style={{ color: data.headerTextColor || '#4a4b34' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="transition-transform duration-300 group-hover:-translate-x-0.5">
-                  <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
+                <Icon name="close" size={16} className="transition-transform duration-300 group-hover:-translate-x-0.5" />
                 CLOSE
               </button>
 
@@ -317,20 +262,14 @@ const Header = ({ data }: HeaderProps) => {
                           src={iconUrl}
                           alt={iconItem.label || 'Icon'}
                           fill
+                          sizes="24px"
                           className="object-contain"
                         />
                       </div>
                     ) : iconItem.type === 'search' ? (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="M21 21l-4.35-4.35" />
-                      </svg>
+                      <Icon name="search" size={20} />
                     ) : iconItem.type === 'link' ? (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="9" cy="21" r="1" />
-                        <circle cx="20" cy="21" r="1" />
-                        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
-                      </svg>
+                      <Icon name="shopping_bag" size={20} />
                     ) : null
                   ) : null;
 
@@ -437,6 +376,7 @@ const Header = ({ data }: HeaderProps) => {
                                   src={socialIconUrl}
                                   alt={social.platform || 'Social'}
                                   fill
+                                  sizes="20px"
                                   className="object-contain"
                                 />
                               </div>

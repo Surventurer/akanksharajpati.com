@@ -13,6 +13,7 @@ export const CACHE_TAGS = {
   WATCH_PAGE: 'watch-page',
   FOOTER: 'footer',
   JOIN_INNER_CIRCLE: 'join-our-inner-circle',
+  SITE_SETTINGS: 'site-settings',
 } as const
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS]

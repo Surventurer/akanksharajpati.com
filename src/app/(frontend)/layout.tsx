@@ -2,22 +2,36 @@ import React from 'react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { Plus_Jakarta_Sans, Playfair_Display, Libre_Baskerville } from 'next/font/google'
-import { cn } from '@/lib/utils'
+import { cn, hexToHsl } from '@/lib/utils'
+import { fetchHeader, fetchFonts, fetchSiteSettings } from '@/lib/cms'
 import '../globals.css'
-
-export const metadata = {
-    title: 'Autumn Stories',
-    description: 'A luxury lifestyle journal',
-    icons: {
-        icon: '/favicon.ico',
-    },
-}
 
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
+}
+
+export async function generateMetadata() {
+    const siteSettings = await fetchSiteSettings()
+    const title = siteSettings?.siteTitle || 'Akanksha Rajpati'
+    const description = siteSettings?.siteDescription || 'A luxury lifestyle journal'
+    const ogImageUrl = siteSettings?.ogImage && typeof siteSettings.ogImage === 'object' && siteSettings.ogImage.url
+        ? siteSettings.ogImage.url
+        : undefined
+
+    return {
+        title: {
+            default: title,
+            template: `%s | ${title}`,
+        },
+        description,
+        icons: {
+            icon: (siteSettings?.favicon && typeof siteSettings.favicon === 'object' && siteSettings.favicon.url) || '/favicon.ico',
+        },
+        openGraph: ogImageUrl ? { images: [{ url: ogImageUrl }] } : undefined,
+    }
 }
 
 const fontSans = Plus_Jakarta_Sans({
@@ -36,16 +50,16 @@ const fontSerif = Libre_Baskerville({
     style: ['normal', 'italic'],
 })
 
-import { fetchHeader, fetchFonts } from "@/lib/cms";
-import { Media } from "@/payload-types";
-
 export default async function FrontendLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const headerData = await fetchHeader();
-    const fonts = await fetchFonts();
+    const [headerData, fonts, siteSettings] = await Promise.all([
+        fetchHeader(),
+        fetchFonts(),
+        fetchSiteSettings(),
+    ])
 
     // Generate @font-face CSS for all uploaded fonts
     const fontFaces = fonts.map(font => {
@@ -55,7 +69,7 @@ export default async function FrontendLayout({
         return `
             @font-face {
                 font-family: '${font.name}';
-                src: url('${fontUrl}') format('woff2'); /* Assuming WOFF2/TTF/OTF uploaded */
+                src: url('${fontUrl}') format('woff2');
                 font-weight: 400;
                 font-style: normal;
                 font-display: swap;
@@ -63,12 +77,25 @@ export default async function FrontendLayout({
         `;
     }).join('\n');
 
+    // Generate theme CSS variables from Payload SiteSettings
+    const themeStyles = siteSettings ? `
+        :root {
+            ${siteSettings.primaryColor ? `--primary: ${hexToHsl(siteSettings.primaryColor)}; --color-primary: ${siteSettings.primaryColor};` : ''}
+            ${siteSettings.secondaryColor ? `--secondary: ${hexToHsl(siteSettings.secondaryColor)}; --color-secondary: ${siteSettings.secondaryColor};` : ''}
+            ${siteSettings.accentColor ? `--accent: ${hexToHsl(siteSettings.accentColor)}; --color-accent: ${siteSettings.accentColor};` : ''}
+            ${siteSettings.backgroundColor ? `--background: ${hexToHsl(siteSettings.backgroundColor)}; --color-background: ${siteSettings.backgroundColor};` : ''}
+            ${siteSettings.textColor ? `--foreground: ${hexToHsl(siteSettings.textColor)}; --color-foreground: ${siteSettings.textColor};` : ''}
+            ${siteSettings.cardBackgroundColor ? `--card: ${hexToHsl(siteSettings.cardBackgroundColor)}; --color-card: ${siteSettings.cardBackgroundColor};` : ''}
+            ${siteSettings.borderColor ? `--border: ${hexToHsl(siteSettings.borderColor)}; --color-border: ${siteSettings.borderColor};` : ''}
+            ${siteSettings.mutedTextColor ? `--muted-foreground: ${hexToHsl(siteSettings.mutedTextColor)}; --color-muted-foreground: ${siteSettings.mutedTextColor};` : ''}
+        }
+    ` : ''
+
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
             <head>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
                 <style dangerouslySetInnerHTML={{
-                    __html: fontFaces
+                    __html: `${fontFaces}\n${themeStyles}`
                 }} />
             </head>
             <body

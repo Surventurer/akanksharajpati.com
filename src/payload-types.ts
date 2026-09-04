@@ -107,6 +107,7 @@ export interface Config {
     header: Header;
     footer: Footer;
     'join-our-inner-circle': JoinOurInnerCircle;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
@@ -118,6 +119,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'join-our-inner-circle': JoinOurInnerCircleSelect<false> | JoinOurInnerCircleSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1913,6 +1915,50 @@ export interface JoinOurInnerCircle {
   createdAt?: string | null;
 }
 /**
+ * Configure global site branding, color palettes, typography, and meta settings.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  siteTitle: string;
+  siteTagline?: string | null;
+  siteDescription?: string | null;
+  logo?: (string | null) | Media;
+  favicon?: (string | null) | Media;
+  ogImage?: (string | null) | Media;
+  primaryColor?: string | null;
+  secondaryColor?: string | null;
+  accentColor?: string | null;
+  backgroundColor?: string | null;
+  cardBackgroundColor?: string | null;
+  textColor?: string | null;
+  mutedTextColor?: string | null;
+  borderColor?: string | null;
+  /**
+   * Select an uploaded font for hero headings and titles
+   */
+  displayFont?: (string | null) | Font;
+  /**
+   * Select an uploaded font for editorial body text and quotes
+   */
+  serifFont?: (string | null) | Font;
+  /**
+   * Select an uploaded font for navigation, buttons, and badges
+   */
+  sansFont?: (string | null) | Font;
+  socialLinks?:
+    | {
+        platform: 'instagram' | 'youtube' | 'pinterest' | 'twitter' | 'facebook' | 'linkedin';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -2689,6 +2735,39 @@ export interface JoinOurInnerCircleSelect<T extends boolean = true> {
   mutedTextColor?: T;
   borderColor?: T;
   inputBackgroundColor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteTitle?: T;
+  siteTagline?: T;
+  siteDescription?: T;
+  logo?: T;
+  favicon?: T;
+  ogImage?: T;
+  primaryColor?: T;
+  secondaryColor?: T;
+  accentColor?: T;
+  backgroundColor?: T;
+  cardBackgroundColor?: T;
+  textColor?: T;
+  mutedTextColor?: T;
+  borderColor?: T;
+  displayFont?: T;
+  serifFont?: T;
+  sansFont?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

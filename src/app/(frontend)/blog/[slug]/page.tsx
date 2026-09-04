@@ -1,10 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import { fetchArticleBySlug, fetchBlogPage, fetchJoinOurInnerCircle, fetchApprovedComments } from "@/lib/cms";
+import { fetchArticleBySlug, fetchArticles, fetchBlogPage, fetchJoinOurInnerCircle, fetchApprovedComments } from "@/lib/cms";
 import { notFound } from "next/navigation";
 import { ViewCounter } from "@/components/blog/ViewCounter";
 import { Comments } from "@/components/blog/Comments";
 import ShareButton from "@/components/ui/ShareButton";
+import { Icon } from "@/components/ui/Icon";
+
+export async function generateStaticParams() {
+    const articles = await fetchArticles();
+    return articles.map((article) => ({
+        slug: article.slug,
+    }));
+}
 
 // Simple Rich Text Renderer for Payload Lexical JSON
 const RichTextRenderer = ({ content }: { content: any }) => {
@@ -218,7 +226,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                 <section className="my-16 bg-beige p-8 rounded-xl shadow-sm border border-primary/10">
                                     <div className="flex items-center justify-between mb-8">
                                         <h4 className="text-xl font-display font-bold tracking-tight uppercase">Shop The Look</h4>
-                                        <span className="text-primary material-symbols-outlined">auto_awesome</span>
+                                        <Icon name="auto_awesome" size={20} className="text-primary" />
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {post.relatedProducts.map((product: any, index: number) => (

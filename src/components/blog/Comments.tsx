@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from 'react'
 import { submitComment } from '@/app/(frontend)/blog/[slug]/actions'
+import { Icon } from '@/components/ui/Icon'
 import { useFormStatus } from 'react-dom'
 
 function SubmitButton() {
@@ -40,7 +41,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
             <div className="h-[250px] space-y-6 overflow-y-auto pr-2 custom-scrollbar">
                 {comments.filter((c: any) => !c.parent).length === 0 ? (
                     <div className="text-center py-8 opacity-50">
-                        <span className="material-symbols-outlined text-3xl mb-2">chat_bubble_outline</span>
+                        <Icon name="chat_bubble_outline" size={28} className="mb-2 mx-auto" />
                         <p className="text-xs">Start the conversation</p>
                     </div>
                 ) : (
@@ -60,7 +61,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                                 <div className="flex gap-3 relative z-10">
                                     <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-sm ${isAuthor ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
                                         }`}>
-                                        {isAuthor ? <span className="material-symbols-outlined text-[14px]">stars</span> : initial}
+                                        {isAuthor ? <Icon name="stars" size={14} /> : initial}
                                     </div>
 
                                     <div className="flex-1">
@@ -92,7 +93,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                                             <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ml-8 relative z-10 bg-background ring-2 ring-background shadow-sm">
                                                 <div className={`w-full h-full rounded-full flex items-center justify-center ${replyIsAuthor ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
                                                     }`}>
-                                                    {replyIsAuthor ? <span className="material-symbols-outlined text-[14px]">stars</span> : replyInitial}
+                                                    {replyIsAuthor ? <Icon name="stars" size={14} /> : replyInitial}
                                                 </div>
                                             </div>
 
@@ -172,7 +173,7 @@ export const Comments = ({ articleId, slug, comments }: { articleId: string, slu
                             onClick={handleUnlock}
                             className="bg-accent text-foreground px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-accent/90 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
                         >
-                            <span className="material-symbols-outlined text-sm">lock_open</span>
+                            <Icon name="lock_open" size={16} />
                             Join Circle to Comment
                         </button>
                     </div>

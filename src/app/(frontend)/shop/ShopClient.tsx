@@ -170,6 +170,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                 className="object-cover grayscale"
                                 src={getMediaUrl(pageData.heroImage)}
                                 fill
+                                sizes="50vw"
                                 priority
                             />
                         </div>
@@ -375,6 +376,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                         src={getMediaUrl(pageData.emptyStateIcon)}
                                         alt="No products"
                                         fill
+                                        sizes="96px"
                                         className="object-contain opacity-30 hover:opacity-50 transition-opacity duration-200"
                                     />
                                 </div>

@@ -42,6 +42,16 @@ yarn-debug.log*
 pnpm-debug.log*
 
 # Misc
-*.pem
-
 fonts/
+
+# Python & virtual environments
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.pyc
+
+# Graphify artifacts
+graphify-out/
+.graphify*

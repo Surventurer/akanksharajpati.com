@@ -24,6 +24,7 @@ import { Footer } from './globals/Footer/config'
 import { ShopPage } from './globals/ShopPage/config'
 import { ContactPage } from './globals/ContactPage/config'
 import { WatchPage } from './globals/WatchPage/config'
+import { SiteSettings } from './globals/SiteSettings/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -73,7 +74,7 @@ export default buildConfig({
         process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
     ].filter(Boolean),
     collections: [Articles, ArticleAuthors, Comments, Media, Fonts, Users, Roles],
-    globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, Header, Footer, JoinOurInnerCircle],
+    globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, Header, Footer, JoinOurInnerCircle, SiteSettings],
     editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
             ...defaultFeatures,

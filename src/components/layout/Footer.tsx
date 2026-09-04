@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { fetchFooter } from "@/lib/cms";
-import { Font } from "@/payload-types";
+import { Font, Media } from "@/payload-types";
+import { Icon } from "@/components/ui/Icon";
 
 const Footer = async () => {
   const footerData = await fetchFooter();
@@ -45,9 +47,9 @@ const Footer = async () => {
                 </p>
               )}
               <div className="flex gap-3">
-                <span className="material-symbols-outlined hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 rounded-full p-2 hover:bg-background/10">alternate_email</span>
-                <span className="material-symbols-outlined hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 rounded-full p-2 hover:bg-background/10">public</span>
-                <span className="material-symbols-outlined hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 rounded-full p-2 hover:bg-background/10">mail</span>
+                <Icon name="alternate_email" size={18} className="hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 p-1 hover:bg-background/10 rounded-full" />
+                <Icon name="public" size={18} className="hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 p-1 hover:bg-background/10 rounded-full" />
+                <Icon name="mail" size={18} className="hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 p-1 hover:bg-background/10 rounded-full" />
               </div>
             </div>
           )}
@@ -132,7 +134,9 @@ const Footer = async () => {
                   placeholder="Enter your email"
                   type="email"
                 />
-                <button className="material-symbols-outlined text-accent hover:translate-x-1 transition-transform duration-200 rounded-full p-1 hover:bg-background/10">east</button>
+                <button aria-label="Subscribe" className="text-accent hover:translate-x-1 transition-transform duration-200 rounded-full p-1 hover:bg-background/10">
+                  <Icon name="east" size={18} />
+                </button>
               </div>
               {footerData.newsletterDescription && (
                 <p 
