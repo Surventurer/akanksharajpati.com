@@ -11,7 +11,7 @@ export async function seedGlobals(payload: Payload, mediaMap: MediaMap | null, f
         data: {
             siteTitle: 'Akanksha Rajpati',
             siteTagline: 'A Luxury Lifestyle Journal',
-            siteDescription: 'A luxury lifestyle journal dedicated to the refined aesthetics of the transitional seasons. Curated for the modern romantic.',
+            siteDescription: 'Bespoke insights from my mind to yours — guiding you toward a more personalized way of living',
             primaryColor: '#B88078',
             secondaryColor: '#868753',
             accentColor: '#C49A48',
@@ -98,7 +98,7 @@ export async function seedGlobals(payload: Payload, mediaMap: MediaMap | null, f
             brandEnabled: true,
             brandName: 'Akanksha Rajpati',
             brandNameFont: fontMap?.playfairDisplay,
-            brandDescription: 'A luxury lifestyle journal dedicated to the refined aesthetics of the transitional seasons. Based in England, reaching the world.',
+            brandDescription: 'Bespoke insights from my mind to yours — guiding you toward a more personalized way of living',
             brandDescriptionFont: fontMap?.cormorantGaramond,
             brandNameColor: '#4a4b34',
             brandDescriptionColor: '#6b6c4f',

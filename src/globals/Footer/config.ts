@@ -56,7 +56,7 @@ export const Footer: GlobalConfig = {
                             name: 'brandDescription',
                             type: 'textarea',
                             label: 'Brand Description',
-                            defaultValue: 'A luxury lifestyle journal dedicated to the refined aesthetics of the transitional seasons. Based in England, reaching the world.',
+                            defaultValue: 'Bespoke insights from my mind to yours — guiding you toward a more personalized way of living',
                         },
                         {
                             name: 'brandDescriptionFont',

@@ -38,7 +38,7 @@ export const SiteSettings: GlobalConfig = {
                             name: 'siteDescription',
                             type: 'textarea',
                             label: 'Default Meta Description',
-                            defaultValue: 'A luxury lifestyle journal dedicated to the refined aesthetics of the transitional seasons.',
+                            defaultValue: 'Bespoke insights from my mind to yours — guiding you toward a more personalized way of living',
                         },
                         {
                             name: 'logo',
