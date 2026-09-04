@@ -7,6 +7,28 @@ import { Comments } from "@/components/blog/Comments";
 import ShareButton from "@/components/ui/ShareButton";
 import { Icon } from "@/components/ui/Icon";
 
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const post = await fetchArticleBySlug(slug);
+    if (!post) {
+        return {
+            title: 'Story Not Found | Akanksha Rajpati',
+        };
+    }
+
+    return {
+        title: post.title,
+        description: post.excerpt,
+        openGraph: post.image ? {
+            title: post.title,
+            description: post.excerpt,
+            images: [{ url: post.image }],
+        } : undefined,
+    };
+}
+
 export async function generateStaticParams() {
     const articles = await fetchArticles();
     return articles.map((article) => ({

@@ -157,6 +157,47 @@ export const Articles: CollectionConfig = {
                 },
             ],
         },
+        {
+            name: 'tags',
+            type: 'relationship',
+            relationTo: 'tags',
+            hasMany: true,
+            admin: {
+                description: 'Tag this article for discovery and related posts matching',
+            },
+        },
+        {
+            name: 'linkedProducts',
+            type: 'relationship',
+            relationTo: 'products',
+            hasMany: true,
+            label: 'Linked Store Products',
+            admin: {
+                description: 'Directly connect real catalog products for interactive shoppable looks',
+            },
+        },
+        {
+            name: 'metaTitle',
+            type: 'text',
+            label: 'Meta Title',
+            admin: {
+                description: 'SEO title (defaults to article title if empty)',
+            },
+        },
+        {
+            name: 'metaDescription',
+            type: 'textarea',
+            label: 'Meta Description',
+            admin: {
+                description: 'SEO description (defaults to article summary if empty)',
+            },
+        },
+        {
+            name: 'ogImage',
+            type: 'upload',
+            relationTo: 'media',
+            label: 'Social Share Image (OG Image)',
+        },
     ],
     hooks: {
         afterChange: [createRevalidateHook(CACHE_TAGS.ARTICLES)],

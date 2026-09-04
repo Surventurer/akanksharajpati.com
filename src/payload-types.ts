@@ -69,6 +69,13 @@ export interface Config {
   collections: {
     articles: Article;
     'article-authors': ArticleAuthor;
+    categories: Category;
+    tags: Tag;
+    products: Product;
+    'product-categories': ProductCategory;
+    orders: Order;
+    videos: Video;
+    playlists: Playlist;
     comments: Comment;
     media: Media;
     fonts: Font;
@@ -83,6 +90,13 @@ export interface Config {
   collectionsSelect: {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'article-authors': ArticleAuthorsSelect<false> | ArticleAuthorsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    'product-categories': ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
+    playlists: PlaylistsSelect<false> | PlaylistsSelect<true>;
     comments: CommentsSelect<false> | CommentsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     fonts: FontsSelect<false> | FontsSelect<true>;
@@ -203,6 +217,23 @@ export interface Article {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Tag this article for discovery and related posts matching
+   */
+  tags?: (string | Tag)[] | null;
+  /**
+   * Directly connect real catalog products for interactive shoppable looks
+   */
+  linkedProducts?: (string | Product)[] | null;
+  /**
+   * SEO title (defaults to article title if empty)
+   */
+  metaTitle?: string | null;
+  /**
+   * SEO description (defaults to article summary if empty)
+   */
+  metaDescription?: string | null;
+  ogImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -265,6 +296,254 @@ export interface ArticleAuthor {
   avatar?: (string | null) | Media;
   role: string;
   bio?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  name: string;
+  /**
+   * Unique tag slug
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  /**
+   * Unique product URL handle
+   */
+  slug: string;
+  status: 'active' | 'draft' | 'archived';
+  /**
+   * Current price (e.g. 45.00)
+   */
+  price: number;
+  /**
+   * Original retail price for sale strikethrough (optional)
+   */
+  compareAtPrice?: number | null;
+  /**
+   * Stock Keeping Unit (optional)
+   */
+  sku?: string | null;
+  /**
+   * Available stock quantity
+   */
+  inventory: number;
+  /**
+   * Product categories for browsing and filtering
+   */
+  categories?: (string | ProductCategory)[] | null;
+  /**
+   * Primary product thumbnail and hero image
+   */
+  featuredImage: string | Media;
+  gallery?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Brief product teaser displayed in grids and cards
+   */
+  shortDescription?: string | null;
+  /**
+   * Full product details, story, and specifications
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Highlight this product on homepage or featured banners
+   */
+  featured?: boolean | null;
+  specifications?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-categories".
+ */
+export interface ProductCategory {
+  id: string;
+  name: string;
+  /**
+   * Unique URL slug (auto-generated from name if left blank)
+   */
+  slug: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  name: string;
+  /**
+   * Unique URL slug
+   */
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: string;
+  /**
+   * Unique order reference identifier
+   */
+  orderNumber: string;
+  customerEmail: string;
+  customerName?: string | null;
+  shippingAddress?: {
+    line1?: string | null;
+    line2?: string | null;
+    city?: string | null;
+    state?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+  };
+  items: {
+    product?: (string | null) | Product;
+    title: string;
+    quantity: number;
+    unitPrice: number;
+    totalPrice: number;
+    id?: string | null;
+  }[];
+  subtotal: number;
+  shipping?: number | null;
+  tax?: number | null;
+  total: number;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  fulfillmentStatus: 'unfulfilled' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  stripeSessionId?: string | null;
+  stripePaymentIntentId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: string;
+  title: string;
+  /**
+   * Unique URL slug for watch page
+   */
+  slug: string;
+  /**
+   * YouTube or Vimeo URL (e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...)
+   */
+  videoUrl: string;
+  videoProvider?: ('youtube' | 'vimeo') | null;
+  /**
+   * Extracted identifier (auto-filled from URL)
+   */
+  videoId?: string | null;
+  /**
+   * Category tag (e.g. Travel, Fashion, Vlog, Design)
+   */
+  category: string;
+  /**
+   * Duration string (e.g. 12:45)
+   */
+  duration?: string | null;
+  /**
+   * Custom high-res poster (optional: defaults to YouTube thumbnail)
+   */
+  thumbnail?: (string | null) | Media;
+  /**
+   * Short video overview displayed in cards and previews
+   */
+  summary?: string | null;
+  /**
+   * Full video description, show notes, and links
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Pin to top of Watch page as Hero Feature
+   */
+  featured?: boolean | null;
+  /**
+   * Total video views
+   */
+  views?: number | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "playlists".
+ */
+export interface Playlist {
+  id: string;
+  title: string;
+  /**
+   * URL slug for playlist/series page
+   */
+  slug: string;
+  description?: string | null;
+  coverImage?: (string | null) | Media;
+  /**
+   * Videos in this playlist / series in playback order
+   */
+  videos?: (string | Video)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -474,6 +753,34 @@ export interface PayloadLockedDocument {
         value: string | ArticleAuthor;
       } | null)
     | ({
+        relationTo: 'categories';
+        value: string | Category;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: string | Tag;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'product-categories';
+        value: string | ProductCategory;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: string | Order;
+      } | null)
+    | ({
+        relationTo: 'videos';
+        value: string | Video;
+      } | null)
+    | ({
+        relationTo: 'playlists';
+        value: string | Playlist;
+      } | null)
+    | ({
         relationTo: 'comments';
         value: string | Comment;
       } | null)
@@ -563,6 +870,11 @@ export interface ArticlesSelect<T extends boolean = true> {
         link?: T;
         id?: T;
       };
+  tags?: T;
+  linkedProducts?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  ogImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -575,6 +887,145 @@ export interface ArticleAuthorsSelect<T extends boolean = true> {
   avatar?: T;
   role?: T;
   bio?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  price?: T;
+  compareAtPrice?: T;
+  sku?: T;
+  inventory?: T;
+  categories?: T;
+  featuredImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  shortDescription?: T;
+  description?: T;
+  featured?: T;
+  specifications?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-categories_select".
+ */
+export interface ProductCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  customerEmail?: T;
+  customerName?: T;
+  shippingAddress?:
+    | T
+    | {
+        line1?: T;
+        line2?: T;
+        city?: T;
+        state?: T;
+        postalCode?: T;
+        country?: T;
+      };
+  items?:
+    | T
+    | {
+        product?: T;
+        title?: T;
+        quantity?: T;
+        unitPrice?: T;
+        totalPrice?: T;
+        id?: T;
+      };
+  subtotal?: T;
+  shipping?: T;
+  tax?: T;
+  total?: T;
+  paymentStatus?: T;
+  fulfillmentStatus?: T;
+  stripeSessionId?: T;
+  stripePaymentIntentId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  videoUrl?: T;
+  videoProvider?: T;
+  videoId?: T;
+  category?: T;
+  duration?: T;
+  thumbnail?: T;
+  summary?: T;
+  description?: T;
+  featured?: T;
+  views?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "playlists_select".
+ */
+export interface PlaylistsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  coverImage?: T;
+  videos?: T;
   updatedAt?: T;
   createdAt?: T;
 }

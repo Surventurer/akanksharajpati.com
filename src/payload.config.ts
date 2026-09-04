@@ -25,6 +25,13 @@ import { ShopPage } from './globals/ShopPage/config'
 import { ContactPage } from './globals/ContactPage/config'
 import { WatchPage } from './globals/WatchPage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
+import { Products } from './collections/Shop/Products/config'
+import { ProductCategories } from './collections/Shop/ProductCategories/config'
+import { Orders } from './collections/Shop/Orders/config'
+import { Videos } from './collections/Watch/Videos/config'
+import { Playlists } from './collections/Watch/Playlists/config'
+import { Tags } from './collections/Content/Tags/config'
+import { Categories } from './collections/Content/Categories/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -73,7 +80,22 @@ export default buildConfig({
         'https://akanksharajpati.vercel.app',
         process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
     ].filter(Boolean),
-    collections: [Articles, ArticleAuthors, Comments, Media, Fonts, Users, Roles],
+    collections: [
+        Articles,
+        ArticleAuthors,
+        Categories,
+        Tags,
+        Products,
+        ProductCategories,
+        Orders,
+        Videos,
+        Playlists,
+        Comments,
+        Media,
+        Fonts,
+        Users,
+        Roles,
+    ],
     globals: [HomePage, BlogPage, AboutPage, ShopPage, ContactPage, WatchPage, Header, Footer, JoinOurInnerCircle, SiteSettings],
     editor: lexicalEditor({
         features: ({ defaultFeatures }) => [

@@ -4,6 +4,8 @@ import Footer from '@/components/layout/Footer'
 import { Plus_Jakarta_Sans, Playfair_Display, Libre_Baskerville } from 'next/font/google'
 import { cn, hexToHsl } from '@/lib/utils'
 import { fetchHeader, fetchFonts, fetchSiteSettings } from '@/lib/cms'
+import { CartProvider } from '@/context/CartContext'
+import CartDrawer from '@/components/shop/CartDrawer'
 import '../globals.css'
 
 export const viewport = {
@@ -106,11 +108,14 @@ export default async function FrontendLayout({
                     fontSerif.variable
                 )}
             >
-                <Header data={headerData} />
-                <main className="min-h-screen">
-                    {children}
-                </main>
-                <Footer />
+                <CartProvider>
+                    <Header data={headerData} />
+                    <main className="min-h-screen">
+                        {children}
+                    </main>
+                    <Footer />
+                    <CartDrawer />
+                </CartProvider>
             </body>
         </html>
     )

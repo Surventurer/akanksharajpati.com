@@ -4,12 +4,16 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShopPage as ShopPageType, Media, Font } from "@/payload-types";
+import { useCart } from "@/context/CartContext";
 
 interface ShopClientProps {
     pageData: ShopPageType | null;
+    collectionProducts?: any[];
+    collectionCategories?: any[];
 }
 
-export default function ShopClient({ pageData }: ShopClientProps) {
+export default function ShopClient({ pageData, collectionProducts, collectionCategories }: ShopClientProps) {
+    const { addItem } = useCart();
     const [activeCategory, setActiveCategory] = useState("all");
     const [sortBy, setSortBy] = useState("newest");
 
@@ -43,8 +47,32 @@ export default function ShopClient({ pageData }: ShopClientProps) {
         );
     }
 
-    const categories = pageData.categories || [{ name: 'All Objects', slug: 'all' }];
-    const products = pageData.products || [];
+    const defaultCategories = pageData.categories || [{ name: 'All Objects', slug: 'all' }];
+    const categories = collectionCategories && collectionCategories.length > 0
+        ? [{ name: 'All Objects', slug: 'all' }, ...collectionCategories.map((c: any) => ({ name: c.name, slug: c.slug }))]
+        : defaultCategories;
+
+    const mappedCollectionProducts = (collectionProducts || []).map((p: any) => {
+        const cat = Array.isArray(p.categories) && p.categories[0] ? (typeof p.categories[0] === 'object' ? p.categories[0].name : p.categories[0]) : 'Object';
+        return {
+            id: p.id,
+            name: p.title,
+            slug: p.slug,
+            price: `$${Number(p.price).toFixed(2)}`,
+            rawPrice: Number(p.price),
+            salePrice: p.compareAtPrice ? `$${Number(p.price).toFixed(2)}` : undefined,
+            category: cat,
+            image: p.featuredImage,
+            description: p.shortDescription || '',
+            link: `/shop/${p.slug}`,
+            badge: p.featured ? 'Featured' : undefined,
+        };
+    });
+
+    const products = mappedCollectionProducts.length > 0
+        ? mappedCollectionProducts
+        : (pageData.products || []);
+
     const sortOptions = pageData.sortOptions || [{ label: 'Newest Arrivals', value: 'newest' }];
 
     // Filter products by category
@@ -265,7 +293,7 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                                 <div 
                                                     className="badge-premium absolute top-4 left-4"
                                                     style={{ 
-                                                        backgroundColor: product.badgeColor || pageData.saleBadgeColor || 'var(--accent)',
+                                                        backgroundColor: (product as any).badgeColor || pageData.saleBadgeColor || 'var(--accent)',
                                                         color: '#fff',
                                                     }}
                                                 >
@@ -360,7 +388,19 @@ export default function ShopClient({ pageData }: ShopClientProps) {
                                         )}
                                         {/* Add to Cart Button */}
                                         {pageData.showAddToCartButton && (
-                                            <button className="mt-4 inline-flex items-center justify-center rounded-lg bg-foreground text-background px-6 py-2.5 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground/90 transition-all duration-300 shadow-sm hover:shadow-md">
+                                            <button 
+                                                onClick={() => {
+                                                    const priceNum = (product as any).rawPrice ?? parseFloat(String(product.price || '0').replace(/[^0-9.]/g, '')) ?? 0;
+                                                    addItem({
+                                                        productId: (product as any).id || (product as any).slug || `prod-${index}`,
+                                                        slug: (product as any).slug || '',
+                                                        title: product.name,
+                                                        price: priceNum,
+                                                        image: productImage,
+                                                    });
+                                                }}
+                                                className="mt-4 inline-flex items-center justify-center rounded-lg bg-foreground text-background px-6 py-2.5 text-[10px] uppercase tracking-widest font-bold hover:bg-foreground/90 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer active:scale-95"
+                                            >
                                                 {pageData.addToCartButtonText || 'Add to Cart'}
                                             </button>
                                         )}

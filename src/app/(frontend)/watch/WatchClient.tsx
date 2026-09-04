@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { WatchPage, Media, Font } from '@/payload-types';
 import { Icon } from '@/components/ui/Icon';
 
@@ -340,7 +341,11 @@ export default function WatchClient({ data }: WatchClientProps) {
                                                     fontFamily: getFontFamily(data.videoCardTitleFont)
                                                 }}
                                             >
-                                                {video.title}
+                                                {video.slug ? (
+                                                    <Link href={`/watch/${video.slug}`} className="hover:opacity-75 transition-opacity">
+                                                        {video.title}
+                                                    </Link>
+                                                ) : video.title}
                                             </h3>
                                             <p 
                                                 className="text-sm mt-0.5"

@@ -1,8 +1,6 @@
-import { fetchWatchPage } from '@/lib/cms';
+import { fetchWatchPage, fetchVideos } from '@/lib/cms';
 import WatchClient from './WatchClient';
 import { Metadata } from 'next';
-
-
 
 export async function generateMetadata(): Promise<Metadata> {
     const data = await fetchWatchPage();
@@ -16,7 +14,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function WatchPage() {
-    const data = await fetchWatchPage();
+    const [data, collectionVideos] = await Promise.all([
+        fetchWatchPage(),
+        fetchVideos(),
+    ]);
 
     if (!data) {
         return (
@@ -31,6 +32,25 @@ export default async function WatchPage() {
 
     // Serialize data to prevent enqueueModel errors
     const serializedData = JSON.parse(JSON.stringify(data));
+
+    // If videos exist in the Videos collection, merge them into the page
+    if (collectionVideos && collectionVideos.length > 0) {
+        const mappedVideos = collectionVideos.map((v: any) => ({
+            id: v.id,
+            title: v.title,
+            slug: v.slug,
+            videoUrl: v.videoUrl,
+            duration: v.duration || '10:00',
+            category: v.category || 'Cinematic',
+            views: v.views || 0,
+            publishedAt: v.publishedAt,
+            thumbnail: v.thumbnail,
+            summary: v.summary,
+            featured: Boolean(v.featured),
+        }));
+
+        serializedData.videos = mappedVideos;
+    }
 
     return <WatchClient data={serializedData} />;
 }

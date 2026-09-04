@@ -124,7 +124,7 @@ export function fetchArticleBySlug(slug: string) {
           ? `${(doc as any).readTimeInMins} min read`
           : '5 min read'
 
-        const relatedProducts = (doc.relatedProducts || []).map((p: any) => {
+        const manualRelated = (doc.relatedProducts || []).map((p: any) => {
           const pImage = p.image as Media
           return {
             name: p.name,
@@ -134,6 +134,20 @@ export function fetchArticleBySlug(slug: string) {
             image: pImage?.url ? `${CMS_URL}${pImage.url}` : '',
           }
         })
+
+        const linkedStoreProducts = ((doc as any).linkedProducts || []).map((p: any) => {
+          if (typeof p !== 'object' || !p) return null
+          const pImage = typeof p.featuredImage === 'object' ? p.featuredImage : null
+          return {
+            name: p.title,
+            price: `$${Number(p.price || 0).toFixed(2)}`,
+            category: 'Store Object',
+            link: `/shop/${p.slug}`,
+            image: pImage?.url ? `${CMS_URL}${pImage.url}` : '',
+          }
+        }).filter(Boolean)
+
+        const relatedProducts = [...manualRelated, ...linkedStoreProducts]
 
         return {
           id: doc.id,
@@ -411,6 +425,202 @@ export function fetchSiteSettings() {
     },
     ['globals', 'site-settings'],
     { tags: [CACHE_TAGS.SITE_SETTINGS] },
+  )()
+}
+
+// ─── Products & Shop ─────────────────────────────────────
+
+export function fetchProducts(options?: { category?: string; featured?: boolean; limit?: number }) {
+  const cacheKey = ['products', options?.category ?? 'all', options?.featured ? 'featured' : 'all', String(options?.limit ?? 50)]
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const where: any = {
+          status: { equals: 'active' },
+        }
+        if (options?.featured) {
+          where.featured = { equals: true }
+        }
+        const data = await payload.find({
+          collection: 'products',
+          where,
+          limit: options?.limit ?? 50,
+          depth: 2,
+          sort: '-createdAt',
+        })
+        return data.docs
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        return []
+      }
+    },
+    cacheKey,
+    { tags: [CACHE_TAGS.PRODUCTS] },
+  )()
+}
+
+export function fetchProductBySlug(slug: string) {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.find({
+          collection: 'products',
+          where: {
+            slug: { equals: slug },
+            status: { equals: 'active' },
+          },
+          depth: 2,
+          limit: 1,
+        })
+        return data.docs[0] || null
+      } catch (error) {
+        console.error('Error fetching product by slug:', error)
+        return null
+      }
+    },
+    ['product', slug],
+    { tags: [CACHE_TAGS.PRODUCTS] },
+  )()
+}
+
+export function fetchProductCategories() {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.find({
+          collection: 'product-categories',
+          limit: 100,
+          depth: 1,
+        })
+        return data.docs
+      } catch (error) {
+        console.error('Error fetching product categories:', error)
+        return []
+      }
+    },
+    ['product-categories'],
+    { tags: [CACHE_TAGS.PRODUCT_CATEGORIES] },
+  )()
+}
+
+// ─── Videos & Media ──────────────────────────────────────
+
+export function fetchVideos(options?: { category?: string; featured?: boolean; limit?: number }) {
+  const cacheKey = ['videos', options?.category ?? 'all', options?.featured ? 'featured' : 'all', String(options?.limit ?? 50)]
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const where: any = {}
+        if (options?.category && options.category !== 'all') {
+          where.category = { equals: options.category }
+        }
+        if (options?.featured) {
+          where.featured = { equals: true }
+        }
+        const data = await payload.find({
+          collection: 'videos',
+          where: Object.keys(where).length > 0 ? where : undefined,
+          limit: options?.limit ?? 50,
+          depth: 2,
+          sort: '-publishedAt',
+        })
+        return data.docs
+      } catch (error) {
+        console.error('Error fetching videos:', error)
+        return []
+      }
+    },
+    cacheKey,
+    { tags: [CACHE_TAGS.VIDEOS] },
+  )()
+}
+
+export function fetchVideoBySlug(slug: string) {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.find({
+          collection: 'videos',
+          where: { slug: { equals: slug } },
+          depth: 2,
+          limit: 1,
+        })
+        return data.docs[0] || null
+      } catch (error) {
+        console.error('Error fetching video by slug:', error)
+        return null
+      }
+    },
+    ['video', slug],
+    { tags: [CACHE_TAGS.VIDEOS] },
+  )()
+}
+
+export function fetchPlaylists() {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.find({
+          collection: 'playlists',
+          depth: 2,
+          limit: 20,
+        })
+        return data.docs
+      } catch (error) {
+        console.error('Error fetching playlists:', error)
+        return []
+      }
+    },
+    ['playlists'],
+    { tags: [CACHE_TAGS.PLAYLISTS] },
+  )()
+}
+
+// ─── Content Taxonomies ──────────────────────────────────
+
+export function fetchCategories() {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.find({
+          collection: 'categories',
+          limit: 100,
+        })
+        return data.docs
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        return []
+      }
+    },
+    ['categories'],
+    { tags: [CACHE_TAGS.CATEGORIES] },
+  )()
+}
+
+export function fetchTags() {
+  return unstable_cache(
+    async () => {
+      try {
+        const payload = await getPayloadClient()
+        const data = await payload.find({
+          collection: 'tags',
+          limit: 100,
+        })
+        return data.docs
+      } catch (error) {
+        console.error('Error fetching tags:', error)
+        return []
+      }
+    },
+    ['tags'],
+    { tags: [CACHE_TAGS.TAGS] },
   )()
 }
 
