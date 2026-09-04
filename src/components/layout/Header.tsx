@@ -17,19 +17,7 @@ interface HeaderProps {
 const Header = ({ data }: HeaderProps) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  // Detect mobile view
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-    }, []);
 
   // Track scroll position for header styling
   useEffect(() => {
@@ -40,6 +28,11 @@ const Header = ({ data }: HeaderProps) => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // If no data from CMS, don't render header
+  if (!data) {
+    return null;
+  }
 
   // Parse Logo
   const logoUrl = data?.logo && typeof data.logo !== 'string' && (data.logo as Media).url
@@ -77,10 +70,126 @@ const Header = ({ data }: HeaderProps) => {
   // Parse nav icons (search, shop, etc)
   const navIcons = data?.navIcons || [];
 
-  // If no data from CMS, don't render header
-  if (!data) {
+  // Helper to render nav icon / label item responsively with pure CSS
+  const renderNavIcon = (
+    iconItem: NonNullable<HeaderType['navIcons']>[number],
+    i: number,
+    isOverlay = false
+  ) => {
+    if (iconItem.enabled === false) return null;
+
+    const iconUrl = getMediaUrl(iconItem.icon as Media);
+
+    // Icon visibility conditions
+    const hasIcon = iconItem.showIcon !== false;
+    const showIconOnMobile = hasIcon && iconItem.showIconOnMobile !== false;
+    const showIconOnDesktop = hasIcon && iconItem.showIconOnDesktop === true;
+
+    // Label visibility conditions
+    const hasLabel = iconItem.showLabel === true && !!iconItem.label;
+    const showLabelOnMobile = hasLabel && iconItem.showLabelOnMobile !== false;
+    const showLabelOnDesktop = hasLabel && iconItem.showLabelOnDesktop !== false;
+
+    // Overall item visibility
+    const visibleOnMobile = showIconOnMobile || showLabelOnMobile;
+    const visibleOnDesktop = showIconOnDesktop || showLabelOnDesktop;
+
+    if (!visibleOnMobile && !visibleOnDesktop) return null;
+
+    // Responsive classes for container
+    let containerClass = 'flex';
+    if (visibleOnMobile && !visibleOnDesktop) {
+      containerClass = 'flex md:hidden';
+    } else if (!visibleOnMobile && visibleOnDesktop) {
+      containerClass = 'hidden md:flex';
+    }
+
+    // Responsive classes for icon
+    let iconClass = '';
+    if (showIconOnMobile && !showIconOnDesktop) {
+      iconClass = 'inline-flex md:hidden';
+    } else if (!showIconOnMobile && showIconOnDesktop) {
+      iconClass = 'hidden md:inline-flex';
+    } else if (showIconOnMobile && showIconOnDesktop) {
+      iconClass = 'inline-flex';
+    }
+
+    const iconElement = (showIconOnMobile || showIconOnDesktop) ? (
+      <span className={`items-center justify-center ${iconClass}`}>
+        {iconUrl ? (
+          <div className={`relative ${isOverlay ? 'w-6 h-6' : 'w-5 h-5'}`}>
+            <Image
+              src={iconUrl}
+              alt={iconItem.label || 'Icon'}
+              fill
+              sizes={isOverlay ? '24px' : '20px'}
+              className="object-contain"
+            />
+          </div>
+        ) : iconItem.type === 'search' ? (
+          <Icon name="search" size={isOverlay ? 20 : 18} />
+        ) : iconItem.type === 'link' ? (
+          <Icon name="shopping_bag" size={isOverlay ? 20 : 18} />
+        ) : null}
+      </span>
+    ) : null;
+
+    // Responsive classes for label
+    let labelClass = '';
+    if (showLabelOnMobile && !showLabelOnDesktop) {
+      labelClass = 'inline md:hidden';
+    } else if (!showLabelOnMobile && showLabelOnDesktop) {
+      labelClass = 'hidden md:inline';
+    } else if (showLabelOnMobile && showLabelOnDesktop) {
+      labelClass = 'inline';
+    }
+
+    const labelElement = (showLabelOnMobile || showLabelOnDesktop) && iconItem.label ? (
+      <span
+        className={`${isOverlay ? 'text-xs' : 'text-[10px] md:text-xs'} uppercase tracking-widest font-bold ${labelClass}`}
+        style={{
+          fontFamily: getFontFamily(iconItem.font as Font),
+          color: iconItem.color || data.headerTextColor || '#4a4b34',
+        }}
+      >
+        {iconItem.label}
+      </span>
+    ) : null;
+
+    const buttonClasses = `${containerClass} hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`;
+
+    if (iconItem.type === 'search') {
+      return (
+        <button
+          key={i}
+          className={buttonClasses}
+          aria-label={iconItem.label || 'Search'}
+          style={{ color: data.headerTextColor || '#4a4b34' }}
+        >
+          {iconElement}
+          {labelElement}
+        </button>
+      );
+    }
+
+    if (iconItem.type === 'link' && iconItem.link) {
+      return (
+        <Link
+          key={i}
+          href={iconItem.link}
+          target={iconItem.newTab ? '_blank' : '_self'}
+          onClick={isOverlay ? () => setMenuOpen(false) : undefined}
+          className={buttonClasses}
+          style={{ color: data.headerTextColor || '#4a4b34' }}
+        >
+          {iconElement}
+          {labelElement}
+        </Link>
+      );
+    }
+
     return null;
-  }
+  };
 
   return (
     <>
@@ -129,80 +238,7 @@ const Header = ({ data }: HeaderProps) => {
 
           {/* Right Side Icons */}
           <div className="flex items-center gap-1 md:gap-2">
-            {navIcons && navIcons.map((iconItem, i) => {
-              if (iconItem.enabled === false) return null;
-
-              const iconUrl = getMediaUrl(iconItem.icon as Media);
-              
-              const shouldShowIcon = iconItem.showIcon === true;
-              const showIconOnDevice = shouldShowIcon && (isMobile ? iconItem.showIconOnMobile !== false : iconItem.showIconOnDesktop !== false);
-              
-              const shouldShowLabel = iconItem.showLabel === true;
-              const showLabelOnDevice = shouldShowLabel && (isMobile ? iconItem.showLabelOnMobile !== false : iconItem.showLabelOnDesktop !== false);
-              
-              const iconContent = showIconOnDevice ? (
-                iconUrl ? (
-                  <div className="relative w-5 h-5">
-                    <Image
-                      src={iconUrl}
-                      alt={iconItem.label || 'Icon'}
-                      fill
-                      sizes="20px"
-                      className="object-contain"
-                    />
-                  </div>
-                ) : iconItem.type === 'search' ? (
-                  <Icon name="search" size={18} />
-                ) : iconItem.type === 'link' ? (
-                  <Icon name="shopping_bag" size={18} />
-                ) : null
-              ) : null;
-
-              const labelContent = showLabelOnDevice && iconItem.label ? (
-                <span 
-                  className="text-[10px] md:text-xs uppercase tracking-widest font-bold"
-                  style={{
-                    fontFamily: getFontFamily(iconItem.font as Font),
-                    color: iconItem.color || data.headerTextColor || '#4a4b34'
-                  }}
-                >
-                  {iconItem.label}
-                </span>
-              ) : null;
-
-              const displayContent = iconContent || labelContent;
-
-              if (!displayContent) return null;
-              
-              if (iconItem.type === 'search') {
-                return (
-                  <button
-                      key={i}
-                      className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      aria-label={iconItem.label || 'Search'}
-                      style={{ color: data.headerTextColor || '#4a4b34' }}
-                    >
-                      {displayContent}
-                    </button>
-                );
-              }
-
-              if (iconItem.type === 'link' && iconItem.link) {
-                return (
-                    <Link
-                      key={i}
-                      href={iconItem.link}
-                      target={iconItem.newTab ? "_blank" : "_self"}
-                      className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      style={{ color: data.headerTextColor || '#4a4b34' }}
-                    >
-                      {displayContent}
-                    </Link>
-                );
-              }
-
-              return null;
-            })}
+            {navIcons && navIcons.map((iconItem, i) => renderNavIcon(iconItem, i, false))}
           </div>
         </div>
       </header>
@@ -244,80 +280,7 @@ const Header = ({ data }: HeaderProps) => {
 
               {/* Right Icons */}
               <div className="flex items-center gap-6">
-                {navIcons && navIcons.map((iconItem, i) => {
-                  if (iconItem.enabled === false) return null;
-
-                  const iconUrl = getMediaUrl(iconItem.icon as Media);
-                  
-                  const shouldShowIcon = iconItem.showIcon === true;
-                  const showIconOnDevice = shouldShowIcon && (isMobile ? iconItem.showIconOnMobile !== false : iconItem.showIconOnDesktop !== false);
-                  
-                  const shouldShowLabel = iconItem.showLabel === true;
-                  const showLabelOnDevice = shouldShowLabel && (isMobile ? iconItem.showLabelOnMobile !== false : iconItem.showLabelOnDesktop !== false);
-                  
-                  const iconContent = showIconOnDevice ? (
-                    iconUrl ? (
-                      <div className="relative w-6 h-6">
-                        <Image
-                          src={iconUrl}
-                          alt={iconItem.label || 'Icon'}
-                          fill
-                          sizes="24px"
-                          className="object-contain"
-                        />
-                      </div>
-                    ) : iconItem.type === 'search' ? (
-                      <Icon name="search" size={20} />
-                    ) : iconItem.type === 'link' ? (
-                      <Icon name="shopping_bag" size={20} />
-                    ) : null
-                  ) : null;
-
-                  const labelContent = showLabelOnDevice && iconItem.label ? (
-                    <span 
-                      className="text-xs uppercase tracking-widest font-bold"
-                      style={{
-                        fontFamily: getFontFamily(iconItem.font as Font),
-                        color: iconItem.color || data.headerTextColor || '#4a4b34'
-                      }}
-                    >
-                      {iconItem.label}
-                    </span>
-                  ) : null;
-
-                  const displayContent = iconContent || labelContent;
-
-                  if (!displayContent) return null;
-                  
-                  if (iconItem.type === 'search') {
-                    return (
-                      <button
-                        key={i}
-                        className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        aria-label={iconItem.label || 'Search'}
-                        style={{ color: data.headerTextColor || '#4a4b34' }}
-                      >
-                        {displayContent}
-                      </button>
-                    );
-                  }
-
-                  if (iconItem.type === 'link' && iconItem.link) {
-                    return (
-                      <Link
-                        key={i}
-                        href={iconItem.link}
-                        target={iconItem.newTab ? "_blank" : "_self"}
-                        className="hover:bg-black/5 active:bg-black/10 active:scale-95 transition-all duration-200 rounded-xl p-2.5 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        style={{ color: data.headerTextColor || '#4a4b34' }}
-                      >
-                        {displayContent}
-                      </Link>
-                    );
-                  }
-
-                  return null;
-                })}
+                {navIcons && navIcons.map((iconItem, i) => renderNavIcon(iconItem, i, true))}
               </div>
             </div>
 
