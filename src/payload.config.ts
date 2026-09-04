@@ -95,7 +95,7 @@ export default buildConfig({
     sharp,
     plugins: [
         vercelBlobStorage({
-            enabled: true,
+            enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
             collections: {
                 [Media.slug]: true,
                 [Fonts.slug]: true,

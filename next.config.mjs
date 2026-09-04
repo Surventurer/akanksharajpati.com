@@ -12,18 +12,32 @@ const nextConfig = {
             '.js': ['.ts', '.tsx', '.js', '.jsx'],
             '.mjs': ['.mts', '.mjs'],
         }
-
         return webpackConfig
+    },
+    outputFileTracingIncludes: {
+        '/**': ['./media/**/*', './fonts/**/*'],
     },
     images: {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'via.assets.so',
+                hostname: '**.vercel-storage.com',
             },
             {
                 protocol: 'https',
-                hostname: '*.public.blob.vercel-storage.com',
+                hostname: '**.public.blob.vercel-storage.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'picsum.photos',
+            },
+            {
+                protocol: 'https',
+                hostname: 'fastly.picsum.photos',
+            },
+            {
+                protocol: 'https',
+                hostname: 'via.assets.so',
             },
             {
                 protocol: 'https',
