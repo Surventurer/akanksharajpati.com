@@ -80,8 +80,8 @@ export default function WatchClient({ data }: WatchClientProps) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold mb-4">Coming Soon</h1>
-                    <p className="text-foreground/60">Our video content is being curated. Please check back later.</p>
+                    <h1 className="text-4xl font-bold mb-4">{(data as any)?.comingSoonText || 'Coming Soon'}</h1>
+                    <p className="text-foreground/60">{(data as any)?.comingSoonDescription || 'Our video content is being curated. Please check back later.'}</p>
                 </div>
             </div>
         );

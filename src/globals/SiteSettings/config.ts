@@ -44,13 +44,25 @@ export const SiteSettings: GlobalConfig = {
                             name: 'logo',
                             type: 'upload',
                             relationTo: 'media',
-                            label: 'Primary Logo',
+                            label: 'Primary Logo (Light Mode / Default)',
+                        },
+                        {
+                            name: 'logoDark',
+                            type: 'upload',
+                            relationTo: 'media',
+                            label: 'Dark Mode Logo (White / Inverted)',
                         },
                         {
                             name: 'favicon',
                             type: 'upload',
                             relationTo: 'media',
-                            label: 'Favicon',
+                            label: 'Favicon (Light Mode / Default)',
+                        },
+                        {
+                            name: 'faviconDark',
+                            type: 'upload',
+                            relationTo: 'media',
+                            label: 'Dark Mode Favicon (White / Inverted for dark tabs)',
                         },
                         {
                             name: 'ogImage',
@@ -214,6 +226,130 @@ export const SiteSettings: GlobalConfig = {
                                     required: true,
                                 },
                             ],
+                        },
+                    ],
+                },
+                {
+                    label: 'Floating Action Button',
+                    description: 'Configure the draggable floating CTA button that appears across the website.',
+                    fields: [
+                        {
+                            name: 'floatingButtonEnabled',
+                            type: 'checkbox',
+                            label: 'Enable Floating Action Button',
+                            defaultValue: true,
+                        },
+                        {
+                            name: 'floatingButtonDraggable',
+                            type: 'checkbox',
+                            label: 'Allow visitors to drag and move the button anywhere on screen',
+                            defaultValue: true,
+                        },
+                        {
+                            type: 'row',
+                            fields: [
+                                {
+                                    name: 'floatingButtonLabel',
+                                    type: 'text',
+                                    label: 'Hover Label / Tooltip',
+                                    defaultValue: 'Atelier Shop',
+                                    admin: { width: '50%' },
+                                },
+                                {
+                                    name: 'floatingButtonLink',
+                                    type: 'text',
+                                    label: 'Destination Link URL',
+                                    defaultValue: '/shop',
+                                    admin: { width: '50%' },
+                                },
+                            ],
+                        },
+                        {
+                            type: 'row',
+                            fields: [
+                                {
+                                    name: 'floatingButtonIcon',
+                                    type: 'select',
+                                    label: 'Preset Icon',
+                                    defaultValue: 'menu_book',
+                                    options: [
+                                        { label: 'Book / Journal (menu_book)', value: 'menu_book' },
+                                        { label: 'Shopping Bag (shopping_bag)', value: 'shopping_bag' },
+                                        { label: 'Auto Stories (auto_stories)', value: 'auto_stories' },
+                                        { label: 'Sparkles / Atelier (auto_awesome)', value: 'auto_awesome' },
+                                        { label: 'Video / Watch (smart_display)', value: 'smart_display' },
+                                        { label: 'Mail / Contact (mail)', value: 'mail' },
+                                        { label: 'Custom Icon Upload', value: 'custom' },
+                                    ],
+                                    admin: { width: '50%' },
+                                },
+                                {
+                                    name: 'floatingButtonPosition',
+                                    type: 'select',
+                                    label: 'Default Screen Corner',
+                                    defaultValue: 'bottom-right',
+                                    options: [
+                                        { label: 'Bottom Right', value: 'bottom-right' },
+                                        { label: 'Bottom Left', value: 'bottom-left' },
+                                        { label: 'Top Right', value: 'top-right' },
+                                        { label: 'Top Left', value: 'top-left' },
+                                    ],
+                                    admin: { width: '50%' },
+                                },
+                            ],
+                        },
+                        {
+                            name: 'floatingButtonIconUpload',
+                            type: 'upload',
+                            relationTo: 'media',
+                            label: 'Custom Icon Upload (Optional)',
+                            admin: {
+                                condition: (_, siblingData) => siblingData?.floatingButtonIcon === 'custom',
+                            },
+                        },
+                        {
+                            type: 'row',
+                            fields: [
+                                {
+                                    name: 'floatingButtonBgColor',
+                                    type: 'text',
+                                    label: 'Background Color',
+                                    admin: {
+                                        width: '33%',
+                                        components: {
+                                            Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                        },
+                                    },
+                                },
+                                {
+                                    name: 'floatingButtonTextColor',
+                                    type: 'text',
+                                    label: 'Icon / Text Color',
+                                    admin: {
+                                        width: '33%',
+                                        components: {
+                                            Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                        },
+                                    },
+                                },
+                                {
+                                    name: 'floatingButtonBorderColor',
+                                    type: 'text',
+                                    label: 'Border Color',
+                                    admin: {
+                                        width: '33%',
+                                        components: {
+                                            Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                        {
+                            name: 'floatingButtonHideOnMobile',
+                            type: 'checkbox',
+                            label: 'Hide on Mobile Devices',
+                            defaultValue: false,
                         },
                     ],
                 },

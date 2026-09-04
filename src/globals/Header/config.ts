@@ -50,7 +50,14 @@ export const Header: GlobalConfig = {
                                     type: 'upload',
                                     relationTo: 'media',
                                     required: false,
-                                    label: 'Logo',
+                                    label: 'Logo (Primary)',
+                                },
+                                {
+                                    name: 'logoDark',
+                                    type: 'upload',
+                                    relationTo: 'media',
+                                    required: false,
+                                    label: 'Logo (Dark Mode / Inverted)',
                                 },
                                 {
                                     name: 'ownerName',

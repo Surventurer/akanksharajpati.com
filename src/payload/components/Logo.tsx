@@ -27,9 +27,28 @@ const textStyle: React.CSSProperties = {
 const Logo: React.FC = () => {
   return (
     <div style={logoStyle}>
+      <style>{`
+        .admin-logo-dark { display: none; }
+        .admin-logo-light { display: block; }
+        [data-theme="dark"] .admin-logo-dark { display: block; }
+        [data-theme="dark"] .admin-logo-light { display: none; }
+        [data-theme="auto"] .admin-logo-dark { display: block; }
+        [data-theme="auto"] .admin-logo-light { display: none; }
+        @media (prefers-color-scheme: light) {
+          [data-theme="auto"] .admin-logo-dark { display: none; }
+          [data-theme="auto"] .admin-logo-light { display: block; }
+        }
+      `}</style>
       <img
         src="/asset/logo.png"
         alt="Akanksha Rajpati"
+        className="admin-logo-light"
+        style={imageStyle}
+      />
+      <img
+        src="/asset/logo-white.png"
+        alt="Akanksha Rajpati"
+        className="admin-logo-dark"
         style={imageStyle}
       />
       <span style={textStyle}>Admin</span>
@@ -38,3 +57,4 @@ const Logo: React.FC = () => {
 }
 
 export default Logo
+

@@ -41,6 +41,10 @@ const Header = ({ data }: HeaderProps) => {
     ? (data.logo as Media).url
     : defaultLogo;
 
+  const logoDarkUrl = (data as any)?.logoDark && typeof (data as any).logoDark !== 'string' && ((data as any).logoDark as Media).url
+    ? ((data as any).logoDark as Media).url
+    : null;
+
   // Helper for font family - use font.name as the font-family
   const getFontFamily = (font: Font | string | null | undefined): string => {
     if (!font) return 'inherit';
@@ -244,9 +248,19 @@ const Header = ({ data }: HeaderProps) => {
                   alt="Logo"
                   fill
                   sizes="(max-width: 768px) 128px, 192px"
-                  className="object-contain"
+                  className={`object-contain ${logoDarkUrl ? 'dark:hidden' : ''}`}
                   priority
                 />
+                {logoDarkUrl && (
+                  <Image
+                    src={logoDarkUrl}
+                    alt="Logo"
+                    fill
+                    sizes="(max-width: 768px) 128px, 192px"
+                    className="object-contain hidden dark:block"
+                    priority
+                  />
+                )}
               </div>
           </Link>
 
@@ -287,8 +301,17 @@ const Header = ({ data }: HeaderProps) => {
                     alt="Logo"
                     fill
                     sizes="128px"
-                    className="object-contain"
+                    className={`object-contain ${logoDarkUrl ? 'dark:hidden' : ''}`}
                   />
+                  {logoDarkUrl && (
+                    <Image
+                      src={logoDarkUrl}
+                      alt="Logo"
+                      fill
+                      sizes="128px"
+                      className="object-contain hidden dark:block"
+                    />
+                  )}
                 </div>
               </Link>
 
@@ -385,8 +408,17 @@ const Header = ({ data }: HeaderProps) => {
                       alt="Logo"
                       fill
                       sizes="112px"
-                      className="object-contain"
+                      className={`object-contain ${logoDarkUrl ? 'dark:hidden' : ''}`}
                     />
+                    {logoDarkUrl && (
+                      <Image
+                        src={logoDarkUrl}
+                        alt="Logo"
+                        fill
+                        sizes="112px"
+                        className="object-contain hidden dark:block"
+                      />
+                    )}
                   </div>
                 )}
               </div>

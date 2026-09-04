@@ -21,6 +21,24 @@ export const HomePage: GlobalConfig = {
             },
         },
         {
+            name: 'comingSoonText',
+            type: 'text',
+            label: 'Coming Soon Heading',
+            defaultValue: 'Coming Soon',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
+            name: 'comingSoonDescription',
+            type: 'textarea',
+            label: 'Coming Soon Description',
+            defaultValue: 'This page is currently being updated.',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
             type: 'tabs',
             tabs: [
                 {
@@ -432,6 +450,15 @@ export const HomePage: GlobalConfig = {
                             label: 'View All Button Link',
                             defaultValue: '/shop',
                         },
+                        {
+                            name: 'shopEmptyText',
+                            type: 'text',
+                            label: 'Empty State Text',
+                            defaultValue: 'Products coming soon',
+                            admin: {
+                                description: 'Text to show when there are no products to display',
+                            }
+                        },
                     ],
                 },
                 {
@@ -523,6 +550,15 @@ export const HomePage: GlobalConfig = {
                             type: 'text',
                             label: 'View All Button Link',
                             defaultValue: '/blog',
+                        },
+                        {
+                            name: 'blogEmptyText',
+                            type: 'text',
+                            label: 'Empty State Text',
+                            defaultValue: 'No blog posts available yet.',
+                            admin: {
+                                description: 'Text to show when there are no blog posts to display',
+                            }
                         },
                     ],
                 },
@@ -638,6 +674,15 @@ export const HomePage: GlobalConfig = {
                             type: 'text',
                             label: 'View All Button Link',
                             defaultValue: '/watch',
+                        },
+                        {
+                            name: 'watchEmptyText',
+                            type: 'text',
+                            label: 'Empty State Text',
+                            defaultValue: 'Videos coming soon',
+                            admin: {
+                                description: 'Text to show when there are no videos to display',
+                            }
                         },
                     ],
                 },

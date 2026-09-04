@@ -21,6 +21,24 @@ export const BlogPage: GlobalConfig = {
             },
         },
         {
+            name: 'comingSoonText',
+            type: 'text',
+            label: 'Coming Soon Heading',
+            defaultValue: 'Coming Soon',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
+            name: 'comingSoonDescription',
+            type: 'textarea',
+            label: 'Coming Soon Description',
+            defaultValue: 'This page is currently being updated.',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
             name: 'headerEnabled',
             type: 'checkbox',
             label: 'Enable Header Section',

@@ -43,7 +43,10 @@ export default buildConfig({
         meta: {
             title: 'Akanksha Rajpati',
             titleSuffix: '— Admin',
-            icons: [{ rel: 'icon', url: '/asset/logo.png' }],
+            icons: [
+                { rel: 'icon', url: '/asset/logo.png', media: '(prefers-color-scheme: light)' },
+                { rel: 'icon', url: '/asset/logo-white.png', media: '(prefers-color-scheme: dark)' },
+            ],
         },
         components: {
             graphics: {

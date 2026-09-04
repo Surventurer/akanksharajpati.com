@@ -21,6 +21,24 @@ export const WatchPage: GlobalConfig = {
             },
         },
         {
+            name: 'comingSoonText',
+            type: 'text',
+            label: 'Coming Soon Heading',
+            defaultValue: 'Coming Soon',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
+            name: 'comingSoonDescription',
+            type: 'textarea',
+            label: 'Coming Soon Description',
+            defaultValue: 'Our video content is being curated. Please check back later.',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
             type: 'tabs',
             tabs: [
                 // =====================

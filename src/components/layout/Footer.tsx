@@ -46,11 +46,6 @@ const Footer = async () => {
                   {footerData.brandDescription}
                 </p>
               )}
-              <div className="flex gap-3">
-                <Icon name="alternate_email" size={18} className="hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 p-1 hover:bg-background/10 rounded-full" />
-                <Icon name="public" size={18} className="hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 p-1 hover:bg-background/10 rounded-full" />
-                <Icon name="mail" size={18} className="hover:text-accent transition-all duration-300 cursor-pointer hover:scale-110 p-1 hover:bg-background/10 rounded-full" />
-              </div>
             </div>
           )}
 

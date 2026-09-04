@@ -74,8 +74,8 @@ export default async function Blog({ searchParams }: BlogPageProps) {
             {pageData?.pageEnabled === false ? (
                 <div className="min-h-[60vh] flex items-center justify-center">
                     <div className="text-center">
-                        <h1 className="text-4xl font-display mb-4">Coming Soon</h1>
-                        <p className="text-foreground/60">This page is currently being updated.</p>
+                        <h1 className="text-4xl font-display mb-4">{(pageData as any)?.comingSoonText || 'Coming Soon'}</h1>
+                        <p className="text-foreground/60">{(pageData as any)?.comingSoonDescription || 'This page is currently being updated.'}</p>
                     </div>
                 </div>
             ) : (

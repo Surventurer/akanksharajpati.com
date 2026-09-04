@@ -55,8 +55,8 @@ export default function ContactClient({ data }: ContactClientProps) {
         return (
             <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: pageBackgroundColor }}>
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold mb-4" style={{ color: textColor }}>Coming Soon</h1>
-                    <p style={{ color: mutedTextColor }}>This page is currently being updated. Please check back later.</p>
+                    <h1 className="text-4xl font-bold mb-4" style={{ color: textColor }}>{(data as any)?.comingSoonText || 'Coming Soon'}</h1>
+                    <p style={{ color: mutedTextColor }}>{(data as any)?.comingSoonDescription || 'This page is currently being updated. Please check back later.'}</p>
                 </div>
             </div>
         );

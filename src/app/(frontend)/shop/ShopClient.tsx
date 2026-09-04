@@ -39,8 +39,8 @@ export default function ShopClient({ pageData, collectionProducts, collectionCat
                 <div className="pt-24"></div>
                 <div className="min-h-[60vh] flex items-center justify-center">
                     <div className="text-center">
-                        <h1 className="text-4xl font-display mb-4">Coming Soon</h1>
-                        <p className="text-foreground/60">Our shop is currently being updated.</p>
+                        <h1 className="text-4xl font-display mb-4">{(pageData as any)?.comingSoonText || 'Coming Soon'}</h1>
+                        <p className="text-foreground/60">{(pageData as any)?.comingSoonDescription || 'Our shop is currently being updated.'}</p>
                     </div>
                 </div>
             </>

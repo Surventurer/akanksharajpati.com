@@ -6,6 +6,7 @@ import { cn, hexToHsl } from '@/lib/utils'
 import { fetchHeader, fetchFonts, fetchSiteSettings } from '@/lib/cms'
 import { CartProvider } from '@/context/CartContext'
 import CartDrawer from '@/components/shop/CartDrawer'
+import FloatingActionButton from '@/components/ui/FloatingActionButton'
 import '../globals.css'
 
 export const viewport = {
@@ -25,7 +26,8 @@ export async function generateMetadata() {
         ? siteSettings.ogImage.url
         : `${siteUrl}/asset/logo.png`
 
-    const faviconUrl = (siteSettings?.favicon && typeof siteSettings.favicon === 'object' && siteSettings.favicon.url) || '/favicon.ico'
+    const faviconLightUrl = (siteSettings?.favicon && typeof siteSettings.favicon === 'object' && siteSettings.favicon.url) || '/asset/logo.png'
+    const faviconDarkUrl = (siteSettings?.faviconDark && typeof siteSettings.faviconDark === 'object' && siteSettings.faviconDark.url) || '/asset/logo-white.png'
 
     return {
         title: {
@@ -35,9 +37,36 @@ export async function generateMetadata() {
         description,
         metadataBase: new URL(siteUrl),
         icons: {
-            icon: faviconUrl,
-            shortcut: faviconUrl,
-            apple: faviconUrl,
+            icon: [
+                {
+                    url: faviconLightUrl,
+                    media: '(prefers-color-scheme: light)',
+                },
+                {
+                    url: faviconDarkUrl,
+                    media: '(prefers-color-scheme: dark)',
+                },
+            ],
+            shortcut: [
+                {
+                    url: faviconLightUrl,
+                    media: '(prefers-color-scheme: light)',
+                },
+                {
+                    url: faviconDarkUrl,
+                    media: '(prefers-color-scheme: dark)',
+                },
+            ],
+            apple: [
+                {
+                    url: faviconLightUrl,
+                    media: '(prefers-color-scheme: light)',
+                },
+                {
+                    url: faviconDarkUrl,
+                    media: '(prefers-color-scheme: dark)',
+                },
+            ],
         },
         openGraph: {
             type: 'website',
@@ -120,9 +149,16 @@ export default async function FrontendLayout({
         }
     ` : ''
 
+    const faviconLight = (siteSettings?.favicon && typeof siteSettings.favicon === 'object' && siteSettings.favicon.url) || '/asset/logo.png'
+    const faviconDark = (siteSettings?.faviconDark && typeof siteSettings.faviconDark === 'object' && siteSettings.faviconDark.url) || '/asset/logo-white.png'
+
     return (
         <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
             <head>
+                <link rel="icon" href={faviconLight} media="(prefers-color-scheme: light)" />
+                <link rel="icon" href={faviconDark} media="(prefers-color-scheme: dark)" />
+                <link rel="apple-touch-icon" href={faviconLight} media="(prefers-color-scheme: light)" />
+                <link rel="apple-touch-icon" href={faviconDark} media="(prefers-color-scheme: dark)" />
                 <style dangerouslySetInnerHTML={{
                     __html: `${fontFaces}\n${themeStyles}`
                 }} />
@@ -142,6 +178,7 @@ export default async function FrontendLayout({
                     </main>
                     <Footer />
                     <CartDrawer />
+                    <FloatingActionButton settings={siteSettings} />
                 </CartProvider>
             </body>
         </html>

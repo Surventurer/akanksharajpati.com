@@ -355,3 +355,32 @@ textarea,
 .btn {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+/* --- Admin Logo & Icon Dark/Light Switch --- */
+.admin-logo-dark,
+.admin-icon-dark {
+  display: none;
+}
+.admin-logo-light,
+.admin-icon-light {
+  display: block;
+}
+
+[data-theme="dark"] .admin-logo-light,
+[data-theme="dark"] .admin-icon-light {
+  display: none !important;
+}
+[data-theme="dark"] .admin-logo-dark,
+[data-theme="dark"] .admin-icon-dark {
+  display: block !important;
+}
+
+[data-theme="light"] .admin-logo-light,
+[data-theme="light"] .admin-icon-light {
+  display: block !important;
+}
+[data-theme="light"] .admin-logo-dark,
+[data-theme="light"] .admin-icon-dark {
+  display: none !important;
+}
+

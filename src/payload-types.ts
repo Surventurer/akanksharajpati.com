@@ -1450,6 +1450,8 @@ export interface HomePage {
    * If disabled, a coming soon message will be shown
    */
   pageEnabled?: boolean | null;
+  comingSoonText?: string | null;
+  comingSoonDescription?: string | null;
   heroEnabled?: boolean | null;
   /**
    * If disabled, the hero section will show without the background image
@@ -1508,6 +1510,10 @@ export interface HomePage {
   shopPreviewDescriptionColor?: string | null;
   shopPreviewButtonText?: string | null;
   shopPreviewButtonLink?: string | null;
+  /**
+   * Text to show when there are no products to display
+   */
+  shopEmptyText?: string | null;
   blogPreviewEnabled?: boolean | null;
   blogPreviewSectionLabel?: string | null;
   blogPreviewSectionLabelFont?: (string | null) | Font;
@@ -1520,6 +1526,10 @@ export interface HomePage {
   blogPreviewHeadingAccentColor?: string | null;
   blogPreviewButtonText?: string | null;
   blogPreviewButtonLink?: string | null;
+  /**
+   * Text to show when there are no blog posts to display
+   */
+  blogEmptyText?: string | null;
   watchPreviewEnabled?: boolean | null;
   watchPreviewSectionLabel?: string | null;
   watchPreviewSectionLabelFont?: (string | null) | Font;
@@ -1535,6 +1545,10 @@ export interface HomePage {
   watchPreviewDescriptionColor?: string | null;
   watchPreviewButtonText?: string | null;
   watchPreviewButtonLink?: string | null;
+  /**
+   * Text to show when there are no videos to display
+   */
+  watchEmptyText?: string | null;
   contactPreviewEnabled?: boolean | null;
   contactPreviewSectionLabel?: string | null;
   contactPreviewSectionLabelFont?: (string | null) | Font;
@@ -1599,6 +1613,8 @@ export interface BlogPage {
    * If disabled, a coming soon message will be shown
    */
   pageEnabled?: boolean | null;
+  comingSoonText?: string | null;
+  comingSoonDescription?: string | null;
   headerEnabled?: boolean | null;
   sectionLabel: string;
   sectionLabelFont?: (string | null) | Font;
@@ -1801,6 +1817,8 @@ export interface ShopPage {
    * If disabled, a coming soon message will be shown
    */
   pageEnabled?: boolean | null;
+  comingSoonText?: string | null;
+  comingSoonDescription?: string | null;
   heroEnabled?: boolean | null;
   heroBackgroundColor?: string | null;
   showHeroImage?: boolean | null;
@@ -1930,6 +1948,8 @@ export interface ContactPage {
    * If disabled, a coming soon message will be shown
    */
   pageEnabled?: boolean | null;
+  comingSoonText?: string | null;
+  comingSoonDescription?: string | null;
   heroEnabled?: boolean | null;
   heroHeading?: string | null;
   heroHeadingFont?: (string | null) | Font;
@@ -2065,6 +2085,8 @@ export interface WatchPage {
    * If disabled, a coming soon message will be shown
    */
   pageEnabled?: boolean | null;
+  comingSoonText?: string | null;
+  comingSoonDescription?: string | null;
   heroEnabled?: boolean | null;
   heroHeading?: string | null;
   heroHeadingFont?: (string | null) | Font;
@@ -2294,6 +2316,7 @@ export interface Header {
    */
   headerTextColor?: string | null;
   logo?: (string | null) | Media;
+  logoDark?: (string | null) | Media;
   ownerName?: string | null;
   ownerFont?: (string | null) | Font;
   ownerColor?: string | null;
@@ -2530,7 +2553,9 @@ export interface SiteSetting {
   siteTagline?: string | null;
   siteDescription?: string | null;
   logo?: (string | null) | Media;
+  logoDark?: (string | null) | Media;
   favicon?: (string | null) | Media;
+  faviconDark?: (string | null) | Media;
   ogImage?: (string | null) | Media;
   primaryColor?: string | null;
   secondaryColor?: string | null;
@@ -2559,6 +2584,19 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  floatingButtonEnabled?: boolean | null;
+  floatingButtonDraggable?: boolean | null;
+  floatingButtonLabel?: string | null;
+  floatingButtonLink?: string | null;
+  floatingButtonIcon?:
+    | ('menu_book' | 'shopping_bag' | 'auto_stories' | 'auto_awesome' | 'smart_display' | 'mail' | 'custom')
+    | null;
+  floatingButtonPosition?: ('bottom-right' | 'bottom-left' | 'top-right' | 'top-left') | null;
+  floatingButtonIconUpload?: (string | null) | Media;
+  floatingButtonBgColor?: string | null;
+  floatingButtonTextColor?: string | null;
+  floatingButtonBorderColor?: string | null;
+  floatingButtonHideOnMobile?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2568,6 +2606,8 @@ export interface SiteSetting {
  */
 export interface HomePageSelect<T extends boolean = true> {
   pageEnabled?: T;
+  comingSoonText?: T;
+  comingSoonDescription?: T;
   heroEnabled?: T;
   showHeroImage?: T;
   heroImage?: T;
@@ -2620,6 +2660,7 @@ export interface HomePageSelect<T extends boolean = true> {
   shopPreviewDescriptionColor?: T;
   shopPreviewButtonText?: T;
   shopPreviewButtonLink?: T;
+  shopEmptyText?: T;
   blogPreviewEnabled?: T;
   blogPreviewSectionLabel?: T;
   blogPreviewSectionLabelFont?: T;
@@ -2632,6 +2673,7 @@ export interface HomePageSelect<T extends boolean = true> {
   blogPreviewHeadingAccentColor?: T;
   blogPreviewButtonText?: T;
   blogPreviewButtonLink?: T;
+  blogEmptyText?: T;
   watchPreviewEnabled?: T;
   watchPreviewSectionLabel?: T;
   watchPreviewSectionLabelFont?: T;
@@ -2647,6 +2689,7 @@ export interface HomePageSelect<T extends boolean = true> {
   watchPreviewDescriptionColor?: T;
   watchPreviewButtonText?: T;
   watchPreviewButtonLink?: T;
+  watchEmptyText?: T;
   contactPreviewEnabled?: T;
   contactPreviewSectionLabel?: T;
   contactPreviewSectionLabelFont?: T;
@@ -2681,6 +2724,8 @@ export interface HomePageSelect<T extends boolean = true> {
  */
 export interface BlogPageSelect<T extends boolean = true> {
   pageEnabled?: T;
+  comingSoonText?: T;
+  comingSoonDescription?: T;
   headerEnabled?: T;
   sectionLabel?: T;
   sectionLabelFont?: T;
@@ -2808,6 +2853,8 @@ export interface AboutPageSelect<T extends boolean = true> {
  */
 export interface ShopPageSelect<T extends boolean = true> {
   pageEnabled?: T;
+  comingSoonText?: T;
+  comingSoonDescription?: T;
   heroEnabled?: T;
   heroBackgroundColor?: T;
   showHeroImage?: T;
@@ -2925,6 +2972,8 @@ export interface ShopPageSelect<T extends boolean = true> {
  */
 export interface ContactPageSelect<T extends boolean = true> {
   pageEnabled?: T;
+  comingSoonText?: T;
+  comingSoonDescription?: T;
   heroEnabled?: T;
   heroHeading?: T;
   heroHeadingFont?: T;
@@ -3045,6 +3094,8 @@ export interface ContactPageSelect<T extends boolean = true> {
  */
 export interface WatchPageSelect<T extends boolean = true> {
   pageEnabled?: T;
+  comingSoonText?: T;
+  comingSoonDescription?: T;
   heroEnabled?: T;
   heroHeading?: T;
   heroHeadingFont?: T;
@@ -3230,6 +3281,7 @@ export interface HeaderSelect<T extends boolean = true> {
   headerBackgroundColor?: T;
   headerTextColor?: T;
   logo?: T;
+  logoDark?: T;
   ownerName?: T;
   ownerFont?: T;
   ownerColor?: T;
@@ -3383,7 +3435,9 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   siteTagline?: T;
   siteDescription?: T;
   logo?: T;
+  logoDark?: T;
   favicon?: T;
+  faviconDark?: T;
   ogImage?: T;
   primaryColor?: T;
   secondaryColor?: T;
@@ -3403,6 +3457,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  floatingButtonEnabled?: T;
+  floatingButtonDraggable?: T;
+  floatingButtonLabel?: T;
+  floatingButtonLink?: T;
+  floatingButtonIcon?: T;
+  floatingButtonPosition?: T;
+  floatingButtonIconUpload?: T;
+  floatingButtonBgColor?: T;
+  floatingButtonTextColor?: T;
+  floatingButtonBorderColor?: T;
+  floatingButtonHideOnMobile?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

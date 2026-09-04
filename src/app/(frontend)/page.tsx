@@ -29,8 +29,8 @@ export default async function Home() {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-4xl font-display mb-4">Coming Soon</h1>
-                    <p className="text-foreground/60">This page is currently being updated.</p>
+                    <h1 className="text-4xl font-display mb-4">{serializedPageData.comingSoonText || 'Coming Soon'}</h1>
+                    <p className="text-foreground/60">{serializedPageData.comingSoonDescription || 'This page is currently being updated.'}</p>
                 </div>
             </div>
         );
@@ -285,7 +285,7 @@ export default async function Home() {
                             )) : (
                                 <div className="col-span-3 text-center py-12 text-foreground/50">
                                     <Icon name="auto_stories" size={36} className="mb-3 opacity-40 mx-auto" />
-                                    <p>No blog posts available yet.</p>
+                                    <p>{pageData?.blogEmptyText || 'No blog posts available yet.'}</p>
                                 </div>
                             )}
                         </div>
@@ -368,7 +368,7 @@ export default async function Home() {
                                 return (
                                     <div className="text-center py-12 text-foreground/50">
                                         <Icon name="shopping_bag" size={36} className="mb-3 opacity-40 mx-auto" />
-                                        <p>Products coming soon</p>
+                                        <p>{pageData?.shopEmptyText || 'Products coming soon'}</p>
                                     </div>
                                 );
                             }
@@ -503,7 +503,7 @@ export default async function Home() {
                                 return (
                                     <div className="text-center py-12 text-foreground/50">
                                         <Icon name="smart_display" size={36} className="mb-3 opacity-40 mx-auto" />
-                                        <p>Videos coming soon</p>
+                                        <p>{pageData?.watchEmptyText || 'Videos coming soon'}</p>
                                     </div>
                                 );
                             }
@@ -614,19 +614,6 @@ export default async function Home() {
                     </div>
                 </section>
             )}
-
-            {/* Floating Shop Button */}
-            <div className="fixed bottom-8 right-8 z-40">
-                <Link
-                    href="/shop"
-                    className="bg-secondary text-secondary-foreground w-14 h-14 rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center hover:scale-110 hover:-translate-y-0.5 active:scale-100 transition-all duration-300 group border border-accent/20"
-                >
-                    <Icon name="menu_book" size={24} />
-                    <span className="absolute right-full mr-4 bg-secondary text-secondary-foreground px-4 py-2 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none tracking-widest uppercase border border-accent/30 rounded-lg shadow-lg">
-                        Atelier Shop
-                    </span>
-                </Link>
-            </div>
         </>
     );
 }

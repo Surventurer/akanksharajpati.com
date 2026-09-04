@@ -21,6 +21,24 @@ export const ShopPage: GlobalConfig = {
             },
         },
         {
+            name: 'comingSoonText',
+            type: 'text',
+            label: 'Coming Soon Heading',
+            defaultValue: 'Coming Soon',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
+            name: 'comingSoonDescription',
+            type: 'textarea',
+            label: 'Coming Soon Description',
+            defaultValue: 'Our shop is currently being updated.',
+            admin: {
+                condition: (data) => !data?.pageEnabled,
+            },
+        },
+        {
             type: 'tabs',
             tabs: [
                 // =====================
