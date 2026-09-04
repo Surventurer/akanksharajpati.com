@@ -18,10 +18,14 @@ export const viewport = {
 export async function generateMetadata() {
     const siteSettings = await fetchSiteSettings()
     const title = siteSettings?.siteTitle || 'Akanksha Rajpati'
-    const description = siteSettings?.siteDescription || 'A luxury lifestyle journal'
+    const description = siteSettings?.siteDescription || 'Bespoke insights from my mind to yours — guiding you toward a more personalized way of living'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://akanksharajpati.vercel.app'
+
     const ogImageUrl = siteSettings?.ogImage && typeof siteSettings.ogImage === 'object' && siteSettings.ogImage.url
         ? siteSettings.ogImage.url
-        : undefined
+        : `${siteUrl}/asset/logo.png`
+
+    const faviconUrl = (siteSettings?.favicon && typeof siteSettings.favicon === 'object' && siteSettings.favicon.url) || '/favicon.ico'
 
     return {
         title: {
@@ -29,10 +33,33 @@ export async function generateMetadata() {
             template: `%s | ${title}`,
         },
         description,
+        metadataBase: new URL(siteUrl),
         icons: {
-            icon: (siteSettings?.favicon && typeof siteSettings.favicon === 'object' && siteSettings.favicon.url) || '/favicon.ico',
+            icon: faviconUrl,
+            shortcut: faviconUrl,
+            apple: faviconUrl,
         },
-        openGraph: ogImageUrl ? { images: [{ url: ogImageUrl }] } : undefined,
+        openGraph: {
+            type: 'website',
+            siteName: title,
+            title,
+            description,
+            url: siteUrl,
+            images: [
+                {
+                    url: ogImageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [ogImageUrl],
+        },
     }
 }
 
