@@ -71,92 +71,93 @@
 
 /* Custom Color Theme Design System */
 :root {
-    /* Core Palette - New Custom Theme */
-    --background: 45 52% 88%;
-    /* Cream/Beige #F2EBD0 */
-    --foreground: 61 24% 30%;
-    /* Dark Olive for text */
+    /* Primary Background: Cream-white */
+    --background: 45 25% 96%;
+    --foreground: 60 10% 25%;
 
-    --card: 45 52% 93%;
-    /* Lighter cream for cards */
-    --card-foreground: 61 24% 25%;
+    /* Cards/Surfaces */
+    --card: 45 20% 98%;
+    --card-foreground: 60 10% 25%;
 
-    --popover: 45 52% 95%;
-    --popover-foreground: 61 24% 25%;
+    --popover: 45 20% 98%;
+    --popover-foreground: 60 10% 25%;
 
-    /* Primary: Dusty Rose/Terracotta #B88078 */
-    --primary: 7 33% 60%;
-    --primary-foreground: 45 52% 95%;
+    /* Active States & Buttons: Soft Sage-Green */
+    --primary: 100 15% 65%;
+    --primary-foreground: 45 25% 98%;
 
-    /* Secondary: Olive Green #868753 */
-    --secondary: 61 24% 43%;
-    --secondary-foreground: 45 52% 95%;
+    /* Secondary Sections & Accents: Muted Dusty-Rose */
+    --secondary: 0 20% 75%;
+    --secondary-foreground: 60 10% 25%;
 
-    /* Muted tones */
-    --muted: 45 40% 85%;
-    --muted-foreground: 61 24% 35%;
+    /* Muted tones (lighter dusty rose) */
+    --muted: 0 20% 85%;
+    --muted-foreground: 60 10% 40%;
 
-    /* Accent: Golden/Mustard #C49A48 */
-    --accent: 42 54% 53%;
-    --accent-foreground: 61 24% 20%;
+    /* Accent uses Sage Green */
+    --accent: 100 15% 65%;
+    --accent-foreground: 45 25% 98%;
 
-    /* Cream surface */
-    --beige: 45 52% 88%;
+    --beige: 45 25% 96%;
 
-    --destructive: 7 60% 50%;
-    --destructive-foreground: 45 52% 95%;
+    --destructive: 0 40% 60%;
+    --destructive-foreground: 45 25% 98%;
 
-    --border: 61 24% 43% / 0.2;
-    --input: 61 24% 43% / 0.15;
-    --ring: 7 33% 60%;
+    /* Borders: Dusty Rose */
+    --border: 0 20% 75% / 0.4;
+    --input: 0 20% 75% / 0.3;
+    --ring: 100 15% 65%;
 
-    --radius: 0.75rem;
+    /* Smooth rounded corners */
+    --radius: 1.25rem;
 
     /* Sidebar */
-    --sidebar-background: 45 52% 88%;
-    --sidebar-foreground: 61 24% 30%;
-    --sidebar-primary: 7 33% 60%;
-    --sidebar-primary-foreground: 45 52% 95%;
-    --sidebar-accent: 42 54% 53%;
-    --sidebar-accent-foreground: 61 24% 20%;
-    --sidebar-border: 61 24% 43% / 0.2;
-    --sidebar-ring: 7 33% 60%;
+    --sidebar-background: 45 25% 96%;
+    --sidebar-foreground: 60 10% 25%;
+    --sidebar-primary: 100 15% 65%;
+    --sidebar-primary-foreground: 45 25% 98%;
+    --sidebar-accent: 0 20% 75%;
+    --sidebar-accent-foreground: 60 10% 25%;
+    --sidebar-border: 0 20% 75% / 0.4;
+    --sidebar-ring: 100 15% 65%;
 
-    /* Footer - Dark olive */
-    --footer-background: 61 24% 25%;
-    --footer-foreground: 45 52% 88% / 0.8;
+    /* Footer - Dusty Rose deep tone */
+    --footer-background: 0 15% 65%;
+    --footer-foreground: 45 25% 96%;
 }
 
 .dark {
-    --background: 61 24% 18%;
-    --foreground: 45 52% 90%;
+    --background: 60 10% 15%;
+    --foreground: 45 25% 90%;
 
-    --card: 61 24% 22%;
-    --card-foreground: 45 52% 90%;
+    --card: 60 10% 18%;
+    --card-foreground: 45 25% 90%;
 
-    --popover: 61 24% 20%;
-    --popover-foreground: 45 52% 90%;
+    --popover: 60 10% 18%;
+    --popover-foreground: 45 25% 90%;
 
-    --primary: 7 33% 65%;
-    --primary-foreground: 61 24% 15%;
+    /* Sage Green */
+    --primary: 100 15% 60%;
+    --primary-foreground: 60 10% 15%;
 
-    --secondary: 61 24% 50%;
-    --secondary-foreground: 61 24% 15%;
+    /* Dusty Rose */
+    --secondary: 0 20% 65%;
+    --secondary-foreground: 60 10% 15%;
 
-    --muted: 61 20% 25%;
-    --muted-foreground: 45 40% 70%;
+    --muted: 60 10% 25%;
+    --muted-foreground: 45 25% 75%;
 
-    --accent: 42 54% 58%;
-    --accent-foreground: 61 24% 15%;
+    --accent: 100 15% 60%;
+    --accent-foreground: 60 10% 15%;
 
-    --beige: 61 24% 20%;
+    --beige: 60 10% 18%;
 
-    --destructive: 7 60% 45%;
-    --destructive-foreground: 45 52% 95%;
+    --destructive: 0 40% 50%;
+    --destructive-foreground: 45 25% 98%;
 
-    --border: 45 52% 88% / 0.15;
-    --input: 45 52% 88% / 0.1;
-    --ring: 7 33% 65%;
+    --border: 0 20% 65% / 0.2;
+    --input: 0 20% 65% / 0.2;
+    --ring: 100 15% 60%;
 }
 
 @layer base {
@@ -257,27 +258,27 @@
     }
 
     .btn-primary {
-        @apply inline-flex items-center justify-center rounded-md bg-foreground text-background px-10 py-4 border border-foreground hover:bg-transparent hover:text-foreground hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 font-semibold tracking-widest text-xs uppercase shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-2xl bg-foreground text-background px-10 py-4 hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 font-semibold tracking-widest text-xs uppercase shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
     }
 
     .btn-secondary {
-        @apply inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-10 py-3 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-foreground hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-2xl bg-primary text-primary-foreground px-10 py-3 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-foreground hover:text-background hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
     }
 
     .btn-outline {
-        @apply inline-flex items-center justify-center rounded-md px-6 py-2.5 border border-accent text-[10px] uppercase tracking-widest font-bold hover:bg-accent hover:text-foreground hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-2xl px-6 py-2.5 border border-border text-[10px] uppercase tracking-widest font-bold hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
     }
 
     .btn-gold {
-        @apply inline-flex items-center justify-center rounded-md px-8 py-3 bg-primary text-primary-foreground font-medium tracking-wide transition-all duration-300 hover:bg-accent hover:text-foreground hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-2xl px-8 py-3 bg-primary text-primary-foreground font-medium tracking-wide transition-all duration-300 hover:bg-foreground hover:text-background hover:-translate-y-0.5 active:translate-y-0 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
     }
 
     .card-hover {
-        @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+        @apply transition-all duration-300 rounded-2xl hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)];
     }
 
     .premium-input {
-        @apply w-full rounded-lg border border-border bg-background px-4 py-3 text-sm ring-offset-background transition-all duration-200 placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+        @apply w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm ring-offset-background transition-all duration-200 shadow-[0_2px_10px_rgba(0,0,0,0.01)] placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
     }
 
     .badge-premium {
