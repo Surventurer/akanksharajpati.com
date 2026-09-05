@@ -44,12 +44,12 @@ export default function GlobalError({
                             >
                                 Try Again
                             </button>
-                            <Link
+                            <a
                                 href="/"
                                 className="border border-[#4a4b34] text-[#4a4b34] px-6 py-3 text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-[#4a4b34]/5 transition-colors"
                             >
                                 Return Home
-                            </Link>
+                            </a>
                         </div>
                     </div>
                 </main>

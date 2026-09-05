@@ -16,6 +16,10 @@ export default function Error({
     const [isPending, startTransition] = useTransition()
 
     useEffect(() => {
+        if (error?.message?.includes('NEXT_DEVTOOLS_SIMULATED_ERROR')) {
+            // Filter devtools simulation from polluting error telemetry
+            return
+        }
         console.error('Frontend Application Error:', error)
     }, [error])
 
@@ -27,8 +31,8 @@ export default function Error({
     }
 
     return (
-        <div className="pt-32 pb-24 min-h-[75vh] flex items-center justify-center px-6">
-            <div className="max-w-2xl mx-auto text-center">
+        <div className="min-h-screen pt-20 md:pt-32 pb-12 w-full flex flex-col items-center justify-center px-6 text-center">
+            <div className="max-w-2xl mx-auto text-center my-auto">
                 <span className="section-label mb-4 block">Unexpected Interruption</span>
                 <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 tracking-tight">
                     Something Went <span className="text-serif-accent">Wrong</span>
@@ -47,13 +51,14 @@ export default function Error({
                         <Icon name="refresh" size={18} className={isPending ? 'animate-spin' : ''} />
                         {isPending ? 'Retrying...' : 'Try Again'}
                     </button>
-                    <Link
+                    <a
                         href="/"
-                        className="btn-outline flex items-center gap-2"
+                        className="btn-outline flex items-center gap-2 cursor-pointer"
+                        aria-label="Return to the home page"
                     >
                         <Icon name="home" size={18} />
                         Return Home
-                    </Link>
+                    </a>
                 </div>
             </div>
         </div>
