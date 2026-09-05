@@ -150,9 +150,8 @@ export async function POST(req: NextRequest) {
         })
 
         return NextResponse.json({
-            url: `/shop/order-confirmation?orderNumber=${orderNumber}&demo=true`,
+            url: `/shop/order-confirmation?orderNumber=${orderNumber}`,
             orderNumber,
-            demo: true,
         })
     } catch (error: any) {
         console.error('Checkout error:', error)
