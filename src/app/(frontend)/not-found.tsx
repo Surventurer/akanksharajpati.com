@@ -8,7 +8,7 @@ export default async function NotFound() {
 
     const getFontFamily = (font: Font | string | null | undefined): string | undefined => {
         if (!font || typeof font === 'string') return undefined
-        return font.filename?.replace(/\.[^/.]+$/, '')
+        return font.filename || undefined
     }
 
     const sectionLabel = pageData?.sectionLabel || '404 Error'
@@ -16,21 +16,46 @@ export default async function NotFound() {
     const headingAccent = pageData?.headingAccent || 'Not Found'
     const description = pageData?.description || 'The story, object, or page you are looking for has either been moved, renamed, or is taking a quiet pause.'
 
-    const primaryBtnText = pageData?.primaryButtonText || 'Return Home'
-    const primaryBtnLink = pageData?.primaryButtonLink || '/'
-    const primaryBtnIcon = pageData?.primaryButtonIcon || 'home'
+    // Parse Action Buttons (CRUD array or fallback to legacy/default)
+    const rawButtons = (pageData as any)?.actionButtons
+    const hasButtonsArray = Array.isArray(rawButtons) && rawButtons.length > 0
 
-    const secondaryBtnText = pageData?.secondaryButtonText || 'Explore Stories'
-    const secondaryBtnLink = pageData?.secondaryButtonLink || '/blog'
-    const secondaryBtnIcon = pageData?.secondaryButtonIcon || 'menu_book'
+    const actionButtons = hasButtonsArray
+        ? rawButtons
+        : [
+            {
+                label: (pageData as any)?.primaryButtonText || 'Return Home',
+                link: (pageData as any)?.primaryButtonLink || '/',
+                icon: (pageData as any)?.primaryButtonIcon || 'home',
+                variant: 'primary',
+                newTab: false,
+            },
+            {
+                label: (pageData as any)?.secondaryButtonText || 'Explore Stories',
+                link: (pageData as any)?.secondaryButtonLink || '/blog',
+                icon: (pageData as any)?.secondaryButtonIcon || 'menu_book',
+                variant: 'outline',
+                newTab: false,
+            },
+        ].filter(btn => Boolean(btn.label && btn.link))
 
-    const tertiaryBtnText = pageData?.tertiaryButtonText || 'Visit Shop'
-    const tertiaryBtnLink = pageData?.tertiaryButtonLink || '/shop'
-    const tertiaryBtnIcon = pageData?.tertiaryButtonIcon || 'shopping_bag'
+    const getButtonClass = (variant?: string) => {
+        switch (variant) {
+            case 'secondary':
+                return 'btn-secondary'
+            case 'outline':
+                return 'btn-outline'
+            case 'gold':
+                return 'btn-gold'
+            case 'primary':
+            default:
+                return 'btn-primary'
+        }
+    }
 
     return (
         <div 
-            className="pt-32 pb-24 min-h-[75vh] flex items-center justify-center px-6 transition-colors duration-300"
+            className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-20 text-center transition-colors duration-300"
             style={{
                 backgroundColor: pageData?.backgroundColor || undefined,
             }}
@@ -77,35 +102,26 @@ export default async function NotFound() {
                 </p>
 
                 <div className="flex flex-wrap items-center justify-center gap-4">
-                    {primaryBtnText && (
-                        <Link
-                            href={primaryBtnLink}
-                            className="btn-primary flex items-center gap-2"
-                        >
-                            {primaryBtnIcon && <Icon name={primaryBtnIcon} size={18} />}
-                            {primaryBtnText}
-                        </Link>
-                    )}
+                    {actionButtons.map((btn: any, index: number) => {
+                        const customStyles: React.CSSProperties = {}
+                        if (btn.customBgColor) customStyles.backgroundColor = btn.customBgColor
+                        if (btn.customTextColor) customStyles.color = btn.customTextColor
+                        if (btn.customBgColor) customStyles.borderColor = btn.customBgColor
 
-                    {secondaryBtnText && (
-                        <Link
-                            href={secondaryBtnLink}
-                            className="btn-outline flex items-center gap-2"
-                        >
-                            {secondaryBtnIcon && <Icon name={secondaryBtnIcon} size={18} />}
-                            {secondaryBtnText}
-                        </Link>
-                    )}
-
-                    {tertiaryBtnText && (
-                        <Link
-                            href={tertiaryBtnLink}
-                            className="btn-outline flex items-center gap-2"
-                        >
-                            {tertiaryBtnIcon && <Icon name={tertiaryBtnIcon} size={18} />}
-                            {tertiaryBtnText}
-                        </Link>
-                    )}
+                        return (
+                            <Link
+                                key={index}
+                                href={btn.link || '/'}
+                                target={btn.newTab ? '_blank' : undefined}
+                                rel={btn.newTab ? 'noopener noreferrer' : undefined}
+                                className={`${getButtonClass(btn.variant)} flex items-center gap-2`}
+                                style={Object.keys(customStyles).length > 0 ? customStyles : undefined}
+                            >
+                                {btn.icon && <Icon name={btn.icon} size={18} />}
+                                <span>{btn.label}</span>
+                            </Link>
+                        )
+                    })}
                 </div>
             </div>
         </div>

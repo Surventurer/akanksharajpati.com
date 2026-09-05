@@ -252,7 +252,7 @@ export const SiteSettings: GlobalConfig = {
                                     name: 'floatingButtonLabel',
                                     type: 'text',
                                     label: 'Hover Label / Tooltip',
-                                    defaultValue: 'Atelier Shop',
+                                    defaultValue: 'Shopping Bag',
                                     admin: { width: '50%' },
                                 },
                                 {
@@ -271,10 +271,11 @@ export const SiteSettings: GlobalConfig = {
                                     name: 'floatingButtonIcon',
                                     type: 'select',
                                     label: 'Preset Icon',
-                                    defaultValue: 'menu_book',
+                                    defaultValue: 'shopping_bag',
                                     options: [
-                                        { label: 'Book / Journal (menu_book)', value: 'menu_book' },
                                         { label: 'Shopping Bag (shopping_bag)', value: 'shopping_bag' },
+                                        { label: 'Shopping Cart (shopping_cart)', value: 'shopping_cart' },
+                                        { label: 'Book / Journal (menu_book)', value: 'menu_book' },
                                         { label: 'Auto Stories (auto_stories)', value: 'auto_stories' },
                                         { label: 'Sparkles / Atelier (auto_awesome)', value: 'auto_awesome' },
                                         { label: 'Video / Watch (smart_display)', value: 'smart_display' },

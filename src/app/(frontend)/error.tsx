@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useTransition } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Icon } from '@/components/ui/Icon'
 
 export default function Error({
@@ -11,9 +12,19 @@ export default function Error({
     error: Error & { digest?: string }
     reset: () => void
 }) {
+    const router = useRouter()
+    const [isPending, startTransition] = useTransition()
+
     useEffect(() => {
         console.error('Frontend Application Error:', error)
     }, [error])
+
+    const handleRetry = () => {
+        startTransition(() => {
+            router.refresh()
+            reset()
+        })
+    }
 
     return (
         <div className="pt-32 pb-24 min-h-[75vh] flex items-center justify-center px-6">
@@ -28,11 +39,13 @@ export default function Error({
 
                 <div className="flex flex-wrap items-center justify-center gap-4">
                     <button
-                        onClick={() => reset()}
-                        className="btn-primary flex items-center gap-2 cursor-pointer"
+                        onClick={handleRetry}
+                        disabled={isPending}
+                        className="btn-primary flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                        aria-label="Try refreshing this view"
                     >
-                        <Icon name="refresh" size={18} />
-                        Try Again
+                        <Icon name="refresh" size={18} className={isPending ? 'animate-spin' : ''} />
+                        {isPending ? 'Retrying...' : 'Try Again'}
                     </button>
                     <Link
                         href="/"

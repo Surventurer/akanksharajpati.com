@@ -179,7 +179,6 @@ const Header = ({ data }: HeaderProps) => {
     }
 
     if (iconItem.type === 'link' && iconItem.link) {
-      const isShopLink = iconItem.link === '/shop' || iconItem.label?.toLowerCase().includes('shop');
       return (
         <div key={i} className="relative inline-flex items-center">
           <Link
@@ -192,16 +191,6 @@ const Header = ({ data }: HeaderProps) => {
             {iconElement}
             {labelElement}
           </Link>
-          {isShopLink && totalItems > 0 && (
-            <button
-              onClick={() => setIsOpen(true)}
-              className="ml-1 px-1.5 py-0.5 text-[9px] font-bold bg-primary text-primary-foreground rounded-full hover:scale-110 transition-transform shadow-sm"
-              title="View Bag"
-              aria-label={`View Bag (${totalItems} items)`}
-            >
-              {totalItems}
-            </button>
-          )}
         </div>
       );
     }

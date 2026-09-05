@@ -123,58 +123,109 @@ export const NotFoundPage: GlobalConfig = {
                     label: 'Action Buttons',
                     fields: [
                         {
-                            name: 'primaryButtonText',
-                            type: 'text',
-                            label: 'Primary Button Text',
-                            defaultValue: 'Return Home',
-                        },
-                        {
-                            name: 'primaryButtonLink',
-                            type: 'text',
-                            label: 'Primary Button Link',
-                            defaultValue: '/',
-                        },
-                        {
-                            name: 'primaryButtonIcon',
-                            type: 'text',
-                            label: 'Primary Button Icon (Material Symbol)',
-                            defaultValue: 'home',
-                        },
-                        {
-                            name: 'secondaryButtonText',
-                            type: 'text',
-                            label: 'Secondary Button Text',
-                            defaultValue: 'Explore Stories',
-                        },
-                        {
-                            name: 'secondaryButtonLink',
-                            type: 'text',
-                            label: 'Secondary Button Link',
-                            defaultValue: '/blog',
-                        },
-                        {
-                            name: 'secondaryButtonIcon',
-                            type: 'text',
-                            label: 'Secondary Button Icon (Material Symbol)',
-                            defaultValue: 'menu_book',
-                        },
-                        {
-                            name: 'tertiaryButtonText',
-                            type: 'text',
-                            label: 'Tertiary Button Text',
-                            defaultValue: 'Visit Shop',
-                        },
-                        {
-                            name: 'tertiaryButtonLink',
-                            type: 'text',
-                            label: 'Tertiary Button Link',
-                            defaultValue: '/shop',
-                        },
-                        {
-                            name: 'tertiaryButtonIcon',
-                            type: 'text',
-                            label: 'Tertiary Button Icon (Material Symbol)',
-                            defaultValue: 'shopping_bag',
+                            name: 'actionButtons',
+                            type: 'array',
+                            label: 'Action Buttons (CRUD)',
+                            minRows: 0,
+                            maxRows: 6,
+                            labels: {
+                                singular: 'Action Button',
+                                plural: 'Action Buttons',
+                            },
+                            defaultValue: [
+                                {
+                                    label: 'Return Home',
+                                    link: '/',
+                                    icon: 'home',
+                                    variant: 'primary',
+                                    newTab: false,
+                                },
+                                {
+                                    label: 'Explore Stories',
+                                    link: '/blog',
+                                    icon: 'menu_book',
+                                    variant: 'outline',
+                                    newTab: false,
+                                },
+                            ],
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            name: 'label',
+                                            type: 'text',
+                                            label: 'Button Label',
+                                            required: true,
+                                            admin: { width: '50%' },
+                                        },
+                                        {
+                                            name: 'link',
+                                            type: 'text',
+                                            label: 'Link URL',
+                                            required: true,
+                                            admin: { width: '50%' },
+                                        },
+                                    ],
+                                },
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            name: 'icon',
+                                            type: 'text',
+                                            label: 'Icon (Material Symbol name, e.g., home, menu_book, arrow_back)',
+                                            admin: { width: '50%' },
+                                        },
+                                        {
+                                            name: 'variant',
+                                            type: 'select',
+                                            label: 'Style Variant',
+                                            defaultValue: 'primary',
+                                            options: [
+                                                { label: 'Primary (Dark / Inverted)', value: 'primary' },
+                                                { label: 'Secondary (Sage Green)', value: 'secondary' },
+                                                { label: 'Outline (Bordered)', value: 'outline' },
+                                                { label: 'Gold / Accent', value: 'gold' },
+                                            ],
+                                            admin: { width: '50%' },
+                                        },
+                                    ],
+                                },
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            name: 'customBgColor',
+                                            type: 'text',
+                                            label: 'Custom Background Color (Optional)',
+                                            admin: {
+                                                width: '50%',
+                                                components: {
+                                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                                },
+                                            },
+                                        },
+                                        {
+                                            name: 'customTextColor',
+                                            type: 'text',
+                                            label: 'Custom Text Color (Optional)',
+                                            admin: {
+                                                width: '50%',
+                                                components: {
+                                                    Field: '@/components/payload/ColorPickerField#ColorPickerField',
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
+                                {
+                                    name: 'newTab',
+                                    type: 'checkbox',
+                                    label: 'Open in New Tab',
+                                    defaultValue: false,
+                                },
+                            ],
                         },
                     ],
                 },
@@ -185,7 +236,7 @@ export const NotFoundPage: GlobalConfig = {
                             name: 'backgroundColor',
                             type: 'text',
                             label: 'Page Background Color',
-                            defaultValue: '#F2EBD0',
+                            defaultValue: '#F9F6F0',
                             admin: {
                                 components: {
                                     Field: '@/components/payload/ColorPickerField#ColorPickerField',

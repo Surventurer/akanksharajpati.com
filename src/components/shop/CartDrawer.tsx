@@ -50,7 +50,7 @@ export default function CartDrawer() {
     const amountToFreeShipping = Math.max(0, freeShippingThreshold - subtotal)
 
     return (
-        <div className="fixed inset-0 z-50 overflow-hidden">
+        <div className="fixed inset-0 z-[100] overflow-hidden">
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"

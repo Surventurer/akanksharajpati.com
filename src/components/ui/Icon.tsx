@@ -3,6 +3,7 @@ import {
   ArrowRight,
   BookOpen,
   ShoppingBag,
+  ShoppingCart,
   Tv,
   Sparkles,
   Search,
@@ -38,6 +39,7 @@ export type IconName =
   | 'arrow_forward'
   | 'auto_stories'
   | 'shopping_bag'
+  | 'shopping_cart'
   | 'smart_display'
   | 'menu_book'
   | 'auto_awesome'
@@ -73,6 +75,7 @@ const iconMap: Record<string, LucideIcon> = {
   auto_stories: BookOpen,
   menu_book: BookOpen,
   shopping_bag: ShoppingBag,
+  shopping_cart: ShoppingCart,
   smart_display: Tv,
   auto_awesome: Sparkles,
   search: Search,

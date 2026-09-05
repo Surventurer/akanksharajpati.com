@@ -1,24 +1,25 @@
 'use client'
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { Icon, IconName } from '@/components/ui/Icon'
 import { SiteSetting, Media } from '@/payload-types'
+import { useCart } from '@/context/CartContext'
 
 interface FloatingActionButtonProps {
   settings?: SiteSetting | null
 }
 
 export default function FloatingActionButton({ settings }: FloatingActionButtonProps) {
+  const { totalItems, setIsOpen } = useCart()
   // Check if enabled (default true)
   const isEnabled = settings?.floatingButtonEnabled !== false
   const isDraggable = settings?.floatingButtonDraggable !== false
   const hideOnMobile = settings?.floatingButtonHideOnMobile === true
 
-  const label = settings?.floatingButtonLabel || 'Atelier Shop'
-  const link = settings?.floatingButtonLink || '/shop'
-  const iconName = (settings?.floatingButtonIcon as IconName) || 'menu_book'
+  const label = settings?.floatingButtonLabel || 'Shopping Bag'
+  // Default to shopping_bag icon
+  const iconName = (settings?.floatingButtonIcon as IconName) || 'shopping_bag'
   const customIconUrl =
     settings?.floatingButtonIconUpload &&
     typeof settings.floatingButtonIconUpload !== 'string'
@@ -74,8 +75,7 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
   // Mouse / Touch handlers for dragging
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDraggable || !buttonRef.current) return
-      e.currentTarget.setPointerCapture(e.pointerId)
+      if (!buttonRef.current) return
       const rect = buttonRef.current.getBoundingClientRect()
       dragRef.current = {
         startX: e.clientX,
@@ -86,31 +86,41 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
       }
       setIsDragging(true)
     },
-    [isDraggable]
+    []
   )
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDragging) return
+      if (!isDragging || !isDraggable) return
       const dx = e.clientX - dragRef.current.startX
       const dy = e.clientY - dragRef.current.startY
 
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      // Only mark as moved and capture pointer once actual drag movement occurs
+      if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
         dragRef.current.hasMoved = true
+        try {
+          if (!e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.setPointerCapture(e.pointerId)
+          }
+        } catch {
+          // Ignore capture error
+        }
       }
 
-      const btnSize = 56
-      const minX = 12
-      const maxX = window.innerWidth - btnSize - 12
-      const minY = 12
-      const maxY = window.innerHeight - btnSize - 12
+      if (dragRef.current.hasMoved) {
+        const btnSize = 56
+        const minX = 12
+        const maxX = window.innerWidth - btnSize - 12
+        const minY = 12
+        const maxY = window.innerHeight - btnSize - 12
 
-      const nextX = Math.min(Math.max(dragRef.current.origX + dx, minX), maxX)
-      const nextY = Math.min(Math.max(dragRef.current.origY + dy, minY), maxY)
+        const nextX = Math.min(Math.max(dragRef.current.origX + dx, minX), maxX)
+        const nextY = Math.min(Math.max(dragRef.current.origY + dy, minY), maxY)
 
-      setPosition({ x: nextX, y: nextY })
+        setPosition({ x: nextX, y: nextY })
+      }
     },
-    [isDragging]
+    [isDragging, isDraggable]
   )
 
   const handlePointerUp = useCallback(
@@ -118,24 +128,33 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
       if (!isDragging) return
       setIsDragging(false)
       try {
-        e.currentTarget.releasePointerCapture(e.pointerId)
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+          e.currentTarget.releasePointerCapture(e.pointerId)
+        }
       } catch {
         // Pointer capture release safety
       }
+
+      // If user clicked/tapped without dragging, open cart!
+      if (!dragRef.current.hasMoved) {
+        setIsOpen(true)
+      }
     },
-    [isDragging]
+    [isDragging, setIsOpen]
   )
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (dragRef.current.hasMoved) {
-      e.preventDefault()
-      e.stopPropagation()
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!dragRef.current.hasMoved) {
+      setIsOpen(true)
     }
   }
 
   if (!isEnabled) return null
 
   const isPositioned = position !== null
+  const displayTooltip = totalItems > 0 ? `Shopping Bag (${totalItems})` : label
 
   return (
     <div
@@ -159,11 +178,11 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
         hideOnMobile ? 'hidden md:block' : 'block'
       } ${!isPositioned ? 'opacity-0' : 'opacity-100'}`}
     >
-      <Link
-        href={link}
-        onClick={handleClick}
-        draggable={false}
-        className="relative group w-14 h-14 rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center hover:scale-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 border border-accent/20 select-none overflow-visible"
+      <button
+        type="button"
+        onClick={handleButtonClick}
+        aria-label={`Open shopping cart (${totalItems} items)`}
+        className="relative group w-14 h-14 rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center hover:scale-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 border border-accent/20 select-none overflow-visible cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         style={{
           backgroundColor: bgColor || 'var(--secondary, #868753)',
           color: textColor || 'var(--secondary-foreground, #FAF7EE)',
@@ -180,7 +199,14 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
             />
           </div>
         ) : (
-          <Icon name={iconName} size={24} />
+          <Icon name={iconName === 'menu_book' ? 'shopping_bag' : iconName} size={24} />
+        )}
+
+        {/* Cart Count Badge */}
+        {totalItems > 0 && (
+          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold h-5 min-w-5 px-1.5 rounded-full flex items-center justify-center shadow-lg border border-background animate-scale-in">
+            {totalItems}
+          </span>
         )}
 
         {/* Floating Tooltip / Label */}
@@ -192,9 +218,9 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
             borderColor: borderColor || 'rgba(196, 154, 72, 0.3)',
           }}
         >
-          {label}
+          {displayTooltip}
         </span>
-      </Link>
+      </button>
     </div>
   )
 }

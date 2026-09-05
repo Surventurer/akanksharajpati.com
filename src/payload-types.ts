@@ -2288,15 +2288,18 @@ export interface NotFoundPage {
   description: string;
   descriptionFont?: (string | null) | Font;
   descriptionColor?: string | null;
-  primaryButtonText?: string | null;
-  primaryButtonLink?: string | null;
-  primaryButtonIcon?: string | null;
-  secondaryButtonText?: string | null;
-  secondaryButtonLink?: string | null;
-  secondaryButtonIcon?: string | null;
-  tertiaryButtonText?: string | null;
-  tertiaryButtonLink?: string | null;
-  tertiaryButtonIcon?: string | null;
+  actionButtons?:
+    | {
+        label: string;
+        link: string;
+        icon?: string | null;
+        variant?: ('primary' | 'secondary' | 'outline' | 'gold') | null;
+        customBgColor?: string | null;
+        customTextColor?: string | null;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   backgroundColor?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2589,7 +2592,16 @@ export interface SiteSetting {
   floatingButtonLabel?: string | null;
   floatingButtonLink?: string | null;
   floatingButtonIcon?:
-    | ('menu_book' | 'shopping_bag' | 'auto_stories' | 'auto_awesome' | 'smart_display' | 'mail' | 'custom')
+    | (
+        | 'shopping_bag'
+        | 'shopping_cart'
+        | 'menu_book'
+        | 'auto_stories'
+        | 'auto_awesome'
+        | 'smart_display'
+        | 'mail'
+        | 'custom'
+      )
     | null;
   floatingButtonPosition?: ('bottom-right' | 'bottom-left' | 'top-right' | 'top-left') | null;
   floatingButtonIconUpload?: (string | null) | Media;
@@ -3259,15 +3271,18 @@ export interface NotFoundPageSelect<T extends boolean = true> {
   description?: T;
   descriptionFont?: T;
   descriptionColor?: T;
-  primaryButtonText?: T;
-  primaryButtonLink?: T;
-  primaryButtonIcon?: T;
-  secondaryButtonText?: T;
-  secondaryButtonLink?: T;
-  secondaryButtonIcon?: T;
-  tertiaryButtonText?: T;
-  tertiaryButtonLink?: T;
-  tertiaryButtonIcon?: T;
+  actionButtons?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        icon?: T;
+        variant?: T;
+        customBgColor?: T;
+        customTextColor?: T;
+        newTab?: T;
+        id?: T;
+      };
   backgroundColor?: T;
   updatedAt?: T;
   createdAt?: T;
