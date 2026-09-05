@@ -112,12 +112,13 @@ export default function CartDrawer() {
                                 <p className="text-sm text-foreground/50 max-w-xs mb-6">
                                     Discover our curated objects of art and design pieces.
                                 </p>
-                                <button
+                                <Link
+                                    href="/shop"
                                     onClick={() => setIsOpen(false)}
-                                    className="btn-gold text-xs px-6 py-2.5 uppercase tracking-widest"
+                                    className="btn-gold text-xs px-6 py-2.5 uppercase tracking-widest inline-flex items-center justify-center"
                                 >
                                     Continue Shopping
-                                </button>
+                                </Link>
                             </div>
                         ) : (
                             items.map(item => (

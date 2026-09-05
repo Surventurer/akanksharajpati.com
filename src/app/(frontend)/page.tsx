@@ -57,7 +57,7 @@ export default async function Home() {
         <>
             {/* Hero Section */}
             {serializedPageData.heroEnabled && (
-                <header className="relative h-screen flex items-center justify-center overflow-hidden">
+                <header className="relative min-h-screen pt-20 md:pt-32 pb-12 flex flex-col items-center justify-center overflow-hidden">
                     {pageData?.showHeroImage !== false && getMediaUrl(pageData?.heroImage) && (
                         <div className="absolute inset-0 z-0">
                             <Image
@@ -72,7 +72,7 @@ export default async function Home() {
                         </div>
                     )}
                     <div className="absolute inset-0 hero-gradient"></div>
-                    <div className="relative z-10 text-center px-6 max-w-4xl animate-fade-in-up">
+                    <div className="relative z-10 text-center px-6 max-w-4xl w-full mx-auto flex flex-col items-center justify-center my-auto animate-fade-in-up">
                         <h1
                             className="text-6xl md:text-9xl mb-6 drop-shadow-sm leading-none"
                             style={{
