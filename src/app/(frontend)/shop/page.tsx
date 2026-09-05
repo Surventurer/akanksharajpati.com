@@ -1,6 +1,9 @@
 import { fetchShopPage, fetchProducts, fetchProductCategories } from "@/lib/cms";
 import ShopClient from "./ShopClient";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Shop() {
     const [pageData, collectionProducts, collectionCategories] = await Promise.all([
         fetchShopPage(),

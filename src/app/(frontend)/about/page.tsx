@@ -4,6 +4,9 @@ import { Media } from "@/payload-types";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function About() {
     const pageData = await fetchAboutPage();
 
@@ -28,14 +31,15 @@ export default async function About() {
     // Helper to get image URL safely
     const getImageUrl = (imageField: string | number | Media | null | undefined) => {
         if (!imageField) return "";
-        if (typeof imageField === 'string' || typeof imageField === 'number') return "";
+        if (typeof imageField === 'string') return imageField;
+        if (typeof imageField === 'number') return "";
         return imageField.url || "";
     };
 
     /* @ts-ignore */
     const getStyle = (fontField: any, colorField: string | null | undefined) => {
         const style: React.CSSProperties = {};
-        if (fontField?.name) style.fontFamily = fontField.name;
+        if (fontField?.name) style.fontFamily = `'${fontField.name}', sans-serif`;
         if (colorField) style.color = colorField;
         return style;
     };
@@ -100,7 +104,6 @@ export default async function About() {
                                         src={signatureImage}
                                         width={120}
                                         height={48}
-                                        style={{ filter: "invert(1)", mixBlendMode: "multiply" }}
                                     />
                                 </div>
                             )}
@@ -111,7 +114,7 @@ export default async function About() {
 
             {/* Philosophy Section - only show if data exists and is enabled */}
             {serializedPageData.philosophyEnabled !== false && (serializedPageData.philosophyLabel || serializedPageData.philosophyQuote || serializedPageData.philosophyText) && (
-                <section className="py-24 px-6 bg-beige relative overflow-hidden">
+                <section className="py-24 px-6 bg-secondary/15 relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.03] to-transparent pointer-events-none"></div>
                     <div className="max-w-4xl mx-auto text-center relative z-10">
                         {/* @ts-ignore */}

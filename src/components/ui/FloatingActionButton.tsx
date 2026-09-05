@@ -10,6 +10,8 @@ interface FloatingActionButtonProps {
   settings?: SiteSetting | null
 }
 
+type Corner = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
+
 export default function FloatingActionButton({ settings }: FloatingActionButtonProps) {
   const { totalItems, setIsOpen } = useCart()
   // Check if enabled (default true)
@@ -29,59 +31,31 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
   const bgColor = settings?.floatingButtonBgColor
   const textColor = settings?.floatingButtonTextColor
   const borderColor = settings?.floatingButtonBorderColor
-  const defaultPosition = settings?.floatingButtonPosition || 'bottom-right'
+  const defaultPosition = (settings?.floatingButtonPosition as Corner) || 'bottom-right'
 
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
+  const [activeCorner, setActiveCorner] = useState<Corner>(defaultPosition)
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
+
   const dragRef = useRef<{
     startX: number
     startY: number
-    origX: number
-    origY: number
     hasMoved: boolean
-  }>({ startX: 0, startY: 0, origX: 0, origY: 0, hasMoved: false })
+  }>({ startX: 0, startY: 0, hasMoved: false })
 
   const buttonRef = useRef<HTMLDivElement>(null)
 
-  // Initialize position based on screen corners
+  // Sync default position if settings change
   useEffect(() => {
-    const updateDefaultPos = () => {
-      if (typeof window === 'undefined') return
-      const margin = 32
-      const btnSize = 56
-
-      let x = window.innerWidth - btnSize - margin
-      let y = window.innerHeight - btnSize - margin
-
-      if (defaultPosition === 'bottom-left') {
-        x = margin
-        y = window.innerHeight - btnSize - margin
-      } else if (defaultPosition === 'top-right') {
-        x = window.innerWidth - btnSize - margin
-        y = margin + 80 // below header
-      } else if (defaultPosition === 'top-left') {
-        x = margin
-        y = margin + 80
-      }
-
-      setPosition((prev) => prev ?? { x, y })
-    }
-
-    updateDefaultPos()
-    window.addEventListener('resize', updateDefaultPos)
-    return () => window.removeEventListener('resize', updateDefaultPos)
+    setActiveCorner(defaultPosition)
   }, [defaultPosition])
 
   // Mouse / Touch handlers for dragging
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!buttonRef.current) return
-      const rect = buttonRef.current.getBoundingClientRect()
       dragRef.current = {
         startX: e.clientX,
         startY: e.clientY,
-        origX: rect.left,
-        origY: rect.top,
         hasMoved: false,
       }
       setIsDragging(true)
@@ -95,7 +69,7 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
       const dx = e.clientX - dragRef.current.startX
       const dy = e.clientY - dragRef.current.startY
 
-      // Only mark as moved and capture pointer once actual drag movement occurs
+      // Only mark as moved and capture pointer once actual drag movement occurs (>6px)
       if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
         dragRef.current.hasMoved = true
         try {
@@ -108,16 +82,7 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
       }
 
       if (dragRef.current.hasMoved) {
-        const btnSize = 56
-        const minX = 12
-        const maxX = window.innerWidth - btnSize - 12
-        const minY = 12
-        const maxY = window.innerHeight - btnSize - 12
-
-        const nextX = Math.min(Math.max(dragRef.current.origX + dx, minX), maxX)
-        const nextY = Math.min(Math.max(dragRef.current.origY + dy, minY), maxY)
-
-        setPosition({ x: nextX, y: nextY })
+        setDragOffset({ x: dx, y: dy })
       }
     },
     [isDragging, isDraggable]
@@ -135,12 +100,35 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
         // Pointer capture release safety
       }
 
-      // If user clicked/tapped without dragging, open cart!
-      if (!dragRef.current.hasMoved) {
-        setIsOpen(true)
+      if (dragRef.current.hasMoved && buttonRef.current) {
+        // Calculate the center of the button on screen to determine closest corner
+        const rect = buttonRef.current.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+
+        const screenWidth = typeof window !== 'undefined' ? window.innerWidth : 400
+        const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 800
+
+        const isLeft = centerX < screenWidth / 2
+        const isTop = centerY < screenHeight / 2
+
+        let targetCorner: Corner
+        if (isTop && isLeft) targetCorner = 'top-left'
+        else if (isTop && !isLeft) targetCorner = 'top-right'
+        else if (!isTop && isLeft) targetCorner = 'bottom-left'
+        else targetCorner = 'bottom-right'
+
+        setActiveCorner(targetCorner)
+        setDragOffset({ x: 0, y: 0 })
+      } else {
+        // If user tapped without dragging, reset drag offset and open cart
+        setDragOffset({ x: 0, y: 0 })
+        if (!dragRef.current.hasMoved) {
+          setIsOpen(true)
+        }
       }
     },
-    [isDragging, setIsOpen]
+    [isDragging, isDraggable, setIsOpen]
   )
 
   const handleButtonClick = (e: React.MouseEvent) => {
@@ -153,8 +141,28 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
 
   if (!isEnabled) return null
 
-  const isPositioned = position !== null
+  const isLeftCorner = activeCorner === 'bottom-left' || activeCorner === 'top-left'
+  const isTopCorner = activeCorner === 'top-left' || activeCorner === 'top-right'
   const displayTooltip = totalItems > 0 ? `Shopping Bag (${totalItems})` : label
+
+  // Dynamic corner positioning with safe-area insets to never cut off on mobile during scroll
+  const cornerStyles: React.CSSProperties = {
+    position: 'fixed',
+    zIndex: 50,
+    touchAction: 'none',
+    userSelect: 'none',
+    cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'pointer',
+    transform: isDragging
+      ? `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`
+      : 'translate3d(0, 0, 0)',
+    transition: isDragging
+      ? 'none'
+      : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), top 0.4s cubic-bezier(0.16, 1, 0.3, 1), bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1), left 0.4s cubic-bezier(0.16, 1, 0.3, 1), right 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+    top: isTopCorner ? 'calc(env(safe-area-inset-top, 0px) + 5.5rem)' : undefined,
+    bottom: !isTopCorner ? 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)' : undefined,
+    left: isLeftCorner ? 'calc(env(safe-area-inset-left, 0px) + 1.25rem)' : undefined,
+    right: !isLeftCorner ? 'calc(env(safe-area-inset-right, 0px) + 1.25rem)' : undefined,
+  }
 
   return (
     <div
@@ -163,20 +171,10 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      style={{
-        position: 'fixed',
-        left: isPositioned ? `${position.x}px` : undefined,
-        top: isPositioned ? `${position.y}px` : undefined,
-        bottom: !isPositioned ? '2rem' : undefined,
-        right: !isPositioned ? '2rem' : undefined,
-        zIndex: 50,
-        touchAction: 'none',
-        cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'pointer',
-        userSelect: 'none',
-      }}
-      className={`transition-opacity duration-300 ${
+      style={cornerStyles}
+      className={`will-change-transform ${
         hideOnMobile ? 'hidden md:block' : 'block'
-      } ${!isPositioned ? 'opacity-0' : 'opacity-100'}`}
+      }`}
     >
       <button
         type="button"
@@ -209,9 +207,11 @@ export default function FloatingActionButton({ settings }: FloatingActionButtonP
           </span>
         )}
 
-        {/* Floating Tooltip / Label */}
+        {/* Floating Tooltip / Label - positioned intelligently based on active corner */}
         <span
-          className="absolute right-full mr-3.5 px-3.5 py-1.5 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none tracking-widest uppercase rounded-lg shadow-xl font-medium border"
+          className={`absolute ${
+            isLeftCorner ? 'left-full ml-3.5' : 'right-full mr-3.5'
+          } px-3.5 py-1.5 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none tracking-widest uppercase rounded-lg shadow-xl font-medium border`}
           style={{
             backgroundColor: bgColor || 'var(--secondary, #868753)',
             color: textColor || 'var(--secondary-foreground, #FAF7EE)',

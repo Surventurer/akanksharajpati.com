@@ -504,6 +504,6 @@ export const AboutPage: GlobalConfig = {
         }
     ],
     hooks: {
-        afterChange: [createRevalidateHook(CACHE_TAGS.ABOUT_PAGE)],
+        afterChange: [createRevalidateHook(CACHE_TAGS.ABOUT_PAGE, '/about')],
     },
 }

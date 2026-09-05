@@ -44,7 +44,7 @@ export const ProductCategories: CollectionConfig = {
         },
     ],
     hooks: {
-        afterChange: [createRevalidateHook(CACHE_TAGS.PRODUCT_CATEGORIES)],
+        afterChange: [createRevalidateHook(CACHE_TAGS.PRODUCT_CATEGORIES, '/shop')],
     },
 }
 

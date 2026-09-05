@@ -924,6 +924,6 @@ export const ShopPage: GlobalConfig = {
         },
     ],
     hooks: {
-        afterChange: [createRevalidateHook(CACHE_TAGS.SHOP_PAGE)],
+        afterChange: [createRevalidateHook(CACHE_TAGS.SHOP_PAGE, '/shop')],
     },
 }

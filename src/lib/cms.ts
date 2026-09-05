@@ -231,7 +231,7 @@ export function fetchBlogPage() {
       }
     },
     ['globals', 'blog-page'],
-    { tags: [CACHE_TAGS.BLOG_PAGE] },
+    { tags: [CACHE_TAGS.BLOG_PAGE], revalidate: 30 },
   )()
 }
 
@@ -251,7 +251,7 @@ export function fetchAboutPage() {
       }
     },
     ['globals', 'about-page'],
-    { tags: [CACHE_TAGS.ABOUT_PAGE] },
+    { tags: [CACHE_TAGS.ABOUT_PAGE], revalidate: 30 },
   )()
 }
 
@@ -271,7 +271,7 @@ export function fetchHeader() {
       }
     },
     ['globals', 'header'],
-    { tags: [CACHE_TAGS.HEADER] },
+    { tags: [CACHE_TAGS.HEADER], revalidate: 30 },
   )()
 }
 
@@ -291,7 +291,7 @@ export function fetchHomePage() {
       }
     },
     ['globals', 'home-page'],
-    { tags: [CACHE_TAGS.HOME_PAGE] },
+    { tags: [CACHE_TAGS.HOME_PAGE], revalidate: 30 },
   )()
 }
 
@@ -308,7 +308,7 @@ export function fetchFooter() {
       }
     },
     ['globals', 'footer'],
-    { tags: [CACHE_TAGS.FOOTER] },
+    { tags: [CACHE_TAGS.FOOTER], revalidate: 30 },
   )()
 }
 
@@ -328,7 +328,7 @@ export function fetchShopPage() {
       }
     },
     ['globals', 'shop-page'],
-    { tags: [CACHE_TAGS.SHOP_PAGE] },
+    { tags: [CACHE_TAGS.SHOP_PAGE], revalidate: 30 },
   )()
 }
 
@@ -348,7 +348,7 @@ export function fetchContactPage() {
       }
     },
     ['globals', 'contact-page'],
-    { tags: [CACHE_TAGS.CONTACT_PAGE] },
+    { tags: [CACHE_TAGS.CONTACT_PAGE], revalidate: 30 },
   )()
 }
 
@@ -368,7 +368,7 @@ export function fetchWatchPage() {
       }
     },
     ['globals', 'watch-page'],
-    { tags: [CACHE_TAGS.WATCH_PAGE] },
+    { tags: [CACHE_TAGS.WATCH_PAGE], revalidate: 30 },
   )()
 }
 
@@ -388,7 +388,7 @@ export function fetchNotFoundPage() {
       }
     },
     ['globals', 'not-found-page'],
-    { tags: [CACHE_TAGS.NOT_FOUND_PAGE] },
+    { tags: [CACHE_TAGS.NOT_FOUND_PAGE], revalidate: 30 },
   )()
 }
 
@@ -408,7 +408,7 @@ export function fetchJoinOurInnerCircle() {
       }
     },
     ['globals', 'join-our-inner-circle'],
-    { tags: [CACHE_TAGS.JOIN_INNER_CIRCLE] },
+    { tags: [CACHE_TAGS.JOIN_INNER_CIRCLE], revalidate: 30 },
   )()
 }
 
@@ -425,7 +425,7 @@ export function fetchFonts() {
       }
     },
     ['fonts'],
-    { tags: [CACHE_TAGS.FONTS] },
+    { tags: [CACHE_TAGS.FONTS], revalidate: 30 },
   )()
 }
 
@@ -445,7 +445,7 @@ export function fetchSiteSettings() {
       }
     },
     ['globals', 'site-settings'],
-    { tags: [CACHE_TAGS.SITE_SETTINGS] },
+    { tags: [CACHE_TAGS.SITE_SETTINGS], revalidate: 30 },
   )()
 }
 

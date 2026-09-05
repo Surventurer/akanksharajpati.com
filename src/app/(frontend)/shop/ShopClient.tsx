@@ -47,52 +47,146 @@ export default function ShopClient({ pageData, collectionProducts, collectionCat
         );
     }
 
-    const defaultCategories = pageData.categories || [{ name: 'All Objects', slug: 'all' }];
-    const categories = collectionCategories && collectionCategories.length > 0
-        ? [{ name: 'All Objects', slug: 'all' }, ...collectionCategories.map((c: any) => ({ name: c.name, slug: c.slug }))]
-        : defaultCategories;
+    // Build category list from Payload collection or fallback ShopPage global
+    const cmsCategories = (collectionCategories && collectionCategories.length > 0)
+        ? collectionCategories.map((c: any) => ({
+            name: c.name,
+            slug: (c.slug || c.name || '').toLowerCase().trim(),
+        }))
+        : (pageData.categories || []).map((c: any) => ({
+            name: c.name,
+            slug: (c.slug || c.name || '').toLowerCase().trim(),
+        }));
 
+    const categories = [
+        { name: 'All Objects', slug: 'all' },
+        ...cmsCategories.filter((c: any) => c.slug !== 'all' && c.name?.toLowerCase() !== 'all objects')
+    ];
+
+    // Map products from Collection or Global
     const mappedCollectionProducts = (collectionProducts || []).map((p: any) => {
-        const cat = Array.isArray(p.categories) && p.categories[0] ? (typeof p.categories[0] === 'object' ? p.categories[0].name : p.categories[0]) : 'Object';
+        const rawCats = Array.isArray(p.categories) ? p.categories : (p.categories ? [p.categories] : []);
+        const catSlugs: string[] = [];
+        const catNames: string[] = [];
+        
+        rawCats.forEach((c: any) => {
+            if (typeof c === 'object' && c !== null) {
+                if (c.slug) catSlugs.push(String(c.slug).toLowerCase().trim());
+                if (c.name) {
+                    catNames.push(c.name);
+                    catSlugs.push(String(c.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+                }
+                if (c.id) catSlugs.push(String(c.id));
+            } else if (typeof c === 'string') {
+                catSlugs.push(c.toLowerCase().trim());
+                catSlugs.push(c.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+                catNames.push(c);
+            }
+        });
+
+        const primaryCategory = catNames[0] || (typeof p.category === 'string' ? p.category : 'Object');
+
         return {
             id: p.id,
-            name: p.title,
+            name: p.title || p.name || 'Untitled',
             slug: p.slug,
-            price: `$${Number(p.price).toFixed(2)}`,
-            rawPrice: Number(p.price),
-            salePrice: p.compareAtPrice ? `$${Number(p.price).toFixed(2)}` : undefined,
-            category: cat,
-            image: p.featuredImage,
-            description: p.shortDescription || '',
-            link: `/shop/${p.slug}`,
+            price: typeof p.price === 'number' ? `$${p.price.toFixed(2)}` : (p.price || '$0.00'),
+            rawPrice: typeof p.price === 'number' ? p.price : parseFloat(String(p.price || '0').replace(/[^0-9.]/g, '') || '0'),
+            salePrice: p.compareAtPrice ? `$${Number(p.compareAtPrice).toFixed(2)}` : undefined,
+            category: primaryCategory,
+            categorySlugs: catSlugs,
+            categoryNames: catNames,
+            image: p.featuredImage || p.image,
+            description: p.shortDescription || p.description || '',
+            link: p.slug ? `/shop/${p.slug}` : (p.link || '#'),
             badge: p.featured ? 'Featured' : undefined,
+            createdAt: p.createdAt,
+        };
+    });
+
+    const fallbackProducts = (pageData.products || []).map((p: any) => {
+        const catName = p.category || 'Object';
+        const catSlug = catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        return {
+            ...p,
+            rawPrice: parseFloat(String(p.price || '0').replace(/[^0-9.]/g, '') || '0'),
+            categorySlugs: [catSlug, catName.toLowerCase().trim()],
+            categoryNames: [catName],
+            link: p.slug ? `/shop/${p.slug}` : (p.link || '#'),
         };
     });
 
     const products = mappedCollectionProducts.length > 0
         ? mappedCollectionProducts
-        : (pageData.products || []);
+        : fallbackProducts;
 
-    const sortOptions = pageData.sortOptions || [{ label: 'Newest Arrivals', value: 'newest' }];
+    const defaultSortOptions = [
+        { label: 'Newest Arrivals', value: 'newest' },
+        { label: 'Price: Low to High', value: 'price-asc' },
+        { label: 'Price: High to Low', value: 'price-desc' },
+    ];
+    const sortOptions = (pageData.sortOptions && pageData.sortOptions.length > 0)
+        ? pageData.sortOptions
+        : defaultSortOptions;
 
     // Filter products by category
     const filteredProducts = activeCategory === 'all' 
         ? products 
-        : products.filter(p => p.category?.toLowerCase().replace(/\s+/g, '-') === activeCategory);
+        : products.filter(p => {
+            const target = activeCategory.toLowerCase().trim();
+            // Match any associated slug
+            if (p.categorySlugs && p.categorySlugs.some((s: string) => s === target || s.includes(target) || target.includes(s))) {
+                return true;
+            }
+            // Match category names
+            if (p.categoryNames && p.categoryNames.some((name: string) => {
+                const norm = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                return norm === target || norm.includes(target) || target.includes(norm);
+            })) {
+                return true;
+            }
+            // Fallback match on primary category
+            if (p.category) {
+                const norm = String(p.category).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                return norm === target || norm.includes(target) || target.includes(norm);
+            }
+            return false;
+        });
 
     // Sort products
     const sortedProducts = [...filteredProducts].sort((a, b) => {
-        if (sortBy === 'price-asc') {
-            const priceA = parseFloat(a.price?.replace(/[^0-9.]/g, '') || '0');
-            const priceB = parseFloat(b.price?.replace(/[^0-9.]/g, '') || '0');
-            return priceA - priceB;
+        const getPrice = (item: any) => {
+            if (typeof item.rawPrice === 'number' && !isNaN(item.rawPrice)) return item.rawPrice;
+            const parsed = parseFloat(String(item.price || '0').replace(/[^0-9.]/g, ''));
+            return isNaN(parsed) ? 0 : parsed;
+        };
+
+        const getDate = (item: any) => {
+            if (item.createdAt) return new Date(item.createdAt).getTime();
+            return 0;
+        };
+
+        const sortVal = String(sortBy).toLowerCase();
+
+        if (sortVal === 'price-asc' || sortVal === 'price_asc' || sortVal === 'low-to-high' || sortVal.includes('low')) {
+            return getPrice(a) - getPrice(b);
         }
-        if (sortBy === 'price-desc') {
-            const priceA = parseFloat(a.price?.replace(/[^0-9.]/g, '') || '0');
-            const priceB = parseFloat(b.price?.replace(/[^0-9.]/g, '') || '0');
-            return priceB - priceA;
+        if (sortVal === 'price-desc' || sortVal === 'price_desc' || sortVal === 'high-to-low' || sortVal.includes('high')) {
+            return getPrice(b) - getPrice(a);
         }
-        return 0; // newest - keep original order
+        if (sortVal === 'oldest' || sortVal === 'date-asc') {
+            return getDate(a) - getDate(b);
+        }
+        if (sortVal === 'name-asc' || sortVal === 'title-asc' || sortVal === 'a-z') {
+            return (a.name || '').localeCompare(b.name || '');
+        }
+        if (sortVal === 'name-desc' || sortVal === 'title-desc' || sortVal === 'z-a') {
+            return (b.name || '').localeCompare(a.name || '');
+        }
+        // Default 'newest'
+        const dateDiff = getDate(b) - getDate(a);
+        if (dateDiff !== 0) return dateDiff;
+        return 0;
     });
 
     // Card hover effect class
@@ -214,28 +308,25 @@ export default function ShopClient({ pageData, collectionProducts, collectionCat
                         style={{ borderColor: pageData.borderColor || 'rgba(var(--accent), 0.1)' }}
                     >
                         <div className="flex flex-wrap gap-2 md:gap-4">
-                            {categories.map((category, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setActiveCategory(category.slug || 'all')}
-                                    className={`rounded-lg transition-all duration-200 px-4 py-2 text-xs uppercase tracking-widest font-bold ${
-                                        activeCategory === (category.slug || 'all')
-                                            ? "bg-primary text-primary-foreground shadow-md"
-                                            : "text-foreground/50 hover:text-foreground hover:bg-foreground/5"
-                                    }`}
-                                    style={{
-                                        fontFamily: getFontFamily(pageData.categoryFont),
-                                        ...(activeCategory === (category.slug || 'all') ? {
-                                            color: pageData.categoryActiveColor || undefined,
-                                            backgroundColor: pageData.categoryActiveColor || undefined,
-                                        } : {
-                                            color: pageData.categoryInactiveColor || undefined,
-                                        }),
-                                    }}
-                                >
-                                    {category.name}
-                                </button>
-                            ))}
+                            {categories.map((category, index) => {
+                                const isActive = activeCategory === (category.slug || 'all');
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => setActiveCategory(category.slug || 'all')}
+                                        className={`rounded-lg transition-all duration-200 px-4 py-2 text-xs uppercase tracking-widest font-bold ${
+                                            isActive
+                                                ? "bg-secondary/40 text-foreground border border-accent/40 shadow-sm"
+                                                : "text-foreground/50 hover:text-foreground hover:bg-foreground/5"
+                                        }`}
+                                        style={{
+                                            fontFamily: getFontFamily(pageData.categoryFont),
+                                        }}
+                                    >
+                                        {category.name}
+                                    </button>
+                                );
+                            })}
                         </div>
                         {pageData.showSortDropdown && (
                             <div className="flex items-center space-x-2 text-sm">
@@ -427,6 +518,14 @@ export default function ShopClient({ pageData, collectionProducts, collectionCat
                             <p className="text-foreground/60">
                                 {pageData.emptyStateDescription || 'Check back soon for new arrivals.'}
                             </p>
+                            {activeCategory !== 'all' && (
+                                <button
+                                    onClick={() => setActiveCategory('all')}
+                                    className="mt-6 inline-flex items-center px-4 py-2 text-xs uppercase tracking-widest font-bold rounded-lg bg-secondary/30 hover:bg-secondary/50 text-foreground transition-all duration-200"
+                                >
+                                    Show All Objects
+                                </button>
+                            )}
                         </div>
                     )}
                 </main>

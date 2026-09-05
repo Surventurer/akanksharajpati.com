@@ -164,7 +164,7 @@ export const Products: CollectionConfig = {
         },
     ],
     hooks: {
-        afterChange: [createRevalidateHook(CACHE_TAGS.PRODUCTS)],
+        afterChange: [createRevalidateHook(CACHE_TAGS.PRODUCTS, '/shop')],
     },
 }
 
